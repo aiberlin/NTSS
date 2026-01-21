@@ -12,13 +12,19 @@ ServerOptions.devices.cs
 
 //XConnect(\gencomp);
 
+NTSS.defaults.inDevice = "X-USB"; // Behringer X-32 mixer in macOS
+NTSS.defaults.outDevice = "X-USB";
+NTSS.defaults.device = "X-USB";
+
 q = q ? ();
 
 q.ntss = q.ntss ? ();
 q.ntss.ready = false;
 q.topName = \N_T_S_S;
 
-s.options.device = "X-USB"; // Behringer X-32 mixer in macOS
+s.options.device = NTSS.device;
+s.options.inDevice = NTSS.inDevice;
+s.options.outDevice = NTSS.outDevice;
 s.options.numInputBusChannels = 30;
 s.options.memSize = 8192 * 32; // boost to 256MB for delaylines
 s.options.numAudioBusChannels = 2048;
