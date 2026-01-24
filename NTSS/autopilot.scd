@@ -1,8 +1,9 @@
 /*
-how to AUTOPILOT?
+This is still for Biophony,
+but it could be nicely adapted for NTSS,
+esp. when soundfile collections are added.
 
 Tdef(\AUTOPILOT).gui;
-
 */
 
 Butz.add(\AUTOPILOT, { WinBounds.showOrMake(\AUTOPILOT) });
