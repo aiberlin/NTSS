@@ -1,5 +1,5 @@
 /*
-Switchable panners for a Mono Ndef bus going to ring of 5 * 4 outs:
+Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
 
 srcPos sets position in circle,
 srcWidth opens to more chans
@@ -17,7 +17,7 @@ Ndef(\pan1).gui;
 
 /// BIOPHONY Panners: //////
 
-q.panNames = [ \panFixed, \panRoto, \panFeed];
+q.panNames = [ \panFixed, \panRoto, \panSnake, \panFeed];
 // // these were the ringnames for biophony ...
 // q.ringNames = [\inside, \shakers, \outside, \bigPA];
 // // separate levels on 4 rings:
@@ -133,6 +133,25 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 
 }, 0.25);
 
+// shared params:
+Spec.add(\srcPosSn, q.ntss.ringNames.size * [-1, 1]);
+
+ProxyChain.add3(\panSnake, { |srcBus = 0, srcPosSn = 0, srcWidth = 0, amp = 0.25,
+	rotRate = 0, pendRate = 0.05, pendDepth = 1|
+
+	var width = (srcWidth  ** 2).linlin(0, 1, 2, 6);
+	var widAmp = srcWidth.linexp(0, 1, 1, 0.2);
+	var in = InFeedback.ar(srcBus);
+	var rotPos = LFSaw.kr(rotRate ** 2);
+	var posMod = SinOsc.kr((pendRate / pendDepth.lag(2).max(1)).lag(2), 0, pendDepth.lag(2));
+	var posAll = (srcPosSn.lag(2) * 2 / q.ntss.ringNames.size) + posMod + rotPos;
+
+	var panned = PanAz.ar(q.ntss.ringsFlat.size, in, posAll, (amp * widAmp).lag(1), width, 0);
+
+	q.ntss.reorderRingsToSpeakers(panned);
+});
+
+
 
 Spec.add(\direct, \amp);
 Spec.add(\delayed, \amp);
@@ -140,7 +159,7 @@ Spec.add(\feedback, \amp);
 Spec.add(\rotate, q.ntss.ringNumSpks * [-1,1]);
 
 ProxyChain.add3(\panFeed, { |srcBus, srcPos = 0, srcWidth = 0,
-	direct = 1, delayed = 0.8, feedback = 0.8, delaytime = 2, rotate = 0|
+	direct = 1, delayed = 0.8, feedback = 0.8, delaytime = 2, rotate = 1|
 
 	var numCh = q.ntss.ringNumSpks;
 	var ringAmps = q.ntss.ringNames.collect { |name|
