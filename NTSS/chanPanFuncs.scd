@@ -18,26 +18,81 @@ Ndef(\pan1).gui;
 /// BIOPHONY Panners: //////
 
 q.panNames = [ \panFixed, \panRoto, \panFeed];
+// // these were the ringnames for biophony ...
+// q.ringNames = [\inside, \shakers, \outside, \bigPA];
+// // separate levels on 4 rings:
+// q.ringNames.do (Spec.add(_, \amp));
 
+// spkGroups have more types of groups,
+q.ntss.spkGroups;
+q.ntss.spkGroups.keys.postcs;
+
+// ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
+q.ntss.ringNumSpks = 6;
+q.ntss.ringNames = ['left', 'right', 'back', 'up']; // leave out subs
+q.ntss.ringNames.do (Spec.add(_, \amp));
+
+q.ntss.ringsFlat = q.ntss.ringNames.collect { |name| q.ntss.spkGroups[name] }.flat;
+q.ntss.ringsFlatIndices = q.ntss.ringsFlat.collect { |spk|
+	var spkIndex = q.ntss.speakersActive.indexOf(spk);
+	[ spk, spkIndex ].postln;
+	spkIndex
+};
+
+q.ntss.reorderRingsToSpeakers = { |nt, array|
+	var res = array.class.newClear(array.size);
+	array.do { |item, i|
+		res.put(
+			q.ntss.ringsFlatIndices[i],
+			item
+		);
+	};
+	res
+};
+
+/**** tests
+// reordering ringNames by indices
+q.ntss.reorderRingsToSpeakers(q.ntss.ringsFlat) == q.ntss.speakersActive.drop(-2);
+
+// should switch between 4 rings!
+Ndef(\testRings, {
+	var snd24 = (LFPulse.ar(0.25, [0, 1, 2, 3] / 4, 0.25) * PinkNoise.ar).collect(_.dup(6)).flat;
+	var arr = Silent.ar ! 24;
+	q.ntss.reorderRingsToSpeakers(snd24);
+}).play;
+
+// test one ring:
+Ndef(\testRings, {
+	var arr = Silent.ar ! 24, snd = Dust2.ar(500);
+	var ring = q.ntss.spkGroups.up;
+	ring.do { |name|
+		var index = q.ntss.speakersActive.indexOf(name);
+		(name.cs + index).postln;
+		arr.put(index, snd);
+	};
+	arr;
+}).play;
+
+****/
 
 // shared params:
 Spec.add(\srcBus, [s.options.firstPrivateBus] + [0, 31] ++ [\lin, 1]);
-Spec.add(\srcPos, [-5, 5]);
+Spec.add(\srcPos, q.ntss.ringNumSpks * [-1, 1]);
 Spec.add(\srcWidth, \unipolar);
-// separate levels on 4 rings:
-q.ringNames = [\inside, \shakers, \outside, \bigPA];
-q.ringNames.do (Spec.add(_, \amp));
 
 ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 	// \panFixed
 	var width = (srcWidth  ** 2).linlin(0, 1, 2, 6);
 	var widAmp = srcWidth.linexp(0, 1, 1, 0.4);
 	var in = InFeedback.ar(srcBus);
-	var amps = q.ringNames.collect(_.kr(0.25));
-	var panned = PanAz.ar(5, in, srcPos * 0.4, amps * widAmp, width, 0).flat;
-	panned;
-});
 
+	var panned = q.ntss.ringNames.collect { |ringname|
+		var ringamp = ringname.postcs.kr(0.25, 1);
+		PanAz.ar(q.ntss.ringNumSpks, in, srcPos * 0.3333, ringamp * widAmp, width, 0)
+	}.flat;
+
+	q.ntss.reorderRingsToSpeakers(panned);
+});
 
 Spec.add(\rotRate, [-5, 5]);
 Spec.add(\pendRate, [0, 5, 8]);
@@ -69,10 +124,12 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 	var posAll = (srcPos.lag(2) * 0.4) + posMod + rotPos;
 	// Out.kr(krBus, [posAll, srcWidth2, circleMagnet.lag(1), cirWidth2]);
 
-	circles.collect { |cirChan, i|
+	var panned = circles.collect { |cirChan, i|
 		var posPan2 = Pan2.ar(cirChan, panPos2, posAmp);
-		PanAz.ar(5, posPan2[0], posAll, 1, srcWidth2, 0) + posPan2[1].dup(5);
+		PanAz.ar(q.ntss.ringNumSpks, posPan2[0], posAll, 1, srcWidth2, 0) + posPan2[1].dup(5);
 	}.flat;
+
+	q.ntss.reorderRingsToSpeakers(panned);
 
 }, 0.25);
 
@@ -80,39 +137,39 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 Spec.add(\direct, \amp);
 Spec.add(\delayed, \amp);
 Spec.add(\feedback, \amp);
-Spec.add(\inside, \amp);
-Spec.add(\shakers, \amp);
-Spec.add(\outside, \amp);
-Spec.add(\bigPA, \amp);
-Spec.add(\rotate, [-5, 5]);
+Spec.add(\rotate, q.ntss.ringNumSpks * [-1,1]);
 
 ProxyChain.add3(\panFeed, { |srcBus, srcPos = 0, srcWidth = 0,
-	direct = 1, delayed = 0.8, feedback = 0.8, delaytime = 2, rotate = 0,
-	inside = 0.5, shakers = 0.2, outside = 0.5, bigPA = 0.5|
+	direct = 1, delayed = 0.8, feedback = 0.8, delaytime = 2, rotate = 0|
 
-	var width = (srcWidth  ** 2).linlin(0, 1, 2, 5);
-	var in = PanAz.ar(5, InFeedback.ar(srcBus), srcPos.lag(2) * 0.4, 1, width, 0);
-	var feedy = LocalIn.ar(5) * feedback.lag(2);
-	var dts = delaytime.lag(5) * LFDNoise3.kr(0.03 ! 5, 0.02, 0.98);
+	var numCh = q.ntss.ringNumSpks;
+	var ringAmps = q.ntss.ringNames.collect { |name|
+		name.kr(0.5, 1, spec: \amp);
+	};
+	var width = (srcWidth  ** 2).linlin(0, 1, 2, numCh);
+	var in = PanAz.ar(numCh, InFeedback.ar(srcBus), srcPos.lag(2) * 2 / numCh, 1, width, 0);
+	var feedy = LocalIn.ar(q.ntss.ringNumSpks) * feedback.lag(2);
+	var dts = delaytime.lag(5) * LFDNoise3.kr(0.03 ! numCh, 0.02, 0.98);
 	var delays = DelayL.ar(LeakDC.ar(in + feedy, 0.998), 10, dts);
-	//// cheap but clumsy fixed out with rotate
-	//// var rotated = delays.rotate(1);
 
-	////// better rotate with PanAz:
+	var mixedouts, panned;
+
+	// better rotate with PanAz:
 	var rotated = delays.collect { |chan, i|
-		var rotatedpos = i + rotate * (2 / q.ntss.speakersOrder.size);
-		PanAz.ar(5, chan, rotatedpos, 1, 2, 0);
+		var rotatedpos = i + rotate * (2 / numCh);
+		PanAz.ar(q.ntss.ringNumSpks, chan, rotatedpos, 1, 2, 0);
 	}.sum;
 
 	rotated = Limiter.ar(rotated, 1, 0.001);
 	LocalOut.ar(rotated);
 
-	// 5 outs, table-multiplied by ring amps
+	// numCh outs, table-multiplied by ring amps
 
-	(((in * direct.lag(2)) + (rotated * delayed.lag(2)))
-		*.t
-		[ inside, shakers, outside, bigPA ].collect(_.lag(1)))
-	.flop.flat;
+	mixedouts = ((in * direct.lag(2)) + (rotated * delayed.lag(2)));
+	panned = (mixedouts *.t ringAmps).flop.flat;
+
+	q.ntss.reorderRingsToSpeakers(panned);
+
 });
 
 /// NTSS Panners: //////
@@ -160,6 +217,7 @@ spread is similar to k
 **/
 
 // was dlypan
+
 
 q.ntss.spat.delayspat = { arg name, speakers, snd;
 	var k = "%_k".format(name).asSymbol.kr(1, spec:[1,10]);
