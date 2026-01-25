@@ -1,3 +1,4 @@
+// Biophony - not sure what this sketch was for
 (
 var win, pop, uv, xy = 400;
 var cols;
@@ -27,6 +28,7 @@ pop = EZPopUpMenu(win, 100@20, "", q.rotoNames, { |pop|
 
 thisThread.randSeed = 1126;
 thisThread.randSeed = 1970;
+
 cols = { Color.rand } ! 12; // enough Colors
 uv.drawFunc = {
 	var uextent = uv.bounds.extent;

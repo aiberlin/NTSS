@@ -1,3 +1,5 @@
+// biophony : play sombat files also on Biophonium
+
 // one-shot-sampler for playing the short SomBat sounds on the computer/PA
 
 /*
