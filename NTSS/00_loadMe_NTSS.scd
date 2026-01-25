@@ -251,6 +251,9 @@ Butz(\NTSS).add(\MainFX, { WinBounds.showOrMake(\MainFX) });
 // on one window as dragsources.
 Butz(\NTSS).add(\allSrcNdefs, { WinBounds.showOrMake(\allSrcNdefs) });
 
+// default groupNames
+q.ndef = q.ndef ? ();
+q.ndef.groupNames = q.ndef.groupNames ? [\ntssChan, \ntssPan];
 "NdefMixer.scd".postcs.loadRelative;
 
 WinBounds.addMake(\Levels, {
@@ -359,11 +362,16 @@ s.waitForBoot {
 	// "autopilot.scd".postcs.loadRelative;
 	Butz.run('SpatioScope');
 	Butz.run(q.topName);
+	Butz.curr_('NTSS');
 
 	0.2.wait;
 
+	// turn sound on by default:
+	MainFX(s).proxy.set(\mainvol, NTSS.mainvol ? 0.25);
+
 	WinBounds.restoreAll;
 	q.ntss.ready = true;
+
 	// put next setup script in q.ntss.finalSetup,
 	// so it runs here:
 	q.ntss.finalSetup;

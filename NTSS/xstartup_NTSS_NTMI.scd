@@ -1,10 +1,15 @@
 /***
-example startupfile for NTMI and NTSS setup:
-- copy to
-StartupFile.filesDir
-- then adjust path!
+example startupfile for combining NTSS with another setup, here the NTMI.
 
-this loads NTSS first,
+Copy this file to your desired location,
+modify to your taste, and use it to load your NTSS!
+
+// If you use StartupFile, do
+StartupFile.dialog;
+// drop this file into the dragsink there,
+// and save it with a name you remember well.
+
+This file loads NTSS first,
 then NTMI with no MainFX and no reboot.
 adds a window for dragsources for NTMI processes,
 so one can drag them to NTSS channels.
@@ -12,21 +17,25 @@ so one can drag them to NTSS channels.
 ***/
 //// some things to set before loading anything:
 
+
 // I want that sampleRate:
 s.options.sampleRate = 48000;
 
-//
+// for general things:
 q = q ? ();
-q.ntss = q.ntss ? ();
+
 // special ntss settings would go here...
+NTSS.defaults;
 
 
-// first load NTSS, which boots server.
-// adjust path to where you have it:
-"~/src/aiberlin/Biophony/00_loadMe_NTSS.scd".standardizePath.loadPaths;
 
-// tell ntss what to do when loaded:
-q.ntss.finalSetup = {
+// first run NTSS, which configures and boots the server.
+NTSS.run;
+// run can be directed to a custom load file:
+// NTSS.run("~/folder/path/to/myLoadMe_NTSS.scd")
+
+// tell ntss what to do when finished loading:
+NTSS.finalSetup = {
 	// wait a bit
 	0.1.wait;
 
