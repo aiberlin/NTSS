@@ -14,7 +14,7 @@ NTSS.defaults.device = "X-USB";
 q = q ? ();
 
 q.ntss = q.ntss ? ();
-q.ntss.ready = false;
+NTSS.ready = false;
 q.topName = \N_T_S_S;
 
 s.options.device = NTSS.device;
@@ -32,13 +32,13 @@ s.options.sampleRate = s.options.sampleRate ? 44100;
 
 /*
 z = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1]
-q.ntss.speakers.size
-q.ntss.speakersDict[q.ntss.speakersActive[0]]
-q.ntss.speakersActive.collect { |sp,i| [sp] ++ q.ntss.speakersDict[sp][..2] ++ [z[i]] }.do {|el| "%: [ %, %, %, %],".format(*el).postln }
+NTSS.speakers.size
+NTSS.speakersDict[NTSS.speakersActive[0]]
+NTSS.speakersActive.collect { |sp,i| [sp] ++ NTSS.speakersDict[sp][..2] ++ [z[i]] }.do {|el| "%: [ %, %, %, %],".format(*el).postln }
 */
 
 // the speakers as in Medienhaus 111
-q.ntss.speakersDict = (
+NTSS.speakersDict = (
 	//      x    y    z   amp
 	bw5: [ 1.2, 5.3, 0.0, 0.4],
 	bw6: [ -4.0, -1.0, 1.3, 0.35],
@@ -75,7 +75,7 @@ q.ntss.speakersDict = (
 );
 
 // make 4 rings of 6 speakers each
-q.ntss.spkGroups = (
+NTSS.spkGroups = (
 	// 4 rings: clockwise, always begin at center, so they can be one long twirl
 	left: [\wd12, \cabass2, \wd14, \bw6, \ldl7, \gene0 ],
 	up: [\kef3, \cabass1, \kef1, \kef0, \kef4, \kef2 ], // kefs,
@@ -95,29 +95,29 @@ q.ntss.spkGroups = (
 	crypt: [\cryptA, \crypt3],
 );
 
-q.ntss.showRing = { |nt, ringName, show=true|
+NTSS.showRing = { |nt, ringName, show=true|
 	if (show, "SHOWING %:\n", "HIDING %:\n").postf(ringName);
-	q.ntss.ringDict[ringName].do { |spkName|
-		var index = q.ntss.speakersActive.indexOf(spkName);
+	NTSS.ringDict[ringName].do { |spkName|
+		var index = NTSS.speakersActive.indexOf(spkName);
 		q.spat.ampViews[index].visible_(show);
 		"  %: %\n".postf(index, spkName);
 	};
 };
 /*
-q.ntss.showRing(\subs, false);
-q.ntss.showRing(\subs);
-q.ntss.showRing(\left, false);
-q.ntss.showRing(\left);
-q.ntss.showRing(\up, false);
-q.ntss.showRing(\up);
-q.ntss.showRing(\right, false);
-q.ntss.showRing(\right);
-q.ntss.showRing(\back, false);
-q.ntss.showRing(\back);
+NTSS.showRing(\subs, false);
+NTSS.showRing(\subs);
+NTSS.showRing(\left, false);
+NTSS.showRing(\left);
+NTSS.showRing(\up, false);
+NTSS.showRing(\up);
+NTSS.showRing(\right, false);
+NTSS.showRing(\right);
+NTSS.showRing(\back, false);
+NTSS.showRing(\back);
 */
 
 // in order of physical outputs :
-q.ntss.speakersOrder = [
+NTSS.speakersOrder = [
 	// 7 XLR outs from X32, 7 to Denon amp
 	\bw5,
 	\bw6,
@@ -169,20 +169,20 @@ q.ntss.speakersOrder = [
 ];
 
 // we play only to the connected speakers, so select these:
-q.ntss.speakersActive = q.ntss.speakersOrder.reject {|spk| spk == \empty };
+NTSS.speakersActive = NTSS.speakersOrder.reject {|spk| spk == \empty };
 
-q.ntss.speakersTuning = q.ntss.speakersActive.collect {|spk| q.ntss.speakersDict[spk][3] };
-q.ntss.speakers = q.ntss.speakersActive.collect {|key|
-	var loc = q.ntss.speakersDict[key];
+NTSS.speakersTuning = NTSS.speakersActive.collect {|spk| NTSS.speakersDict[spk][3] };
+NTSS.speakers = NTSS.speakersActive.collect {|key|
+	var loc = NTSS.speakersDict[key];
 	[loc[0], loc[1], loc[2]]
-}.flat.normalize(-0.85,0.85).reshape(q.ntss.speakersActive.size, 3);
+}.flat.normalize(-0.85,0.85).reshape(NTSS.speakersActive.size, 3);
 
 // names to use for setting output amps
-q.ntss.amp_names = q.ntss.speakersActive;
+NTSS.amp_names = NTSS.speakersActive;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains
 q.numPmcs = 16;
-~num = q.ntss.speakersOrder.size;
+~num = NTSS.speakersOrder.size;
 ~numIOchans = 32; // 16 for install, 24 for concert
 ~hideChanNdefs = false;
 
@@ -277,7 +277,7 @@ WinBounds.addMake(\Levels, {
 // not sure why it sometimes needs stop/start before it shows again.
 
 WinBounds.addMake(\SpatioScope, {
-	q.spat = SpatioScope.new(q.ntss.speakers.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500));
+	q.spat = SpatioScope.new(NTSS.speakers.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500));
 
 	q.spat.parentView.mouseDownAction = nil;
 	q.spat.magnify_(10);
@@ -288,11 +288,11 @@ WinBounds.addMake(\SpatioScope, {
 	q.spat.ampViews.do(_.stringColor_(Color.white));
 	q.spat.ampViews.do {|view,i|
 		view.bounds = view.bounds.height_(30);
-		view.string = q.ntss.speakersActive[i];
+		view.string = NTSS.speakersActive[i];
 		view.mouseDownAction = {
-			var name = q.ntss.speakersActive[i];
+			var name = NTSS.speakersActive[i];
 			"*** q.spat: %, %: %\n".postf(i, name,
-				q.ntss.speakersDict[name]
+				NTSS.speakersDict[name]
 			);
 		};
 	};
@@ -304,7 +304,7 @@ WinBounds.addMake(\SpatioScope, {
 // everything audio except the chains and panners.
 // can be modified, e.g. for use with NTMI.
 
-q.ntss.getSrcNdefs = {
+NTSS.getSrcNdefs = {
 	var sources = Ndef.all[s.name].envir.asArray;
 	sources = sources.select { |px| px.rate == \audio };
 	q.pchains.do { |chain|
@@ -320,7 +320,7 @@ WinBounds.addMake(\allSrcNdefs, {
 	w = Window("allSrcNdefs", Rect(500, 13.0, 400.0, 400.0)).front;
 	w.background_(Color.grey);
 	w.view.layout = GridLayout.rows(
-		*q.ntss.getSrcNdefs.collect { |ndef|
+		*NTSS.getSrcNdefs.collect { |ndef|
 			DragSource(w).object_(ndef) }.clump(4)
 	);
 	w;
@@ -391,10 +391,10 @@ s.waitForBoot {
 	MainFX(s).proxy.set(\mainvol, NTSS.mainvol ? 0.25);
 
 	WinBounds.restoreAll;
-	q.ntss.ready = true;
+	NTSS.ready = true;
 
-	// put next setup script in q.ntss.finalSetup,
+	// put next setup script in NTSS.finalSetup,
 	// so it runs here:
-	q.ntss.finalSetup;
+	NTSS.finalSetup;
 
 };

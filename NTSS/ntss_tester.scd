@@ -19,9 +19,9 @@ Tdef(\bal).play;  // Tdef(\bal) plays sounds round-robin on ~chans
 (
 q = q ? ();
 
-q.ntss.speakers.size;
-q.ntss.speakersOrder;
-q.ntss.speakersActive;
+NTSS.speakers.size;
+NTSS.speakersOrder;
+NTSS.speakersActive;
 
 // a simple noise burst
 SynthDef(\pink, { |out, amp=0.1, sustain=1|
@@ -41,14 +41,14 @@ SynthDef(\pink, { |out, amp=0.1, sustain=1|
 ~chans = [0, 1];
 
 // test that all speakers run:
-~chans = (0..q.ntss.speakersActive.lastIndex);
+~chans = (0..NTSS.speakersActive.lastIndex);
 
 
 // balance tester Tdef
 Tdef(\bal, {
 	inf.do { |i|
 		var chan = ~chans.wrapAt(i);
-		"*** % : %\n".postf(chan, q.ntss.speakersActive[chan].cs);
+		"*** % : %\n".postf(chan, NTSS.speakersActive[chan].cs);
 		(instrument: \pink,
 			out: chan,
 			amp: 0.5

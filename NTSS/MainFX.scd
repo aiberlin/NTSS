@@ -91,15 +91,15 @@ ProxyChain.add3(
 	\mainMixer,  \filter -> { |in|
 		var snds = in;
 		var mainvol = \mainvol.kr(0, spec:\amp);
-		var amps = q.ntss.amp_names.collect {|name| name.kr(1, spec:\amp) } ++ DC.ar(0!(32-q.ntss.amp_names.size));
+		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp) } ++ DC.ar(0!(32-NTSS.amp_names.size));
 		// measured in class:
 		//var tuning = (1!20) ++ (0.0!12);
-		//var tuning = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1] ++ (0.0!(32-q.ntss.amp_names.size));
-		var tuning = q.ntss.speakersTuning ++ (0.0!(32-q.ntss.speakersTuning.size));
+		//var tuning = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1] ++ (0.0!(32-NTSS.amp_names.size));
+		var tuning = NTSS.speakersTuning ++ (0.0!(32-NTSS.speakersTuning.size));
 		snds * (amps * mainvol * tuning);
 	},
 	1,
-	q.ntss.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
+	NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
 );
 
 ProxyChain.add3(
@@ -112,10 +112,10 @@ ProxyChain.add3(
 );
 
 ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
-	var currentSpeakers = q.ntss.speakers.size;
+	var currentSpeakers = NTSS.speakers.size;
 	var outs = Silent.ar!s.options.numOutputBusChannels;
 	var counter = 0;
-	q.ntss.speakersOrder.do {|speaker,i|
+	NTSS.speakersOrder.do {|speaker,i|
 		if (speaker != \empty) {
 			outs[i] = in[counter];
 			counter = counter + 1;
@@ -127,7 +127,7 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
 
 MainFX(s).clear;
-MainFX(s, q.ntss.speakersOrder.size, [\mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]);
+MainFX(s, NTSS.speakersOrder.size, [\mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]);
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);

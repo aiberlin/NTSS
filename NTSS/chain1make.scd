@@ -270,7 +270,7 @@ q.pchains.do { |pc, i|
 	var mybuf, panNdefName, panner;
 	panNdefName = q.pannerNames[i];
 	panner = Ndef(panNdefName);
-	panner.ar(q.ntss.speakers.size);
+	panner.ar(NTSS.speakers.size);
 	panner.fadeTime = 3;
 	panner.vol = 0.25;
 	panner.set(\srcBus, pc.proxy.index);
