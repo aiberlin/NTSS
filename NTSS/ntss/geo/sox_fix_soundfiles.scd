@@ -1,1 +1,0 @@
-sox --ignore-length corrupted.wav fixed.wav

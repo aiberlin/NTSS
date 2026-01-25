@@ -1,1 +1,0 @@
-python3 ~/Seafile/BiophonySetup/code/geo/geophoneDatacast.py
