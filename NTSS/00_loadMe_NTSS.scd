@@ -6,6 +6,7 @@ which will be either integrated or removed/moved aside over time.
 ServerOptions.devices.cs
 
 */
+
 // works for macOS, to test for others
 NTSS.defaults.inDevice = "X-USB"; // Behringer X-32 mixer in macOS
 NTSS.defaults.outDevice = "X-USB";
@@ -17,10 +18,13 @@ q.ntss = q.ntss ? ();
 NTSS.ready = false;
 q.topName = \N_T_S_S;
 
-s.options.device = NTSS.device;
-s.options.inDevice = NTSS.inDevice;
-s.options.outDevice = NTSS.outDevice;
+
+s.options.device = s.options.device ? NTSS.device;
+s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
+s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
+
 s.options.numInputBusChannels = 30;
+s.options.numOutputBusChannels = 32;
 s.options.memSize = 8192 * 32; // boost to 256MB for delaylines
 s.options.numAudioBusChannels = 2048;
 s.options.maxNodes = 4096;
@@ -30,164 +34,13 @@ s.options.hardwareBufferSize = 256;
 s.options.sampleRate = s.options.sampleRate ? 44100;
 
 
-/*
-z = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1]
-NTSS.speakers.size
-NTSS.speakersDict[NTSS.speakersActive[0]]
-NTSS.speakersActive.collect { |sp,i| [sp] ++ NTSS.speakersDict[sp][..2] ++ [z[i]] }.do {|el| "%: [ %, %, %, %],".format(*el).postln }
-*/
-
-// the speakers as in Medienhaus 111
-NTSS.speakersDict = (
-	//      x    y    z   amp
-	bw5: [ 1.2, 5.3, 0.0, 0.4],
-	bw6: [ -4.0, -1.0, 1.3, 0.35],
-	cabass2: [ -0.5, 2.7, 0.8, 0.13],
-	cabass0: [ -0.5, 2.9, 0.8, 0.13],
-	cabass1: [ 6.0, 3.8, 3.5, 0.14],
-	ldl7: [ 0.5, -1.0, 2.0, 0.15],
-	ldl8: [ -3.5, 5.2, 0.0, 0.3],
-	gene0: [ 2.0, -0.5, 1.0, 0.7],
-
-	///// group as up
-	kef0: [ -3.0, 3.0, 3.2, 0.5],
-	kef1: [ 0.5, 6.0, 3.2, 0.5],
-	kef2: [ 0.5, -0.6, 3.2, 0.5],
-	kef3: [ 1.5, 1.1, 2.9, 0.5],
-	kef4: [ -3.5, 2.5, 3.0, 0.5],
-
-	wd14: [ -3.5, 1.0, 0.5, 0.4],
-	wd13: [ 6.0, 1.5, 1.0, 0.4],
-	wd12: [ 1.5, 0.5, 0.2, 0.32],
-	wd11: [ 3.5, 0.5, 0.2, 0.4],
-	noname: [ 2.4, 4.0, 3.5, 0.5],
-	braun1: [ 4.5, 2.0, 2.2, 1],
-	braun2: [ -1.0, 3.8, 3.0, 0.8],
-	crypt3: [ 5.5, 0.0, 0.0, 1],
-	behring: [ 2.5, 3.0, 2.0, 0.6],
-	cryptA: [ 4.5, -0.5, 1.0, 0.5],
-	bluecab: [ 2.2, 5.5, 2.2, 0.3],
-
-	// not in any group
-	sub0: [ 0.0, 0.0, 0.0, 1],
-	sub1: [ -4, 3, 0.0, 1],
-
-);
-
-// make 4 rings of 6 speakers each
-NTSS.spkGroups = (
-	// 4 rings: clockwise, always begin at center, so they can be one long twirl
-	left: [\wd12, \cabass2, \wd14, \bw6, \ldl7, \gene0 ],
-	up: [\kef3, \cabass1, \kef1, \kef0, \kef4, \kef2 ], // kefs,
-	back: [ \noname, \bluecab, \bw5, \ldl8, \braun2, \cabass0 ],
-	right: [ \wd11, \cryptA, \crypt3, \wd13, \braun1, \behring],
-	// the subs:
-	subs: [\sub0, \sub1],
-	// same-speakers:
-	wd: [\wd11, \wd12, \wd13, \wd14],
-	kef: [\kef0, \kef1, \kef2, \kef3, \kef4],
-	cabass: [\cabass0, \cabass1, \cabass2],
-	// pairs by brand/type
-	bw: [\bw5, \bw6],
-	ldl: [\ldl7, \ldl8],
-	braun: [\braun1, \braun2],
-	amps: [\behring, \bluecab],
-	crypt: [\cryptA, \crypt3],
-);
-
-NTSS.showRing = { |nt, ringName, show=true|
-	if (show, "SHOWING %:\n", "HIDING %:\n").postf(ringName);
-	NTSS.ringDict[ringName].do { |spkName|
-		var index = NTSS.speakersActive.indexOf(spkName);
-		q.spat.ampViews[index].visible_(show);
-		"  %: %\n".postf(index, spkName);
-	};
-};
-/*
-NTSS.showRing(\subs, false);
-NTSS.showRing(\subs);
-NTSS.showRing(\left, false);
-NTSS.showRing(\left);
-NTSS.showRing(\up, false);
-NTSS.showRing(\up);
-NTSS.showRing(\right, false);
-NTSS.showRing(\right);
-NTSS.showRing(\back, false);
-NTSS.showRing(\back);
-*/
-
-// in order of physical outputs :
-NTSS.speakersOrder = [
-	// 7 XLR outs from X32, 7 to Denon amp
-	\bw5,
-	\bw6,
-	\cabass2,
-	\cabass0,
-	\cabass1,
-	\ldl7,
-	\ldl8,
-
-	// last XLR out from X32
-	\gene0,
-
-	// 8 XLR outs from s16 to Stereo amps
-	\kef0,
-	\kef1,
-	\kef2,
-	\kef3,
-	\kef4,
-
-	\empty,
-	\empty,
-	\empty,
-
-	// 5 JACK outs from s16-RME-ADAT to Yamaha Amp
-	\wd14,
-	\wd13,
-	\wd12,
-	\wd11,
-	\noname,
-
-	// 2 JACK outs from s16-RME-ADAT to stereo amp 1
-	\braun1,
-	\braun2,
-
-	// 1 JACK out from s16-RME-ADAT to stereo amp 2
-	\crypt3,
-
-	// aux 1-6 from x32 to active speakers
-	\behring,
-	\cryptA,
-	\bluecab,
-	\empty,
-	\empty,
-	\empty,
-
-	// X32 monitor out
-	\sub0,
-	\sub1,
-];
-
-// we play only to the connected speakers, so select these:
-NTSS.speakersActive = NTSS.speakersOrder.reject {|spk| spk == \empty };
-
-NTSS.speakersTuning = NTSS.speakersActive.collect {|spk| NTSS.speakersDict[spk][3] };
-NTSS.speakers = NTSS.speakersActive.collect {|key|
-	var loc = NTSS.speakersDict[key];
-	[loc[0], loc[1], loc[2]]
-}.flat.normalize(-0.85,0.85).reshape(NTSS.speakersActive.size, 3);
-
-// names to use for setting output amps
-NTSS.amp_names = NTSS.speakersActive;
+"speakerData.scd".postcs.loadRelative;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains
-q.numPmcs = 16;
-~num = NTSS.speakersOrder.size;
-~numIOchans = 32; // 16 for install, 24 for concert
-~hideChanNdefs = false;
+NTSS.numPmcs = 16;
 
-s.options.numOutputBusChannels = ~num;
-
+NTSS.numIOchans = NTSS.speakersOrder.size;
+s.options.numOutputBusChannels = NTSS.numIOchans;
 
 // general specs for everything
 Spec.add(\amp4, [0, 4, \amp]);
@@ -272,33 +125,28 @@ WinBounds.addMake(\Levels, {
 	s.meter.window.name_("Levels").moveTo(0,0);
 });
 
+
 // Note: Spatio gets added to end of s.defaultGroup,
 // so it shows the signals BEFORE mainvol and speaker remapping.
 // not sure why it sometimes needs stop/start before it shows again.
 
-WinBounds.addMake(\SpatioScope, {
-	q.spat = SpatioScope.new(NTSS.speakers.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500));
+"spatio.scd".postcs.loadRelative;
 
-	q.spat.parentView.mouseDownAction = nil;
-	q.spat.magnify_(10);
-	q.spat.parent.background_(Color.blue(0.5));
-	// make amps semitransparent for overlapping speakers
-	q.spat.ampAlpha = 0.5;
 
-	q.spat.ampViews.do(_.stringColor_(Color.white));
-	q.spat.ampViews.do {|view,i|
-		view.bounds = view.bounds.height_(30);
-		view.string = NTSS.speakersActive[i];
-		view.mouseDownAction = {
-			var name = NTSS.speakersActive[i];
-			"*** q.spat: %, %: %\n".postf(i, name,
-				NTSS.speakersDict[name]
-			);
-		};
-	};
-	q.spat.parent.moveTo(120, 480);
-	q.spat.parent
-});
+/*
+NTSS.showRing(\subs, false);
+NTSS.showRing(\subs);
+NTSS.showRing(\left, false);
+NTSS.showRing(\left);
+NTSS.showRing(\up, false);
+NTSS.showRing(\up);
+NTSS.showRing(\right, false);
+NTSS.showRing(\right);
+NTSS.showRing(\back, false);
+NTSS.showRing(\back);
+*/
+
+
 
 // get all desired source Ndefs :
 // everything audio except the chains and panners.
@@ -331,7 +179,7 @@ WinBounds.stored.putAll( (
 	N_T_S_S: Rect(520, Window.availableBounds.height - 430, 900, 450),
 	SpatioScope: Rect(120, 540, 500, 500),
 	NdefMixer: Rect(120, 300, 1086.0, 500),
-	Levels: Rect(0, 0, 58 + (~numIOchans * 38), 230.0),
+	Levels: Rect(0, 0, 58 + (s.options.numOutputBusChannels * 38), 230.0),
 	MainFX: Rect(803.0, 642.0, 500, 560),
 ) );
 
