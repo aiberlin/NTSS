@@ -1,0 +1,17 @@
+TITLE:: NTSS
+summary:: the NonTrivial Sound System project
+categories:: Overviews
+related:: Classes/NTSS
+
+DESCRIPTION::
+
+NTSS is a NonTrivial Sound System, developed by link::https://s4ntp.org::.
+It is a sound system built for diversity of loudspeaker sound colors,
+and currently consists of 26 loudspeakers set up at UdK Berlin Medienhaus room 111.
+
+code::
+(NTSS.dir.setup.dirname +/+ "Readme.md").openOS;
+Document.open(NTSS.dir.setup.dirname +/+ "Readme.md");
+::
+
+Tutorial - Instructions to follow ...

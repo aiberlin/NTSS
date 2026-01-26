@@ -2,9 +2,13 @@
 # Nontrivial Sound System at 111 / UdK Berlin
 Bruno Gola, Alberto de Campo, 2025/6
 
+NTSS is a NonTrivial Sound System, developed by link::https://s4ntp.org::.
+
+It is a sound system built for diversity of loudspeaker sound colors,
+and currently consists of 26 loudspeakers set up at UdK Berlin Medienhaus room 111.
 
 ## Install Software:
-// Install the Biophony quark
+// Install the NTSS quark
 Quarks.install("https://github.com/aiberlin/NTSS");
 // update your installed quarks
 Quarks.installed.do(_.update);
@@ -40,6 +44,7 @@ little amps next to Yamaha, and
 -> YAMAHA, Denon, and the little amps are on.
 Genelec on Stand, power dist in the cupboard
 -> Genelec, Behringer guitar amp and BlueCab bass amp are on
+
 
 5. In SuperCollider, the screen looks like this:
 
