@@ -29,7 +29,7 @@ q.topName = \N_T_S_S;
 
 s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
 s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
-s.options.device = if (s.options.device.isKindOf(Array)) { nil } { s.options.device } ? NTSS.device;
+if (s.options.device.isKindOf(Array).not) { s.options.device = s.options.device ? NTSS.device };
 
 s.options.numInputBusChannels = NTSS.numInputBusChannels;
 s.options.numOutputBusChannels = NTSS.numOutputBusChannels;
