@@ -11,6 +11,15 @@ ServerOptions.devices.cs
 NTSS.defaults.inDevice = "X-USB"; // Behringer X-32 mixer in macOS
 NTSS.defaults.outDevice = "X-USB";
 NTSS.defaults.device = "X-USB";
+NTSS.defaults.numInputBusChannels = 30;
+NTSS.defaults.numOutputBusChannels = 32;
+NTSS.defaults.memSize = 8192 * 32; // boost to 256MB for delaylines
+NTSS.defaults.numAudioBusChannels = 2048;
+NTSS.defaults.maxNodes = 4096;
+NTSS.defaults.numWireBufs = 512;
+NTSS.defaults.hardwareBufferSize = 256;
+NTSS.defaults.sampleRate = 44100;
+
 
 q = q ? ();
 
@@ -18,20 +27,20 @@ q.ntss = q.ntss ? ();
 NTSS.ready = false;
 q.topName = \N_T_S_S;
 
-
 s.options.device = s.options.device ? NTSS.device;
 s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
 s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
 
-s.options.numInputBusChannels = 30;
-s.options.numOutputBusChannels = 32;
-s.options.memSize = 8192 * 32; // boost to 256MB for delaylines
-s.options.numAudioBusChannels = 2048;
-s.options.maxNodes = 4096;
-s.options.numWireBufs = 512;
-s.options.hardwareBufferSize = 256;
+s.options.numInputBusChannels = NTSS.numInputBusChannels;
+s.options.numOutputBusChannels = NTSS.numOutputBusChannels;
+s.options.memSize =NTSS.memSize;
+s.options.numAudioBusChannels = NTSS.numAudioBusChannels;
+s.options.maxNodes = NTSS.maxNodes;
+s.options.numWireBufs = NTSS.numWireBufs;
+s.options.hardwareBufferSize = NTSS.hardwareBufferSize;
+
 // if sampleRate was already set, keep it
-s.options.sampleRate = s.options.sampleRate ? 44100;
+s.options.sampleRate = s.options.sampleRate ? NTSS.sampleRate;
 
 
 "speakerData.scd".postcs.loadRelative;
