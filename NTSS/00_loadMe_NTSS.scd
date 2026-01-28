@@ -27,9 +27,10 @@ q.ntss = q.ntss ? ();
 NTSS.ready = false;
 q.topName = \N_T_S_S;
 
-s.options.device = s.options.device ? NTSS.device;
 s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
 s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
+s.options.device = s.options.device ? NTSS.device;
+
 
 s.options.numInputBusChannels = NTSS.numInputBusChannels;
 s.options.numOutputBusChannels = NTSS.numOutputBusChannels;
