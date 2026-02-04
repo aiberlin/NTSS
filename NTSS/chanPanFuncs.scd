@@ -307,7 +307,7 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 
 NTSS.spat.peatSoup = { arg name, speakers, snd;
 	var in = snd;
-	var polarity = \polarity.kr(1, spec:[-1,1,\lin,2]);
+	var polarity = 2 * \polarity.kr(0, spec:[0,1,\lin,1]) - 1;
 	var amp = Amplitude.ar(in, \atk.kr(2, spec:[0,10]), \rls.kr(2, spec:[0,10]));
 	var db = amp.ampdb;
 	var mid = \midDb.kr(-40, spec:[-60,-20]);
