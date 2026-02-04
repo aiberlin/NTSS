@@ -91,9 +91,16 @@ NTSS.pmcSaveString = { |dict, pc|
 	);
 
 	saveStrings.add(
-		"%.set(*%);".format(pc, panSettings.flat.cs)
+		"%.set(*%);".format(panner, panSettings.flat.cs)
 	);
-	saveStrings.add("");
+
+	saveStrings.add(
+		"%.set(*%);".format(panner, panSettings.flat.cs)
+	);
+
+	if (panner.monitor.isPlaying) {
+		saveStrings.add(panner.playEditString);
+	};
 
 	saveStrings.join(Char.nl);
 
