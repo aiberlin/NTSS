@@ -1,18 +1,26 @@
 /*
-// test for one
+NTSS state can e saved as code file to reload later,
+e.g. as setup file on startup.
+
+// test for one proxychain
 NTSS.pmcSaveString(q.pchains[0]);
 
-NTSS.saveDialog
+// whole setup save as string
+NTSS.saveString;
 
-// example: load setup automatically on startup
+// as text document to save by hand:
+NTSS.document
+
+// by dialog
+NTSS.saveDialog;
+
+// example to load setup automatically on startup
 (
 NTSS.finalSetup = {
-	"/Users/adc/Desktop/adc0001.ntssSave.scd".loadPaths;
+	("/Users/adc/Desktop/ntss_curr/mytestsave.ntssSave.scd").loadPaths;
 };
-
 NTSS.run;
 )
-
 */
 
 (
@@ -22,18 +30,26 @@ NTSS.saveDialog = {
 			path = path ++ ".ntssSave.scd";
 		};
 		File.use(path, "w", { |file|
-			var strings = [ "/*** NTSS Setup saved ***/" ];
-
-			q.pchains.do { |pc|
-				strings = strings.add(NTSS.pmcSaveString(pc));
-			};
-
-			file.write(strings.join("\n\n"));
-
+			file.write(NTSS.saveString);
 			"*** NTSS setup saved at %\n\n".postf(path.cs);
 		});
 	});
 };
+
+
+NTSS.saveString = {
+	var strings = List[ "/*** NTSS Setup saved on % ***/".format(Date.getDate.stamp), "" ];
+	q.pchains.do { |pc|
+		strings.add(NTSS.pmcSaveString(pc));
+	};
+	strings.add( "// Add more things to setup here: \n\n" );
+	strings.join("\n\n");
+};
+
+NTSS.document = {
+	Document("NTSS_%.ntssSave.scd".format(Date.getDate.stamp), NTSS.saveString);
+};
+
 
 
 NTSS.loadDialog = {
@@ -90,10 +106,7 @@ NTSS.pmcSaveString = { |dict, pc|
 		"%.set(*%);".format(pc, pcSettings.flat.cs)
 	);
 
-	saveStrings.add(
-		"%.set(*%);".format(panner, panSettings.flat.cs)
-	);
-
+	saveStrings.add("// panner:");
 	saveStrings.add(
 		"%.set(*%);".format(panner, panSettings.flat.cs)
 	);
