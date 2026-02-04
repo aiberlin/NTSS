@@ -305,6 +305,21 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 	(snd * dryKr) + delayline;
 };
 
+NTSS.spat.peatSoup = { arg name, speakers, snd;
+	var in = snd;
+	var polarity = \polarity.kr(1, spec:[-1,1,\lin,2]);
+	var amp = Amplitude.ar(in, \atk.kr(2, spec:[0,10]), \rls.kr(2, spec:[0,10]));
+	var db = amp.ampdb;
+	var mid = \midDb.kr(-40, spec:[-60,-20]);
+	var maxRot = \maxRotation.kr(100, spec:[0.01, 100, \exp]);
+	var width = db.linlin(-60, -20, speakers.size/1.5, 1);
+	var pan = LFSaw.ar(
+		(
+			(db.linexp(mid, -10, 0.01, maxRot)*polarity.neg) +
+			(db.linexp(-80, mid, maxRot, 0.01)*polarity))
+	);
+	PanAz.ar(speakers.size, Limiter.ar(in * \am.kr(1, spec:[0,20,\amp]), 1), pan, \limiter.kr(0.5, spec:\amp), width);
+};
 
 NTSS.spat.keys.do {|spatName|
 	ProxyChain.add3(spatName, NTSS.getSpat(spatName));
