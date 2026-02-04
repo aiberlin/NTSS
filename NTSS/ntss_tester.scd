@@ -56,10 +56,11 @@ Tdef(\bal, {
 		1.wait;
 	}
 });
-q.testpath = thisProcess.nowExecutingPath.openOS;
+
+q.testpath = thisProcess.nowExecutingPath;
 
 Butz.add(\testNTSS, {
-	q.testpath.openOS;
+	Document.open(q.testpath);
 	Tdef(\bal).gui;
 });
 );
