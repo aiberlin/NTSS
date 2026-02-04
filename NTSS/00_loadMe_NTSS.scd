@@ -118,6 +118,9 @@ Butz.add(\N_T_S_S, {});
 // put NTSS specifics in its own Butz:
 Butz('NTSS').addMiniMax;
 Butz(\NTSS).add(\N_T_S_S, {});
+Butz(\NTSS).add(\LOAD, { NTSS.loadDialog });
+Butz(\NTSS).add(\SAVE, { NTSS.saveDialog });
+
 Butz(\NTSS).add(\SpatioScope, { WinBounds.showOrMake(\SpatioScope) });
 Butz(\NTSS).add(\NdefMixer, { WinBounds.showOrMake(\NdefMixer) });
 Butz(\NTSS).add(\Levels, { WinBounds.showOrMake(\Levels) });
@@ -141,6 +144,8 @@ WinBounds.addMake(\Levels, {
 // not sure why it sometimes needs stop/start before it shows again.
 
 "spatio.scd".postcs.loadRelative;
+
+"NTSS_save.scd".postcs.loadRelative;
 
 
 /*

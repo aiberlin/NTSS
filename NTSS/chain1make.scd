@@ -348,12 +348,41 @@ MFdef(\setSrc).(q.pchains[0], Ndef(\x));
 MFdef(\setSrc).(q.pchains[0], Ndef(\x, { Dust2.ar(30, 0.3) }));
 */
 
+MFdef(\setSlots).add(\setSlots, { |pc, slotsToSet|
+	var slotsToAdd, slotsToRemove;
+	var currActive = pc.activeSlotNames.copy;
+	" setSlots: - slotsToSet: %\n".postf(slotsToSet);
+	slotsToAdd = slotsToSet.copy.removeAll(currActive);
+	slotsToRemove = currActive.removeAll(slotsToSet);
+	" slotsToAdd: %\n".postf(slotsToSet);
+	slotsToAdd.do { |name| pc.add(name.postcs) };
+	" slotsToRemove: %\n".postf(slotsToRemove);
+	slotsToRemove.do { |name| pc.remove(name.postcs) };
+});
+
+/*
+q.pchains[0].add(\top)
+MFdef(\setSlots).(q.pchains[0], [\top]);
+MFdef(\setSlots).(q.pchains[0], [\ins, \sndfile]);
+*/
+
+
 
 // function to switch pan modes:
-MFdef(\setPanner).add(\choose, { |pc, panIndex = 0|
-	var newPanName = q.panNames[panIndex];
+MFdef(\setPanner).add(\choose, { |pc, panNameOrIndex = 0|
+
 	var panner = pc.getHalo(\panner);
-	var newPanSource = ProxyChain.allSources[newPanName];
+	var newPanName, panIndex, newPanSource;
+	if (panNameOrIndex.isKindOf(Number)) {
+		newPanName = q.panNames[panNameOrIndex];
+		panIndex = panNameOrIndex;
+	} {
+		newPanName = panNameOrIndex;
+		panIndex = q.panNames.indexOf(newPanName);
+	};
+
+	newPanSource = ProxyChain.allSources[newPanName];
+
 	if (newPanSource.isNil) {
 		"no pan source called %!\n".format(newPanName).warn;
 		nil;
@@ -371,7 +400,9 @@ MFdef(\setPanner).add(\choose, { |pc, panIndex = 0|
 	};
 });
 /*
-MFdef(\setPanner).(ProxyChain(\ch1ada), 7.rand);
+MFdef(\setPanner).(ProxyChain(\ch01ada), 7.rand.postln);
+MFdef(\setPanner).(ProxyChain(\ch01ada), q.panNames.choose.postln);
+
 MFdef(\setPanner).(q.pchains[0], 7);
 */
 
