@@ -1,11 +1,12 @@
 ## NTSS - Nontrivial Sound System at 111 / UdK Berlin
-Bruno Gola, Alberto de Campo, S4NTP 2025/6
+_Bruno Gola, Alberto de Campo, S4NTP 2025/6_
 
+NTSS is a NonTrivial Sound System, developed by https://s4ntp.org, and it is built for diversity of loudspeaker sound colors. 
 
-NTSS is a NonTrivial Sound System, developed by link::https://s4ntp.org::, and it is built for diversity of loudspeaker sound colors. It currently consists of 26 loudspeakers set up at UdK Berlin Medienhaus room 111.
+It currently consists of 26 loudspeakers set up at UdK Berlin Medienhaus room 111.
 
 ## Install Software:
-```
+```supercollider
 // Install the NTSS quark
 Quarks.install("https://github.com/aiberlin/NTSS");
 // update your installed quarks
@@ -20,7 +21,7 @@ Quarks.installed.do(_.update);
 ### Check that Black Distributor 2 AMPS right side is OFF, and if not, TURN IT OFF!
 -> AMPS On the table ARE OFF NOW.
 
-### Turn on White Power distributor 1 COMP:
+### Turn on White Power distributor 1 (COMP):
 -> Audio interfaces of the NTSS are ON now:
 - Behringer X-32 Mixer
 - Behringer S16 Expander
@@ -28,7 +29,7 @@ Quarks.installed.do(_.update);
 
 ### 2. Connect Laptop to USB plug w extender
 choose a good location to sit, and open SuperCollider ...
-```
+```supercollider
 // If you use StartupFile, switch to your NTSS startup, and recompile
 -> N_T_S_S comes up
 // If not, run xstartup_example_NTSS.scd, or simply do
@@ -36,14 +37,18 @@ NTSS.run
 // and then run your setup files for other things. 
 ```
 
-### 4. Turn ON Black Distributor 2 AMPS:
--> YAMAHA, Denon receivers, and the 5 little amps on the YAMAHA are on.
-Turn on power dist in the cupboard: <br>
--> Behringer guitar amp and BlueCab bass amp are on <br>
-Check that the active speakers are on:   <br>
--> Genelec on Stand should be on,  <br>
-  and McCrypt speaker on the table (power switch on the back side)
+### 3. Turn ON Black Power Distributor 2 (AMPS)
+  
+YAMAHA + Denon receivers, and the 5 little amps on the YAMAHA are on.  
 
+### 4. Turn on power dist in the cupboard
+
+Behringer guitar amp and BlueCab bass amp are on  
+
+Check that the active speakers are on:  
+
+- Genelec on Stand should be on,
+- McCrypt speaker on the table (power switch on the back side)
 
 ### 5. In SuperCollider, the screen should look like this: 
 ![alt text](https://raw.githubusercontent.com/aiberlin/NTSS/refs/heads/main/images/NTSS_baseGUIs.png "Basic NTSS GUIs") 
