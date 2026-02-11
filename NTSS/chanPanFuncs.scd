@@ -302,7 +302,8 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 	var delayline = DelayC.ar(snd * sendKr + fb, 4, taps);
 	delayline = PitchShift.ar(delayline, 0.2, {rrand(1.01,0.99)}!nspeakers);
 	LocalOut.ar(delayline * fbKr);
-	(snd * dryKr) + delayline;
+	// safety, find out where in tapsfb bad numbers come from
+	((snd * dryKr) + delayline).zap;
 };
 
 NTSS.spat.peatSoup = { arg name, speakers, snd;
