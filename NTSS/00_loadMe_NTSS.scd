@@ -234,6 +234,8 @@ s.waitForBoot {
 	// make Pepsi mixer channels (see David Tudor) as ProxyChains
 	"chain1make.scd".postcs.loadRelative;
 
+	NTSS.panNames = NTSS.panNames ? q.allPanNames;
+
 	0.2.wait;
 
 	"chanPanGuis.scd".postcs.loadRelative;

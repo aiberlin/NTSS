@@ -68,9 +68,9 @@ WinBounds.addMake(q.topName, {
 		]).font_(f)
 		.action_({ |bt| panna.stop; playBt.value = 0 });
 
-		var panPop = EZPopUpMenu(comp, wid@30, nil, q.panNames, { |pop|
+		var panPop = EZPopUpMenu(comp, wid@30, nil, NTSS.panNames, { |pop|
 			pop.item.postln;
-			MFdef(\setPanner).(pch, pop.value);
+			MFdef(\setPanner).(pch, pop.item);
 		}).font_(f2);
 
 		ProxyMeter.addMonitorGui(moni);
@@ -140,8 +140,8 @@ WinBounds.addMake(q.topName, {
 		//// panPops:
 		allViews[5].do { |pop, i|
 			var currPan = q.pchains[i].getHalo(\panName);
-			var currPanIndex = q.panNames.indexOf(currPan);
-			if (pop.value != currPanIndex) { pop.value = currPanIndex };
+			var currPanIndex = pop.items.collect(_.key).indexOf(currPan) ? 0;
+			if (pop.item != currPan) { pop.value = currPanIndex };
 		};
 
 	}, 0.5, { w.isClosed }, \bio);

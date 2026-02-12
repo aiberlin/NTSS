@@ -41,10 +41,11 @@ MFdef(\updatePchWin).add(\bufPath, { |pch|
 MFdef(\updatePchWin).add(\panMode, { |pch|
 	var h = pch.getHalo;
 	var panName = h.panName;
-	var panIndex = q.panNames.indexOf(panName);
-	h.panbuts.do { |but, i|
-		var panVal = (i == panIndex).binaryValue;
-		if (but.value != panVal) { but.value = panVal }
+	var pop = h.panPop;
+	var popCurrItem = pop.item;
+	if (popCurrItem != panName) {
+		[panName, popCurrItem].postln;
+		pop.value = pop.items.collect(_.key).indexOf(panName).postln ? 0;
 	};
 });
 
@@ -115,7 +116,7 @@ q.pchains.do { |pch, i|
 		var flow = w.addFlowLayout;
 		var font = Font(Font.defaultMonoFace, 14);
 
-		var inputPop, pxDrag, sfDrag, pchgui, pannerGui, panbuts, panguibounds;
+		var inputPop, pxDrag, sfDrag, pchgui, pannerGui, panPop, panguibounds;
 
 		// make input selections: audio inputs
 		inputPop = EZPopUpMenu(w, 160@30, \anaIn, q.inNames,
@@ -197,20 +198,12 @@ q.pchains.do { |pch, i|
 		pchgui.buttons[0].valueAction_(0);
 		defer ({ pchgui.buttons[0].valueAction_(1) }, 0.25);
 
-		panbuts = q.panNames.collect { |panName, i|
-			Button(w, Rect(0, 0, 450 / q.panNames.size, 30)).font_(f)
-			.states_([
-				[ panName ],
-				[ panName, Color.black, Color.green ]
-			]).font_(font)
-			.value_((pch.getHalo.panName == panName).binaryValue)
-			.action = { |bt|
-				if (bt.value == 1) {
-					MFdef(\setPanner).(pch, i);
-				}
-			}
-		};
-		pch.addHalo(\panbuts, panbuts);
+		panPop = EZPopUpMenu(w, 200@20, "panMode", NTSS.panNames, { |pop|
+			pop.item.postln;
+			MFdef(\setPanner).(pch, pop.item);
+		}).font_(font);
+
+		pch.addHalo(\panPop, panPop);
 
 		pannerGui = NdefGui(pch.getHalo(\panner), 18, w, 490@250);
 		pannerGui.paramGui.paramViews[0].enabled_(false);
