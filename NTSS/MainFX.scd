@@ -86,33 +86,36 @@ ProxyChain.add3(\mix2four, \filter -> { |in|
 }, 1);
 
 
-
 ProxyChain.add3(
-	\mainMixer,  \filter -> { |in|
-		var snds = in;
-		var mainvol = \mainvol.kr(0, spec:\amp);
-		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp) } ++ DC.ar(0!(32-NTSS.amp_names.size));
-		// measured in class:
-		//var tuning = (1!20) ++ (0.0!12);
-		//var tuning = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1] ++ (0.0!(32-NTSS.amp_names.size));
-		var tuning = NTSS.speakersTuning ++ (0.0!(32-NTSS.speakersTuning.size));
-		snds * (amps * mainvol * tuning);
+	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 1|
+		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp) };
+
+		var spkChans = in.keep(NTSS.speakers.size - 2);
+		var mixSpks = RLPF.ar(
+			spkChans.sum *  (1/ NTSS.speakers.size.sqrt),
+			subFreq.lag(1)
+		);
+		var subChans = in.drop(NTSS.speakers.size - 2) + (mixSpks * mix2Sub);
+		var allChans = spkChans ++ subChans;
+
+		// measured in class: 26 speakers
+		var tuning = NTSS.speakersTuning;
+
+		var finalLogicalOut = allChans * (amps * mainvol * tuning);
+		Out.ar(q.spatbus, finalLogicalOut);
+
+		finalLogicalOut
 	},
 	1,
-	NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
-);
-
-ProxyChain.add3(
-	\shiftSound,  \filter -> { |in|
-		Limiter.ar(LeakDC.ar(
-			in[0..9] ++ DC.ar(0!2) ++ in[10..15],
-			\maxVol.kr(0.99, spec:\amp)))
-	},
-	1,
+	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(
+		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
+	)
 );
 
 ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
+
 	var currentSpeakers = NTSS.speakers.size;
+
 	var outs = Silent.ar!s.options.numOutputBusChannels;
 	var counter = 0;
 	NTSS.speakersOrder.do {|speaker,i|
@@ -145,4 +148,3 @@ Butz.add(\MainFX, { WinBounds.showOrMake(\MainFX) });
 ).flop.flat
 MainFX(s).gui
 */
- 
