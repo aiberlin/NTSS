@@ -74,3 +74,9 @@ dbap_k - sound spreads to more or fewer speakers.
 
 If SpatioScope does not show live signals, stop and start to wake it up!
 
+## 8. When done, TURN OFF central power:
+### - DO NOT TURN OFF individual amps!
+### - DO NOT TURN OFF individual audio/computer interfaces!
+- First, turn off central power for all amps: the black distributor labeled 2 AMPS
+- Turn off power for guitar and bass amps: the distributor in the cupboard
+- When all amps are off, turn off central power for computers:  the white distributor labeled 1 COMP
