@@ -378,7 +378,7 @@ MFdef(\setPanner).add(\choose, { |pc, panNameOrIndex = 0|
 		panIndex = panNameOrIndex;
 	} {
 		newPanName = panNameOrIndex;
-		panIndex = q.panNames.indexOf(newPanName);
+		panIndex = NTSS.panNames.indexOf(newPanName);
 	};
 
 	newPanSource = ProxyChain.allSources[newPanName];

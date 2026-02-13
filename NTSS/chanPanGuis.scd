@@ -44,8 +44,9 @@ MFdef(\updatePchWin).add(\panMode, { |pch|
 	var pop = h.panPop;
 	var popCurrItem = pop.item;
 	if (popCurrItem != panName) {
-		[panName, popCurrItem].postln;
-		pop.value = pop.items.collect(_.key).indexOf(panName).postln ? 0;
+		// [panName, popCurrItem].postcs;
+		// "here? panMode".postln;
+		pop.value = pop.items.collect(_.key).indexOf(panName) ? 0;
 	};
 });
 
