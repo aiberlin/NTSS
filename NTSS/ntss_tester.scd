@@ -45,7 +45,7 @@ SynthDef(\pink, { |out, amp=0.1, sustain=1|
 
 
 // balance tester Tdef
-Tdef(\bal, {
+Tdef(\tester, {
 	inf.do { |i|
 		var chan = ~chans.wrapAt(i);
 		"*** % : %\n".postf(chan, NTSS.speakersActive[chan].cs);
@@ -59,8 +59,12 @@ Tdef(\bal, {
 
 q.testpath = thisProcess.nowExecutingPath;
 
-Butz.add(\testNTSS, {
+Butz(\NTSS).add(\TEST_NTSS, {
+	// Document.open(q.testpath);
+	Tdef(\tester).gui;
+});
+
+Butz(\NTSS).add(\openBalance, {
 	Document.open(q.testpath);
-	Tdef(\bal).gui;
 });
 );
