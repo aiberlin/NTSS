@@ -120,6 +120,7 @@ Butz('NTSS').addMiniMax;
 Butz(\NTSS).add(\N_T_S_S, {});
 Butz(\NTSS).add(\LOAD, { NTSS.loadDialog });
 Butz(\NTSS).add(\SAVE, { NTSS.saveDialog });
+Butz(\NTSS).add(\TEST_NTSS, { });
 
 Butz(\NTSS).add(\SpatioScope, { WinBounds.showOrMake(\SpatioScope) });
 Butz(\NTSS).add(\NdefMixer, { WinBounds.showOrMake(\NdefMixer) });
@@ -195,7 +196,7 @@ WinBounds.stored.putAll( (
 	SpatioScope: Rect(120, 540, 500, 500),
 	NdefMixer: Rect(120, 300, 1086.0, 500),
 	Levels: Rect(0, 0, 58 + (s.options.numOutputBusChannels * 38), 230.0),
-	MainFX: Rect(803.0, 642.0, 500, 560),
+	MainFX: Rect(803.0, 642.0, 500, 640),
 ) );
 
 s.waitForBoot {
