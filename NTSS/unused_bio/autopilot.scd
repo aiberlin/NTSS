@@ -48,7 +48,7 @@ Tdef(\AUTOPILOT, { |env|
 
 		if (0.5.coin) {
 			// or switch panning algorithm
-			MFdef(\setPanner.postln).(pch, q.panNames.size.rand)
+			MFdef(\setPanner.postln).(pch, NTSS.panNames.drop(1).choose)
 		};
 
 		if (0.5.coin) {

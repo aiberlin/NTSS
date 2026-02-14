@@ -18,7 +18,7 @@ Ndef(\pan1).gui;
 
 /// BIOPHONY Panners: //////
 
-q.panNames = [ \panFixed, \panRoto, \panSnake, \panFeed];
+// was q...panNames = [ \panFixed, \panRoto, \panSnake, \panFeed];
 // // these were the ringnames for biophony ...
 // q.ringNames = [\inside, \shakers, \outside, \bigPA];
 // // separate levels on 4 rings:
@@ -76,9 +76,15 @@ Ndef(\testRings, {
 
 ****/
 
-// shared params:
+NTSS.allPanNames.addAll([ \panFixed, \panRoto, \panSnake, \panFeed]);
+
+
+// shared parameter names and ranges
+// the input buses coming from the PMCs
 Spec.add(\srcBus, [s.options.firstPrivateBus] + [0, 31] ++ [\lin, 1]);
+// angle position on the ring
 Spec.add(\srcPos, NTSS.ringNumSpks * [-1, 1]);
+// source width on the ring (scaled PanAz width)
 Spec.add(\srcWidth, \unipolar);
 
 ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
@@ -94,6 +100,13 @@ ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 
 	NTSS.reorderRingsToSpeakers(panned);
 });
+
+ProxyChain.sourceDicts[\panFixed].put(\text,
+	"panFixed pans into 4 rings of 6 speakers:
+srcPos:  circular position on the ring,
+srcWith: 0 is max 2 speakers on the ring, 1 is all speakers
+left, right, back, up: volume levels for the 4 rings.");
+
 
 Spec.add(\rotRate, [-5, 5]);
 Spec.add(\pendRate, [0, 5, 8]);
@@ -133,6 +146,21 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 	NTSS.reorderRingsToSpeakers(panned);
 
 }, 0.25);
+
+ProxyChain.sourceDicts[\panRoto].put(\text,
+	"panRoto pans into 4 rings of 6 speakers,
+with a pendulum-like back and forth swing option,
+and fixed-speed rotation, which are added together.
+
+srcPos:    circular position on the ring,
+srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
+circle:    position in a ring of the 4 circles, as on a torus.
+cirWidth:  width across the rings, 0 is max 2 rings , 1 is all rings
+rotRate:   rate of rotation around the circles of 6, in Hertz.
+pendRate:  rate of one full pendulum swing in Hertz, i.e.
+           from center to left to center to reight to center.
+pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
+
 
 // shared params:
 Spec.add(\srcPosSn, NTSS.ringNames.size * [-1, 1]);
@@ -335,5 +363,4 @@ NTSS.spat.keys.do {|spatName|
 	ProxyChain.add3(spatName, NTSS.getSpat(spatName));
 };
 
-
-q.panNames = q.panNames ++ NTSS.spat.keys(Array).sort;
+NTSS.allPanNames.addAll(NTSS.spat.keys(Array).sort);

@@ -206,6 +206,17 @@ q.pchains.do { |pch, i|
 
 		pch.addHalo(\panPop, panPop);
 
+		Button(w, 80@20).font_(font).states_([["explain"]])
+		.action_({ |bt|
+			var panDict = ProxyChain.sourceDicts[pch.getHalo(\panName)];
+			var text = "Sorry, no panDict found";
+			var loc = bt.absoluteBounds.postln;
+			if (panDict.notNil) { text = panDict.text };
+			text = text ? "Sorry, no explanation found";
+			TextView(nil, Rect.aboutPoint(Window.availableBounds.center, 200, 100))
+				.string_(text).front;
+		});
+
 		pannerGui = NdefGui(pch.getHalo(\panner), 18, w, 490@250);
 		pannerGui.paramGui.paramViews[0].enabled_(false);
 		q.tuneNameView(pannerGui);
@@ -216,6 +227,6 @@ q.pchains.do { |pch, i|
 
 		w;
 	});
-};
+	};
 );
 
