@@ -287,6 +287,8 @@ q.pchains.do { |pc, i|
 		pc.addHalo(\mybuf, mybuf);
 		pc.set(\bufnum, pc.getHalo(\mybuf).bufnum);
 	};
+
+	pc.addHalo(\backCol, Color.hsv(i / NTSS.numPmcs, 0.7, 0.8))
 };
 );
 

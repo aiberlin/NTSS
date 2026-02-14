@@ -41,7 +41,7 @@ WinBounds.addMake(q.topName, {
 		var panna = pch.getHalo.panner;
 		var widCol = w.bounds.width - 100 / 8.2, hi = w.bounds.height - 60;
 		var wid = widCol - 4;
-		var comp = CompositeView(w, widCol@hi).background_(Color.hsv(i / 8, 1, 1));
+		var comp = CompositeView(w, widCol@hi).background_(pch.getHalo.backCol);
 		var flow = comp.addFlowLayout(0@0, 0@0);
 		var label = Button(comp, wid@30).states_([[name]]).font_(f)
 		.action = { Butz(\NTSS).run(name) };

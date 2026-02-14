@@ -113,7 +113,7 @@ q.pchains.do { |pch, i|
 		var horizStagger = (Window.screenBounds.width - 200 - 500 / q.pchains.size).round;
 		var vertiStagger = (Window.availableBounds.height - 830 / q.pchains.size).round;
 		var winrect = Rect(horizStagger * i + 200, q.pchains.size - i * vertiStagger, 500, 820);
-		var w = Window(pch.key, winrect.postln).front;
+		var w = Window(pch.key, winrect.postln).front.background_(pch.getHalo.backCol);
 		var flow = w.addFlowLayout;
 		var font = Font(Font.defaultMonoFace, 14);
 
