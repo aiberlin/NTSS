@@ -28,6 +28,7 @@ ProxyChainPreset:
 
 q = q ? ();
 NTSS.numPmcs = NTSS.numPmcs ? 8;
+
 NTSS.allPcNames = [
 	\ada, \bob, \cecilia, \dada, \eek,
 	\fifi, \gogo, \hah, \ivy, \jay,
@@ -253,16 +254,21 @@ ProxyChain(\pmc1).proxy.addSpec(\micBus, [0, 15, \lin, 1])
 */
 // instancing
 
-q.pcSlots = [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
+NTSS.pcSlots = NTSS.pcSlots ? [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
 
 // make the pchains
 q.pchains.do(_.free);
 
 q.pchains = NTSS.pcNames.collect { |name, i|
-	Ndef(name).ar(1);
+	Ndef(name).ar(2);
 	Ndef(name).vol_(0.25);
-	ProxyChain.from(Ndef(name), q.pcSlots).set(\micBus, i);
+	ProxyChain.from(Ndef(name), NTSS.pcSlots).set(\micBus, i);
 };
+
+NTSS.pchainIndices = q.pchains.collect(_.proxy).collect(_.index);
+
+Spec.add(\srcBus, [ NTSS.pchainIndices.minItem, NTSS.pchainIndices.maxItem] ++ [\lin, 1]);
+
 
 // make the buffer and panner for each pch:
 (
