@@ -47,7 +47,7 @@ if (NTSS.sampleRate.notNil) {
 "speakerData.scd".postcs.loadRelative;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains
-NTSS.numPmcs = 16;
+NTSS.numPmcs = NTSS.numPmcs ? 8;
 
 NTSS.numIOchans = NTSS.speakersOrder.size;
 s.options.numOutputBusChannels = NTSS.numIOchans;

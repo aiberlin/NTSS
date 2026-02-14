@@ -27,16 +27,18 @@ ProxyChainPreset:
 */
 
 q = q ? ();
-q.numPmcs = q.numPmcs ? 8;
-q.names = [
+NTSS.numPmcs = NTSS.numPmcs ? 8;
+NTSS.allPcNames = [
 	\ada, \bob, \cecilia, \dada, \eek,
 	\fifi, \gogo, \hah, \ivy, \jay,
 	\kiki, \lily, \mimi, \nana, \opo,
 	\pepe, \qiqo, \roro, \sisu, \tata,
 	\ubu, \vovo, \wawa, \xoxo, \yoyo, \zazie ];
 
-q.pcNames = q.numPmcs.collect { |i| ("ch" ++ (i+ 101).asString.keep(-2) ++ q.names[i]).asSymbol };
-q.pannerNames = q.pcNames.collect { |name| name.asString.insert(2, "P").asSymbol };
+NTSS.pcNames = NTSS.numPmcs.collect { |i|
+	("ch" ++ (i+ 101).asString.keep(-2) ++ NTSS.allPcNames[i]).asSymbol
+};
+NTSS.pannerNames = NTSS.pcNames.collect { |name| name.asString.insert(2, "P").asSymbol };
 
 (
 // just to put the config params on top
@@ -256,7 +258,7 @@ q.pcSlots = [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \l
 // make the pchains
 q.pchains.do(_.free);
 
-q.pchains = q.pcNames.collect { |name, i|
+q.pchains = NTSS.pcNames.collect { |name, i|
 	Ndef(name).ar(1);
 	Ndef(name).vol_(0.25);
 	ProxyChain.from(Ndef(name), q.pcSlots).set(\micBus, i);
@@ -266,7 +268,7 @@ q.pchains = q.pcNames.collect { |name, i|
 (
 q.pchains.do { |pc, i|
 	var mybuf, panNdefName, panner;
-	panNdefName = q.pannerNames[i];
+	panNdefName = NTSS.pannerNames[i];
 	panner = Ndef(panNdefName);
 	panner.ar(NTSS.speakers.size);
 	panner.fadeTime = 3;
