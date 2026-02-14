@@ -102,7 +102,7 @@ ProxyChain.add3(
 		var tuning = NTSS.speakersTuning;
 
 		var finalLogicalOut = allChans * (amps * mainvol * tuning);
-		Out.ar(q.spatbus, finalLogicalOut);
+		Out.ar(NTSS.spatbus, finalLogicalOut);
 
 		finalLogicalOut
 	},

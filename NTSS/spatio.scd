@@ -20,12 +20,12 @@ NTSS.showRing(\back, false);
 NTSS.showRing(\back);
 */
 
-q.spatbus = q.spatbus ?? { Bus.audio(s, NTSS.speakers.size) };
+NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.speakers.size) };
 
 WinBounds.addMake(\SpatioScope, {
 	q.spat = SpatioScope.new(
 		NTSS.speakers.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500),
-		busOffset: q.spatbus.index
+		busOffset: NTSS.spatbus.index
 	);
 
 	q.spat.parentView.mouseDownAction = nil;

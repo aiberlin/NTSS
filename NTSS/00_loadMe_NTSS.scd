@@ -139,15 +139,7 @@ WinBounds.addMake(\Levels, {
 	s.meter.window.name_("Levels").moveTo(0,0);
 });
 
-
-// Note: Spatio gets added to end of s.defaultGroup,
-// so it shows the signals BEFORE mainvol and speaker remapping.
-// not sure why it sometimes needs stop/start before it shows again.
-
-"spatio.scd".postcs.loadRelative;
-
 "NTSS_save.scd".postcs.loadRelative;
-
 
 /*
 NTSS.showRing(\subs, false);
@@ -161,8 +153,6 @@ NTSS.showRing(\right);
 NTSS.showRing(\back, false);
 NTSS.showRing(\back);
 */
-
-
 
 // get all desired source Ndefs :
 // everything audio except the chains and panners.
@@ -202,46 +192,33 @@ WinBounds.stored.putAll( (
 s.waitForBoot {
 	Butz.numButz_(24).show;
 
-	0.5.wait;
+	s.sync;
+	// Note: Spatio has its own bus that it reads from,
+	// and mainFX writes to that bus in the LOGICAL order of 26 speakers.
+	// the remapping to the physical order of the speakers comes later,
+	// at the end of the chain.
+	"spatio.scd".postcs.loadRelative;
+
+	s.sync;
+
 	"MainFX.scd".postcs.resolveRelative.loadPaths;
+	"ntss_tester.scd".postcs.loadRelative;
 
 	s.volume = -12;
 
-	"make q.buses".postln;
-	q.bus_inside  = Bus.audio(s, 5);
-	q.bus_outside = Bus.audio(s, 5);
-	q.bus_shakers = Bus.audio(s, 5);
-	q.bus_bigPA   = Bus.audio(s, 5);
-
-	q.buses = [
-		q.bus_inside,
-		q.bus_shakers,
-		q.bus_outside,
-		q.bus_bigPA,
-	];
-
-	// make mono sources first:
-	// try { "geo/geophoneReceiver.scd".postcs.loadRelative };
-	// try { "geo/geoSim.scd".postcs.loadRelative };
-
-	// play on all single channels
-	// "one-shot-sampler.scd".postcs.loadRelative;
-
-	// and others ...
-
-	// get panner functions
+	// load panner functions
 	"chanPanFuncs.scd".postcs.loadRelative;
-
-	// make Pepsi mixer channels (see David Tudor) as ProxyChains
-	"chain1make.scd".postcs.loadRelative;
 
 	NTSS.panNames = NTSS.panNames ? NTSS.allPanNames;
 
+	// make Pepsi Mixer Channels (see David Tudor) as ProxyChains
+	"chain1make.scd".postcs.loadRelative;
+
 	0.2.wait;
 
+	// load GUI code
 	"chanPanGuis.scd".postcs.loadRelative;
 	"TopWindow.scd".postcs.loadRelative;
-	"ntss_tester.scd".postcs.loadRelative;
 	Butz.add('plotTree', { s.plotTree });
 
 	0.1.wait;
