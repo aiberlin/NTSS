@@ -1,6 +1,5 @@
-"*** LOADING NEW PANNER PARAMETER NAMES! ".postln;
-
-/* Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
+/*
+Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
 
 srcPos sets position in circle,
 srcWidth opens to more chans
@@ -17,8 +16,8 @@ Ndef(\pan1).gui;
 */
 
 /// BIOPHONY Panners: //////
+NTSS.allPanNames.addAll([ \panFixed, \panRoto, \panSnake, \panFeed]);
 
-// was q...panNames = [ \panFixed, \panRoto, \panSnake, \panFeed];
 // // these were the ringnames for biophony ...
 // q.ringNames = [\inside, \shakers, \outside, \bigPA];
 // // separate levels on 4 rings:
@@ -76,15 +75,9 @@ Ndef(\testRings, {
 
 ****/
 
-NTSS.allPanNames.addAll([ \panFixed, \panRoto, \panSnake, \panFeed]);
-
-
-// shared parameter names and ranges
-// the input buses coming from the PMCs
+// shared params:
 Spec.add(\srcBus, [s.options.firstPrivateBus] + [0, 31] ++ [\lin, 1]);
-// angle position on the ring
 Spec.add(\srcPos, NTSS.ringNumSpks * [-1, 1]);
-// source width on the ring (scaled PanAz width)
 Spec.add(\srcWidth, \unipolar);
 
 ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
@@ -100,13 +93,6 @@ ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 
 	NTSS.reorderRingsToSpeakers(panned);
 });
-
-ProxyChain.sourceDicts[\panFixed].put(\text,
-	"panFixed pans into 4 rings of 6 speakers:
-srcPos:  circular position on the ring,
-srcWidth: 0 is max 2 speakers on the ring, 1 is all speakers
-left, right, back, up: volume levels for the 4 rings.");
-
 
 Spec.add(\rotRate, [-5, 5]);
 Spec.add(\pendRate, [0, 5, 8]);
@@ -147,22 +133,10 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 
 }, 0.25);
 
-ProxyChain.sourceDicts[\panRoto].put(\text,
-	"panRoto pans into 4 rings of 6 speakers,
-with a pendulum-like back and forth swing option,
-and fixed-speed rotation, which are added together.
+// shared params:
+Spec.add(\srcPosSn, NTSS.ringNames.size * [-1, 1]);
 
-srcPos:    circular position on the ring,
-srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
-circle:    position in a ring of the 4 circles, as on a torus.
-cirWidth:  width across the rings, 0 is max 2 rings , 1 is all rings
-rotRate:   rate of rotation around the circles of 6, in Hertz.
-pendRate:  rate of one full pendulum swing in Hertz, i.e.
-           from center to left to center to reight to center.
-pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
-
-
-ProxyChain.add3(\panSnake, { |srcBus = 0, srcPos = 0, srcWidth = 0, amp = 0.25,
+ProxyChain.add3(\panSnake, { |srcBus = 0, srcPosSn = 0, srcWidth = 0, amp = 0.25,
 	rotRate = 0, pendRate = 0.05, pendDepth = 1|
 
 	var width = (srcWidth  ** 2).linlin(0, 1, 2, 6);
@@ -170,22 +144,12 @@ ProxyChain.add3(\panSnake, { |srcBus = 0, srcPos = 0, srcWidth = 0, amp = 0.25,
 	var in = InFeedback.ar(srcBus);
 	var rotPos = LFSaw.kr(rotRate ** 2);
 	var posMod = SinOsc.kr((pendRate / pendDepth.lag(2).max(1)).lag(2), 0, pendDepth.lag(2));
-	var posAll = (srcPos.lag(2) * 2 / NTSS.ringNames.size) + posMod + rotPos;
+	var posAll = (srcPosSn.lag(2) * 2 / NTSS.ringNames.size) + posMod + rotPos;
 
 	var panned = PanAz.ar(NTSS.ringsFlat.size, in, posAll, (amp * widAmp).lag(1), width, 0);
 
 	NTSS.reorderRingsToSpeakers(panned);
 });
-
-ProxyChain.sourceDicts[\panSnake].put(\text,
-	"panSnake pans into one long ring of all 24 speakers,
-with fixed-speed rotation and pendulum movement options.
-srcPos:    circular position, now on the long ring,
-srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
-rotRate:   rate of rotation around the circles of 6, in Hertz.
-pendRate:  rate of one full pendulum swing in Hertz, i.e.
-           from center to left to center to reight to center.
-pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
 
 
 
@@ -227,19 +191,6 @@ ProxyChain.add3(\panFeed, { |srcBus, srcPos = 0, srcWidth = 0,
 
 });
 
-ProxyChain.sourceDicts[\panFeed].put(\text,
-	"panFeed pans into 4 rings of 6 speakers each,
-with delay and feedback that can be rotated.
-srcPos:    circular position, now on the long ring,
-srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
-direct:    level of direct panned sound
-delayed:   level of delayed sound
-feedback:  level of feedback in delayed sound
-delaytime: delaytime of delayed sound
-rotate:    number of speakers by which delay is rotated against source.
-           0 is none, 1 is 1 spk. clockwise, 3 is opposite on ring of 6."
-);
-
 /// NTSS Panners: //////
 
 NTSS.spat = NTSS.spat ? ();
@@ -258,9 +209,9 @@ NTSS.getSpat = { arg ntss, name;
 
 NTSS.spat.dbap = { arg name, speakers, snd;
 	var d, g, norm, srcPos;
-	var x = "srcX".format(name).asSymbol.kr(0, spec:[-1,1]);
-	var y = "srcY".format(name).asSymbol.kr(0, spec:[-1,1]);
-	var k = 11 - "srcWidth".format(name).asSymbol.kr(1, spec:[1,10]);
+	var k = 11 - "%_k".format(name).asSymbol.kr(1, spec:[1,10]);
+	var x = "%_x".format(name).asSymbol.kr(0, spec:[-1,1]);
+	var y = "%_y".format(name).asSymbol.kr(0, spec:[-1,1]);
 	var sig;
 	srcPos = [x,y];
 	sig = snd;
@@ -287,22 +238,16 @@ spread is similar to k
 
 
 NTSS.spat.delayspat = { arg name, speakers, snd;
-	var x = \srcX.kr(0, spec:[-1,1]);
-	var y = \srcY.kr(0, spec:[-1,1]);
-	var z = \spkScale.kr(1, spec:[1,30]);
-	var k = \xyScale.kr(1, spec:[1,10]);
-	var spread = 11 - \spread.kr(1, spec:[1,10]);
-
-	var dists, g, norm;
-
-	var scale = k * z;
-	x = x * scale; y = y * scale;
-
-	dists = speakers.collect { |pt|
+	var k = "%_k".format(name).asSymbol.kr(1, spec:[1,10]);
+	var z = "%_z".format(name).asSymbol.kr(1, spec:[1,30]);
+	var x = "%_x".format(name).asSymbol.kr(0, spec:[-1,1])*k*z;
+	var y = "%_y".format(name).asSymbol.kr(0, spec:[-1,1])*k*z;
+	var spread = 11 - "%_spread".format(name).asSymbol.kr(1, spec:[1,10]);
+	var dists = speakers.collect { |pt|
 		pt = Point(*(pt)*z);
 		(pt.x - x).hypot(pt.y - y)
 	};
-
+	var g, norm;
 	dists = dists.lag(0.3);
 	g = 1/(dists.pow(spread) + 1e-6);
 	norm = (g.squared.sum).sqrt;
@@ -313,7 +258,7 @@ NTSS.spat.delayspat = { arg name, speakers, snd;
 // for each source channel, on/off for each speaker
 NTSS.spat.direct = { arg name, speakers, snd;
 	var nchannels = speakers.size;
-	var output = \outChan.kr(0, spec:[0,nchannels-1, 0, 1]);
+	var output = "%_out".format(name).asSymbol.kr(0, spec:[0,nchannels-1, 0, 1]);
 	(0..nchannels-1).collect {|idx|
 		snd * Select.kr(BinaryOpUGen('==', output, idx), [Silent.ar, DC.ar(1)]);
 	};
@@ -322,9 +267,7 @@ NTSS.spat.direct = { arg name, speakers, snd;
 // for each source channel, set level for each speaker
 NTSS.spat.mixer = { arg name, speakers, snd;
 	var nchannels = speakers.size;
-	var outs = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec: \amp)
-	};
+	var outs = nchannels.collect {|i| "%_out".format(NTSS.speakersActive[i]).asSymbol.kr(0, spec: \amp) };
 	snd * outs;
 };
 
@@ -336,8 +279,8 @@ NTSS.spat.taps = { arg name, speakers, snd;
 	var nspeakers = speakers.size;
 	var dryKr = \dry.kr(1, 1, spec:\amp);
 	var sendKr = \send.kr(1, 1, spec:\amp);
-	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4])
+	var taps = nspeakers.collect {|idx|
+		"%_tap_%".format(name, idx).asSymbol.kr(0, spec:[0,4])
 	};
 	//(snd*\dry.kr(1, spec:\amp)) + CombC.ar(snd * \send.kr(0, spec:\amp), 4, taps, 6);
 	(snd*dryKr) + CombC.ar(snd * sendKr, 4, taps, 0);
@@ -353,8 +296,8 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 	var fbKr = \fb.kr(0, spec:\amp);
 
 	var fb = LocalIn.ar(nspeakers);
-	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4])
+	var taps = nspeakers.collect {|idx|
+		"%_tap_%".format(name, idx).asSymbol.kr(0, spec:[0,4])
 	};
 	var delayline = DelayC.ar(snd * sendKr + fb, 4, taps);
 	delayline = PitchShift.ar(delayline, 0.2, {rrand(1.01,0.99)}!nspeakers);
@@ -382,5 +325,6 @@ NTSS.spat.peatSoup = { arg name, speakers, snd;
 NTSS.spat.keys.do {|spatName|
 	ProxyChain.add3(spatName, NTSS.getSpat(spatName));
 };
+
 
 NTSS.allPanNames.addAll(NTSS.spat.keys(Array).sort);
