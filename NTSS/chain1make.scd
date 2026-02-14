@@ -262,8 +262,6 @@ q.pchains = q.pcNames.collect { |name, i|
 	ProxyChain.from(Ndef(name), q.pcSlots).set(\micBus, i);
 };
 
-// q.panNames = [ \panFixed, \panRoto, \panFeed];
-
 // make the buffer and panner for each pch:
 (
 q.pchains.do { |pc, i|
@@ -374,7 +372,7 @@ MFdef(\setPanner).add(\choose, { |pc, panNameOrIndex = 0|
 	var panner = pc.getHalo(\panner);
 	var newPanName, panIndex, newPanSource;
 	if (panNameOrIndex.isKindOf(Number)) {
-		newPanName = q.panNames[panNameOrIndex];
+		newPanName = NTSS.panNames[panNameOrIndex];
 		panIndex = panNameOrIndex;
 	} {
 		newPanName = panNameOrIndex;
@@ -401,7 +399,7 @@ MFdef(\setPanner).add(\choose, { |pc, panNameOrIndex = 0|
 });
 /*
 MFdef(\setPanner).(ProxyChain(\ch01ada), 7.rand.postln);
-MFdef(\setPanner).(ProxyChain(\ch01ada), q.panNames.choose.postln);
+MFdef(\setPanner).(ProxyChain(\ch01ada), NTSS.panNames.choose.postln);
 
 MFdef(\setPanner).(q.pchains[0], 7);
 */

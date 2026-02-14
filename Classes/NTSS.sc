@@ -21,6 +21,7 @@ NTSS {
 
 		NTSS.dir.setup = NTSS.filenameSymbol.asString.dirname.dirname +/+ "NTSS";
 		NTSS.dir.loadMe = NTSS.dir.setup  +/+ "00_loadMe_NTSS.scd";
+		NTSS.allPanNames = List['-']; // so we can add dynamically
 
 	}
 

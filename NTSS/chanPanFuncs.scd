@@ -16,8 +16,8 @@ Ndef(\pan1).gui;
 */
 
 /// BIOPHONY Panners: //////
+NTSS.allPanNames.addAll([ \panFixed, \panRoto, \panSnake, \panFeed]);
 
-q.allPanNames= [ \panFixed, \panRoto, \panSnake, \panFeed];
 // // these were the ringnames for biophony ...
 // q.ringNames = [\inside, \shakers, \outside, \bigPA];
 // // separate levels on 4 rings:
@@ -327,4 +327,4 @@ NTSS.spat.keys.do {|spatName|
 };
 
 
-q.allPanNames = ['-'] ++ q.allPanNames ++ NTSS.spat.keys(Array).sort;
+NTSS.allPanNames.addAll(NTSS.spat.keys(Array).sort);

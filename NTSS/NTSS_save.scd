@@ -92,11 +92,7 @@ NTSS.pmcSaveString = { |dict, pc|
 	};
 	if (panName.notNil) {
 		saveStrings.add(
-			"MFdef('setPanner').(%, %, %);".format(pc,
-
-				q.panNames.indexOf(panName),
-				panName.cs
-			)
+			"MFdef('setPanner').(%, %, %);".format(pc, panName.cs)
 		)
 	};
 	saveStrings.add(
