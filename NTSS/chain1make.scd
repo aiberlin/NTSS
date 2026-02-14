@@ -54,6 +54,8 @@ ProxyChain.add3(\top, { |micBus, proxyBus = -1, bufnum|
 // pinknoise to simulate analog electronics noise
 ProxyChain.add3(\ins, \mix -> { |micBus = 0, micAmp = 0, proxyBus = 4, proxyAmp = 0, noiseAmp = 0.0|
 	var micSnd = SoundIn.ar(micBus) * micAmp.lag(1);
+	// assume proxy is usually stereo,
+	// mix to mono, proxyBus + [0,1], or just take left only?
 	var busSnd = InFeedback.ar(proxyBus) * proxyAmp.lag(1);
 	var pinkSnd = PinkNoise.ar(noiseAmp.lag(1));
 	var snd = micSnd + busSnd + pinkSnd;
@@ -70,6 +72,28 @@ ProxyChain.add3(\ins, \mix -> { |micBus = 0, micAmp = 0, proxyBus = 4, proxyAmp 
 	proxyAmp: \amp4,
 	noiseAmp: \amp
 )
+)
+);
+
+// STEREO inputs: mic, pluggable ndef/bus-input, noise
+// expect stereo ndefs, expects two adjacent input channels
+ProxyChain.add3(\ins2, \mix -> { |micBus = 0, micAmp = 0, proxyBus = 4, proxyAmp = 0, noiseAmp = 0.0|
+	var micSnd = SoundIn.ar(micBus + [0, 1]) * micAmp.lag(1);
+	var busSnd = InFeedback.ar(proxyBus + [0, 1]) * proxyAmp.lag(1);
+	var pinkSnd = PinkNoise.ar(noiseAmp.lag(1) * (SinOsc.kr(1) * [1, -1]).max(0));
+	var snd = micSnd + busSnd + pinkSnd;
+
+	// limit max level by clipping
+	// snd = snd.softclip;
+	// remove DC drift to avoid feedback to +1 or -1
+	snd = LeakDC.ar(snd, 0.999);
+	snd;
+}, 1, (
+	micBus: [0, 32, \lin, 1],
+	micAmp: \amp4,
+	proxyBus: [-1, s.options.numAudioBusChannels, \lin, 1],
+	proxyAmp: \amp4,
+	noiseAmp: \amp
 )
 );
 
@@ -251,13 +275,14 @@ ProxyChain(\pmc1).proxy.addSpec(\micBus, [0, 15, \lin, 1])
 */
 // instancing
 
-q.pcSlots = [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
+q.pcSlots = [\top, \ins, \ins2, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \auto3reg, \reverb,  \limiter ];
 
 // make the pchains
 q.pchains.do(_.free);
 
 q.pchains = q.pcNames.collect { |name, i|
-	Ndef(name).ar(1);
+	// stereo compatible:
+	Ndef(name).ar(2);
 	Ndef(name).vol_(0.25);
 	ProxyChain.from(Ndef(name), q.pcSlots).set(\micBus, i);
 };
