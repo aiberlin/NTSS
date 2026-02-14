@@ -17,8 +17,10 @@ NTSS.defaults.memSize = 8192 * 32; // boost to 256MB for delaylines
 NTSS.defaults.numAudioBusChannels = 2048;
 NTSS.defaults.maxNodes = 4096;
 NTSS.defaults.numWireBufs = 512;
-NTSS.defaults.hardwareBufferSize = 256;
+// safer to make it big, esp. for Windows
+NTSS.defaults.hardwareBufferSize = 1024;
 
+NTSS.defaults.reboot = true;
 
 q = q ? ();
 
@@ -189,7 +191,15 @@ WinBounds.stored.putAll( (
 	MainFX: Rect(803.0, 642.0, 500, 640),
 ) );
 
+// reboot by default, because we NTSS needs its settings:
+if (NTSS.reboot) {
+	"*** NTSS.rebooting...".postln;
+	s.quit({ s.boot });
+};
+
 s.waitForBoot {
+
+	"*** NTSS has booted.".postln;
 	Butz.numButz_(24).show;
 
 	s.sync;
