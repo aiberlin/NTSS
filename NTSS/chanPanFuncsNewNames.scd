@@ -104,7 +104,7 @@ ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 ProxyChain.sourceDicts[\panFixed].put(\text,
 	"panFixed pans into 4 rings of 6 speakers:
 srcPos:  circular position on the ring,
-srcWith: 0 is max 2 speakers on the ring, 1 is all speakers
+srcWidth: 0 is max 2 speakers on the ring, 1 is all speakers
 left, right, back, up: volume levels for the 4 rings.");
 
 
@@ -162,10 +162,7 @@ pendRate:  rate of one full pendulum swing in Hertz, i.e.
 pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
 
 
-// shared params:
-Spec.add(\srcPosSn, NTSS.ringNames.size * [-1, 1]);
-
-ProxyChain.add3(\panSnake, { |srcBus = 0, srcPosSn = 0, srcWidth = 0, amp = 0.25,
+ProxyChain.add3(\panSnake, { |srcBus = 0, srcPos = 0, srcWidth = 0, amp = 0.25,
 	rotRate = 0, pendRate = 0.05, pendDepth = 1|
 
 	var width = (srcWidth  ** 2).linlin(0, 1, 2, 6);
@@ -173,12 +170,22 @@ ProxyChain.add3(\panSnake, { |srcBus = 0, srcPosSn = 0, srcWidth = 0, amp = 0.25
 	var in = InFeedback.ar(srcBus);
 	var rotPos = LFSaw.kr(rotRate ** 2);
 	var posMod = SinOsc.kr((pendRate / pendDepth.lag(2).max(1)).lag(2), 0, pendDepth.lag(2));
-	var posAll = (srcPosSn.lag(2) * 2 / NTSS.ringNames.size) + posMod + rotPos;
+	var posAll = (srcPos.lag(2) * 2 / NTSS.ringNames.size) + posMod + rotPos;
 
 	var panned = PanAz.ar(NTSS.ringsFlat.size, in, posAll, (amp * widAmp).lag(1), width, 0);
 
 	NTSS.reorderRingsToSpeakers(panned);
 });
+
+ProxyChain.sourceDicts[\panSnake].put(\text,
+	"panSnake pans into one long ring of all 24 speakers,
+with fixed-speed rotation and pendulum movement options.
+srcPos:    circular position, now on the long ring,
+srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
+rotRate:   rate of rotation around the circles of 6, in Hertz.
+pendRate:  rate of one full pendulum swing in Hertz, i.e.
+           from center to left to center to reight to center.
+pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
 
 
 
@@ -219,6 +226,19 @@ ProxyChain.add3(\panFeed, { |srcBus, srcPos = 0, srcWidth = 0,
 	NTSS.reorderRingsToSpeakers(panned);
 
 });
+
+ProxyChain.sourceDicts[\panFeed].put(\text,
+	"panFeed pans into 4 rings of 6 speakers each,
+with delay and feedback that can be rotated.
+srcPos:    circular position, now on the long ring,
+srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
+direct:    level of direct panned sound
+delayed:   level of delayed sound
+feedback:  level of feedback in delayed sound
+delaytime: delaytime of delayed sound
+rotate:    number of speakers by which delay is rotated against source.
+           0 is none, 1 is 1 spk. clockwise, 3 is opposite on ring of 6."
+);
 
 /// NTSS Panners: //////
 
