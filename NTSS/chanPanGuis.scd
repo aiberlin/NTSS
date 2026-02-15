@@ -3,16 +3,16 @@
 
 fixedPan, rotoPan, feedPan, molens
 
-q.pchains.choose.getHalo;
+NTSS.pchains.choose.getHalo;
 
-ProxyChainGui(q.pchains[0]);
+ProxyChainGui([0]);
 
-MFdef(\setPanner).(q.pchains[0], 1);
-MFdef(\setPanner).(q.pchains[0], 0);
+MFdef(\setPanner).([0], 1);
+MFdef(\setPanner).([0], 0);
 
 q.inNames;
-q.pchains[0].slotNames.size
-q.pchains[0].getHalo
+[0].slotNames.size
+[0].getHalo
 */
 
 (
@@ -51,8 +51,8 @@ MFdef(\updatePchWin).add(\panMode, { |pch|
 });
 
 /*
-MFdef(\updatePchWin).(q.pchains[0]);
-MFdef(\updatePchWin).(q.pchains[2]);
+MFdef(\updatePchWin).(NTSS.pchains[0]);
+MFdef(\updatePchWin).(NTSS.pchains[2]);
 */
 );
 
@@ -61,10 +61,10 @@ MFdef(\updatePchWin).(q.pchains[2]);
 NTSS.getSrcNdefs = {
 	var sources = Ndef.all[s.name].envir.asArray;
 	sources = sources.select { |px| px.rate == \audio };
-	q.pchains.do { |chain|
+	NTSS.pchains.do { |chain|
 		sources.remove(chain.proxy);
 	};
-	q.pchains.do { |chain|
+	NTSS.pchains.do { |chain|
 		sources.remove(chain.getHalo(\panner));
 	};
 	sources.sort { |a, b| a.key < b.key };
@@ -82,8 +82,8 @@ WinBounds.addMake(\allSrcNdefs, {
 
 /*
 // choose source Ndef for one pchain from buttons:
-MFdef(\allSrcChoose).(q.pchains[0]);
-MFdef(\allSrcChoose).(q.pchains[0], 400@500);
+MFdef(\allSrcChoose).(NTSS.pchains[0]);
+MFdef(\allSrcChoose).(NTSS.pchains[0], 400@500);
 */
 MFdef(\allSrcChoose).add(\choose, { |pchain, xy|
 	var w = Window("choose src for % :".format(pchain),
@@ -106,13 +106,13 @@ MFdef(\allSrcChoose).add(\choose, { |pchain, xy|
 
 
 (
-q.pchains.do { |pch, i|
+NTSS.pchains.do { |pch, i|
 	Butz(\NTSS).add(pch.key, { WinBounds.showOrMake(pch.key) });
 
 	WinBounds.addMake(pch.key, {
-		var horizStagger = (Window.screenBounds.width - 200 - 500 / q.pchains.size).round;
-		var vertiStagger = (Window.availableBounds.height - 830 / q.pchains.size).round;
-		var winrect = Rect(horizStagger * i + 200, q.pchains.size - i * vertiStagger, 500, 820);
+		var horizStagger = (Window.screenBounds.width - 200 - 500 / NTSS.pchains.size).round;
+		var vertiStagger = (Window.availableBounds.height - 830 / NTSS.pchains.size).round;
+		var winrect = Rect(horizStagger * i + 200, NTSS.pchains.size - i * vertiStagger, 500, 820);
 		var w = Window(pch.key, winrect.postln).front.background_(pch.getHalo.backCol);
 		var flow = w.addFlowLayout;
 		var font = Font(Font.defaultMonoFace, 14);

@@ -3,7 +3,7 @@ NTSS state can e saved as code file to reload later,
 e.g. as setup file on startup.
 
 // test for one proxychain
-NTSS.pmcSaveString(q.pchains[0]);
+NTSS.pmcSaveString(NTSS.pchains[0]);
 
 // whole setup save as string
 NTSS.saveString;
@@ -39,7 +39,7 @@ NTSS.saveDialog = {
 
 NTSS.saveString = {
 	var strings = List[ "/*** NTSS Setup saved on % ***/".format(Date.getDate.stamp), "" ];
-	q.pchains.do { |pc|
+	NTSS.pchains.do { |pc|
 		strings.add(NTSS.pmcSaveString(pc));
 	};
 	strings.add( "// Add more things to setup here: \n\n" );

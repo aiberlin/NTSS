@@ -257,22 +257,25 @@ ProxyChain(\pmc1).proxy.addSpec(\micBus, [0, 15, \lin, 1])
 NTSS.pcSlots = NTSS.pcSlots ? [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
 
 // make the pchains
-q.pchains.do(_.free);
+NTSS.pchains.do(_.free);
 
-q.pchains = NTSS.pcNames.collect { |name, i|
+NTSS.pchains = NTSS.pcNames.collect { |name, i|
 	Ndef(name).ar(2);
 	Ndef(name).vol_(0.25);
 	ProxyChain.from(Ndef(name), NTSS.pcSlots).set(\micBus, i);
 };
 
-NTSS.pchainIndices = q.pchains.collect(_.proxy).collect(_.index);
+// backwards compat, just in case
+q.pchains = NTSS.pchains;
+
+NTSS.pchainIndices = NTSS.pchains.collect(_.proxy).collect(_.index);
 
 Spec.add(\srcBus, [ NTSS.pchainIndices.minItem, NTSS.pchainIndices.maxItem] ++ [\lin, 1]);
 
 
 // make the buffer and panner for each pch:
 (
-q.pchains.do { |pc, i|
+NTSS.pchains.do { |pc, i|
 	var mybuf, panNdefName, panner;
 	panNdefName = NTSS.pannerNames[i];
 	panner = Ndef(panNdefName);
@@ -297,8 +300,8 @@ q.pchains.do { |pc, i|
 q.ndef = q.ndef ? ();
 // make several groups
 q.ndef.groups = q.ndef.groups ? ();
-q.ndef.groups.put(\ntssChan, q.pchains.collect(_.proxy));
-q.ndef.groups.put(\ntssPan, q.pchains.collect(_.getHalo(\panner)));
+q.ndef.groups.put(\ntssChan, NTSS.pchains.collect(_.proxy));
+q.ndef.groups.put(\ntssPan, NTSS.pchains.collect(_.getHalo(\panner)));
 q.ndef.groupNames = q.ndef.groupNames ? [\ntssChan, \ntssPan];
 q.ndef.groupNames.postcs;
 
@@ -322,7 +325,7 @@ MFdef(\setSndfile).add(\setFile, { |pc, pathOrSF|
 
 /*
 // q.bio.soundfiles are in biophony
-MFdef(\setSndfile).(q.pchains[0], q.bio.sndfiles.choose.path);
+MFdef(\setSndfile).(NTSS.pchains[0], q.bio.sndfiles.choose.path);
 */
 
 MFdef(\setSrc).add(\setSrc, { |pc, drag|
@@ -350,10 +353,10 @@ MFdef(\setSrc).add(\setSrc, { |pc, drag|
 });
 
 /*
-MFdef(\setSrc).(q.pchains[0]);
-MFdef(\setSrc).(q.pchains[0], \x);
-MFdef(\setSrc).(q.pchains[0], Ndef(\x));
-MFdef(\setSrc).(q.pchains[0], Ndef(\x, { Dust2.ar(30, 0.3) }));
+MFdef(\setSrc).(NTSS.pchains[0]);
+MFdef(\setSrc).(NTSS.pchains[0], \x);
+MFdef(\setSrc).(NTSS.pchains[0], Ndef(\x));
+MFdef(\setSrc).(NTSS.pchains[0], Ndef(\x, { Dust2.ar(30, 0.3) }));
 */
 
 MFdef(\setSlots).add(\setSlots, { |pc, slotsToSet|
@@ -369,9 +372,9 @@ MFdef(\setSlots).add(\setSlots, { |pc, slotsToSet|
 });
 
 /*
-q.pchains[0].add(\top)
-MFdef(\setSlots).(q.pchains[0], [\top]);
-MFdef(\setSlots).(q.pchains[0], [\ins, \sndfile]);
+NTSS.pchains[0].add(\top)
+MFdef(\setSlots).(NTSS.pchains[0], [\top]);
+MFdef(\setSlots).(NTSS.pchains[0], [\ins, \sndfile]);
 */
 
 
@@ -411,7 +414,7 @@ MFdef(\setPanner).add(\choose, { |pc, panNameOrIndex = 0|
 MFdef(\setPanner).(ProxyChain(\ch01ada), 7.rand.postln);
 MFdef(\setPanner).(ProxyChain(\ch01ada), NTSS.panNames.choose.postln);
 
-MFdef(\setPanner).(q.pchains[0], 7);
+MFdef(\setPanner).(NTSS.pchains[0], 7);
 */
 
 MFdef(\randPanPars).add(\rand, { |pc, rand = 0.01|
@@ -423,11 +426,11 @@ MFdef(\randPanPars).add(\rand, { |pc, rand = 0.01|
 });
 
 /*
-MFdef(\randPanPars).(q.pchains[4], 0.1);
+MFdef(\randPanPars).(NTSS.pchains[4], 0.1);
 */
 
 // initialize inputs
-q.pchains.do { |pc, i|
+NTSS.pchains.do { |pc, i|
 
 	pc.add(\top, 0);
 	pc.add(\limiter, 1);

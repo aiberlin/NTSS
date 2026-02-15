@@ -29,7 +29,7 @@ Tdef(\AUTOPILOT, { |env|
 
 	loop {
 		// use ch5-8 for AUTOPILOT?
-		var pch = q.pchains.at(env.rndChans.asInteger - 1).choose;
+		var pch = NTSS.pchains.at(env.rndChans.asInteger - 1).choose;
 		// always show its gui?
 		// Butz.run(pch.key);
 		pch.proxy.send;

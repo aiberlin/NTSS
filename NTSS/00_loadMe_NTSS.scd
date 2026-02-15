@@ -163,10 +163,8 @@ NTSS.showRing(\back);
 NTSS.getSrcNdefs = {
 	var sources = Ndef.all[s.name].envir.asArray;
 	sources = sources.select { |px| px.rate == \audio };
-	q.pchains.do { |chain|
+	NTSS.pchains.do { |chain|
 		sources.remove(chain.proxy);
-	};
-	q.pchains.do { |chain|
 		sources.remove(chain.getHalo(\panner));
 	};
 	sources.sort { |a, b| a.key < b.key };

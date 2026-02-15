@@ -55,7 +55,7 @@ MKtl(\LevelControl).elAt(0, \pad, nil, \on).keep(8).do { |pad, i|
 	pad.action = { |pad|
 		if (pad.isOn) {
 			"play ".post;
-			q.pchains[i].getHalo.panner.postln.play;
+			NTSS.pchains[i].getHalo.panner.postln.play;
 		}
 	}
 };
@@ -63,7 +63,7 @@ MKtl(\LevelControl).elAt(0, \pad, nil, \on).drop(8).do { |pad, i|
 	pad.action = { |pad|
 		if (pad.isOn) {
 			"stop ".post;
-			q.pchains[i].getHalo.panner.postln.stop;
+			NTSS.pchains[i].getHalo.panner.postln.stop;
 		}
 	}
 };
@@ -76,7 +76,7 @@ MKtl(\LevelControl).elAt(0, \kn, (8..15)).do({ |kn, i|
 	kn.action = {
 		var delta = (kn.deviceValue - 64);
 		var step = delta * delta.abs.sqrt * 0.002;
-		var proxychain = q.pchains[i];
+		var proxychain = NTSS.pchains[i];
 		var panner = proxychain.getHalo.panner;
 		var currval = \amp.asSpec.unmap(panner.vol);
 		var newval = \amp.asSpec.map(currval + step);
