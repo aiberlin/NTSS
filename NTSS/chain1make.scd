@@ -41,6 +41,26 @@ NTSS.pcNames = NTSS.numPmcs.collect { |i|
 };
 NTSS.pannerNames = NTSS.pcNames.collect { |name| name.asString.insert(2, "P").asSymbol };
 
+NTSS.addPanNames = { |q ... names|
+	names.flat.do { |name|
+		if (NTSS.allPanNames.includes(name).not) {
+			NTSS.allPanNames.add(name)
+		}
+	};
+}
+
+NTSS.updatePanNames = { |newNames|
+	if (newNames.notNil) {
+		NTSS.pchains.do { |pch|
+			var panpop = pch.getHalo(\panPop);
+			if (panpop.notNil and: { panpop.view.isClosed.not }) {
+				panpop.items = newNames
+			}
+		}
+	}
+};
+
+
 (
 // just to put the config params on top
 ProxyChain.add3(\top, { |micBus, proxyBus = -1, bufnum|
@@ -197,13 +217,13 @@ ProxyChain.add3(\tilta, \filter -> { |in,
 },
 1,
 (
-// specs go here:
-tilt: \pan,
-curve: \pan,
-reso: [1, 11],
-flWidth: [-1, 1],
-flRate: [0.1, 50, \exp],
-flRateMod: [-1, 1]
+	// specs go here:
+	tilt: \pan,
+	curve: \pan,
+	reso: [1, 11],
+	flWidth: [-1, 1],
+	flRate: [0.1, 50, \exp],
+	flRateMod: [-1, 1]
 )
 )
 );
