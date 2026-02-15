@@ -51,6 +51,25 @@ NTSS.reorderRingsToSpeakers = { |nt, array|
 	res
 };
 
+NTSS.addPanNames = { |q ... names|
+	names.flat.do { |name|
+		if (NTSS.allPanNames.includes(name).not) {
+			NTSS.allPanNames.add(name)
+		}
+	};
+};
+
+NTSS.updatePanNames = { |newNames|
+	if (newNames.notNil) {
+		NTSS.pchains.do { |pch|
+			var panpop = pch.getHalo(\panPop);
+			if (panpop.notNil and: { panpop.view.isClosed.not }) {
+				panpop.items = newNames
+			}
+		}
+	}
+};
+
 /**** tests
 // reordering ringNames by indices
 NTSS.reorderRingsToSpeakers(NTSS.ringsFlat) == NTSS.speakersActive.drop(-2);

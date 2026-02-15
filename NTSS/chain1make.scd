@@ -41,25 +41,6 @@ NTSS.pcNames = NTSS.numPmcs.collect { |i|
 };
 NTSS.pannerNames = NTSS.pcNames.collect { |name| name.asString.insert(2, "P").asSymbol };
 
-NTSS.addPanNames = { |q ... names|
-	names.flat.do { |name|
-		if (NTSS.allPanNames.includes(name).not) {
-			NTSS.allPanNames.add(name)
-		}
-	};
-}
-
-NTSS.updatePanNames = { |newNames|
-	if (newNames.notNil) {
-		NTSS.pchains.do { |pch|
-			var panpop = pch.getHalo(\panPop);
-			if (panpop.notNil and: { panpop.view.isClosed.not }) {
-				panpop.items = newNames
-			}
-		}
-	}
-};
-
 
 (
 // just to put the config params on top
