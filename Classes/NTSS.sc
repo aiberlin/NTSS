@@ -21,8 +21,15 @@ NTSS {
 
 		NTSS.dir.setup = NTSS.filenameSymbol.asString.dirname.dirname +/+ "NTSS";
 		NTSS.dir.loadMe = NTSS.dir.setup  +/+ "00_loadMe_NTSS.scd";
-		NTSS.allPanNames = List['-']; // so we can add dynamically
 
+		NTSS.allPanNames = List['-']; // so we can add dynamically
+		NTSS.addPanNames = { |q ... names|
+			names.flat.do { |name|
+				if (NTSS.allPanNames.includes(name).not) {
+					NTSS.allPanNames.add(name)
+				}
+			}
+		}
 	}
 
 	// redirect everything to NTSS.q:

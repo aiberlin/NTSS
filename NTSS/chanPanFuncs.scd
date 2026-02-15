@@ -1,4 +1,4 @@
-"*** LOADING NEW PANNER PARAMETER NAMES! ".postln;
+"panModes: Using new panner param names.".postln;
 
 /* Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
 
@@ -76,10 +76,10 @@ Ndef(\testRings, {
 
 ****/
 
-NTSS.allPanNames.addAll([ \panFixed, \panRoto, \panSnake, \panFeed]);
+NTSS.addPanNames([ \panFixed, \panRoto, \panSnake, \panFeed]);
 
+// shared parameter names and ranges for dirrent panModes
 
-// shared parameter names and ranges
 // the input buses coming from the PMCs
 Spec.add(\srcBus, [s.options.firstPrivateBus] + [0, 31] ++ [\lin, 1]);
 // angle position on the ring
@@ -256,19 +256,24 @@ NTSS.getSpat = { arg ntss, name;
 	};
 };
 
+// subs should not be in speakers I guess?
 NTSS.spat.dbap = { arg name, speakers, snd;
 	var d, g, norm, srcPos;
-	var x = "srcX".format(name).asSymbol.kr(0, spec:[-1,1]);
-	var y = "srcY".format(name).asSymbol.kr(0, spec:[-1,1]);
-	var k = 11 - "srcWidth".format(name).asSymbol.kr(1, spec:[1,10]);
+	var x = \srcX.kr(0, spec:[-1,1]);
+	var y = \srcY.kr(0, spec:[-1,1]);
+	// because srcWidth is 0-1 generally, use that spec and rescale
+	var k = \srcWidth.kr(1).linlin(0, 1, 10, 1);
 	var sig;
 	srcPos = [x,y];
 	sig = snd;
+	// distances
 	d = speakers.collect { |p|
 		var val = (srcPos - p);
 		val[0].hypot(val[1])
 	};
+	// amps decrease with dist, k is high is narrower focus
 	g = 1/(d.pow(k) + 1e-6);
+	// normalize by power
 	norm = (g.squared.sum).sqrt;
 	g = g / norm;
 	sig * g;
@@ -286,12 +291,14 @@ spread is similar to k
 // was dlypan
 
 
+
+
 NTSS.spat.delayspat = { arg name, speakers, snd;
 	var x = \srcX.kr(0, spec:[-1,1]);
 	var y = \srcY.kr(0, spec:[-1,1]);
 	var z = \spkScale.kr(1, spec:[1,30]);
 	var k = \xyScale.kr(1, spec:[1,10]);
-	var spread = 11 - \spread.kr(1, spec:[1,10]);
+	var spread = \spread.kr(1, spec:[1,10]);
 
 	var dists, g, norm;
 
@@ -309,6 +316,8 @@ NTSS.spat.delayspat = { arg name, speakers, snd;
 	g = g / norm;
 	DelayC.ar(snd*g, 1, dists / 344, 1/(1+dists).sqrt);
 };
+
+
 
 // for each source channel, on/off for each speaker
 NTSS.spat.direct = { arg name, speakers, snd;
@@ -371,16 +380,67 @@ NTSS.spat.peatSoup = { arg name, speakers, snd;
 	var mid = \midDb.kr(-40, spec:[-60,-20]);
 	var maxRot = \maxRotation.kr(100, spec:[0.01, 100, \exp]);
 	var width = db.linlin(-60, -20, speakers.size/1.5, 1);
-	var pan = LFSaw.ar(
+	var panpos = LFSaw.ar(
 		(
 			(db.linexp(mid, -10, 0.01, maxRot)*polarity.neg) +
 			(db.linexp(-80, mid, maxRot, 0.01)*polarity))
 	);
-	PanAz.ar(speakers.size, Limiter.ar(in * \am.kr(1, spec:[0,20,\amp]), 1), pan, \limiter.kr(0.5, spec:\amp), width);
+	PanAz.ar(speakers.size,
+		Limiter.ar(in * \am.kr(1, spec:[0,20,\amp]), 1),
+		panpos,
+		\limiter.kr(0.5, spec:\amp),
+		width
+	);
 };
 
 NTSS.spat.keys.do {|spatName|
 	ProxyChain.add3(spatName, NTSS.getSpat(spatName));
 };
 
-NTSS.allPanNames.addAll(NTSS.spat.keys(Array).sort);
+ProxyChain.sourceDicts[\dbap].put(\text,
+	"DBAP is Distance Based Amplitude Panning:
+srcX:      source position on x-axis
+srcY:      source position on y-axis
+srcWidth:  small is very focused, big is wide field of speakers, 0 to 1."
+);
+
+ProxyChain.sourceDicts[\delayspat].put(\text,
+	"delayspat is Distance-Based delay & amp Panning:
+srcX:      source position on x-axis
+srcY:      source position on y-axis
+srcWidth:  small is very focused, big is wide field of speakers, 0 to 1.
+spkScale:  scale size of speaker distances
+xyScale:   scale size of xy position movement
+"
+);
+
+ProxyChain.sourceDicts[\direct].put(\text,
+	"direct plays to only one speaker at a time:
+outChan:   which speakers to play to."
+);
+
+ProxyChain.sourceDicts[\mixer].put(\text,
+	"mixer allows setting level for each speaker by name:
+" ++ NTSS.speakersActive.cs
+);
+
+ProxyChain.sourceDicts[\taps].put(\text,
+	"taps allows setting individual delays for each speaker by name.
+dry:   level of dry signal in all speakers
+send:  level of delayed signal in all speakers
+bw5..sub1: delay time in seconds for each speaker.
+"
+);
+
+ProxyChain.sourceDicts[\tapsfb].put(\text,
+	"taps allows setting individual delays for each speaker by name,
+and adds global feedback on the delayed signals.
+dry:   level of dry signal in all speakers
+send:  level of delayed signal in all speakers
+fb:    level of feedback in delayed signals
+bw5..sub1: delay time in seconds for each speaker.
+"
+);
+
+
+NTSS.addPanNames(NTSS.spat.keys(Array).sort);
