@@ -22,6 +22,8 @@ NTSS.defaults.hardwareBufferSize = 1024;
 
 NTSS.defaults.reboot = true;
 
+NTSS.defaults.speakerData = "speakerData.scd";
+
 q = q ? ();
 
 q.ntss = q.ntss ? ();
@@ -45,8 +47,7 @@ if (NTSS.sampleRate.notNil) {
 	s.options.sampleRate = NTSS.sampleRate;
 };
 
-
-"speakerData.scd".postcs.loadRelative;
+NTSS.speakerData.postcs.loadRelative;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains
 NTSS.numPmcs = NTSS.numPmcs ? 8;

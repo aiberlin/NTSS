@@ -45,6 +45,11 @@ WinBounds.addMake(\SpatioScope, {
 			);
 		};
 	};
+	if (NTSS.spatImagePath.notNil) {
+		q.spat.parent.view.backgroundImage_(
+			Image(NTSS.spatImagePath)
+		);
+	};
 	q.spat.parent.moveTo(120, 480);
 	q.spat.parent
 });
