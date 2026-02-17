@@ -75,6 +75,15 @@ ProxyChain.add3(\molens, \filter -> { | in, ampWh = 1, rotWh = 0.051, sizeWh=16,
 
 ProxyChain.sourceDicts.molens.specs.keysValuesDo { |key, spec| Spec.add(key, spec) };
 
+ProxyChain.add3(\eq3, \filter -> { |in, bass = 0, mid = 0, treble =0|
+	in = BLowShelf.ar( in, 400, 1, bass);
+	in = BPeakEQ.ar( in, 1200, 0.5, mid);
+	in = BHiShelf.ar( in, 5000, 1, treble);
+}, 1, (
+	bass: [-12, 12],
+	mid: [-12, 12],
+	treble: [-12, 12]
+));
 
 
 ProxyChain.add3(\mix2stereo, \filter -> { |in|
@@ -130,7 +139,7 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
 
 MainFX(s).clear;
-MainFX(s, NTSS.speakersOrder.size, [\mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]);
+MainFX(s, NTSS.speakersOrder.size, [\eq3, \mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]);
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);

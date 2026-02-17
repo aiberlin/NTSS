@@ -255,7 +255,7 @@ ProxyChain(\pmc1).proxy.addSpec(\micBus, [0, 15, \lin, 1])
 */
 // instancing
 
-NTSS.pcSlots = NTSS.pcSlots ? [\top, \ins, \sndfile, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
+NTSS.pcSlots = NTSS.pcSlots ? [\top, \ins, \sndfile, \eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter ];
 
 // make the pchains
 NTSS.pchains.do(_.free);
