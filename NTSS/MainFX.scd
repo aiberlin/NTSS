@@ -73,9 +73,14 @@ ProxyChain.add3(\molens, \filter -> { | in, ampWh = 1, rotWh = 0.051, sizeWh=16,
 )
 );
 
+Spec.add(\gainDB, [-12, 12]);
+Spec.add(\treble, \gainDB);
+Spec.add(\mid, \gainDB);
+Spec.add(\bass, \gainDB);
+
 ProxyChain.sourceDicts.molens.specs.keysValuesDo { |key, spec| Spec.add(key, spec) };
 
-ProxyChain.add3(\eq3, \filter -> { |in, bass = 0, mid = 0, treble =0|
+ProxyChain.add3(\eq3, \filter -> { |in, treble =0, mid = 0, bass = 0|
 	in = BLowShelf.ar( in, 400, 1, bass);
 	in = BPeakEQ.ar( in, 1200, 0.5, mid);
 	in = BHiShelf.ar( in, 5000, 1, treble);
