@@ -24,6 +24,18 @@ NTSS.defaults.reboot = true;
 
 NTSS.defaults.speakerData = "speakerData.scd";
 
+// still the inNames from Biophony...
+NTSS.defaults.inNames = [
+	\kiteMic, \richtMic, \funkMic1,\funkMic2,
+	\micA_innen, \micB_innen, \micC_innen,
+	\stringGang, \stringWind,
+	\plonkBauL, \plonkBauM, \plonkBauR,
+	\line1, \line2, \line3, \line4,
+	\echoShure, \geoLom,
+	\hydroWheel, \hydroFount,
+	\angel, \arianeFunk
+].collect { |name, i| ((i+1).asString ++ name).asSymbol };
+
 q = q ? ();
 
 q.ntss = q.ntss ? ();
@@ -76,16 +88,7 @@ Spec.add(\loop, \unipolar);
 
 // These are still the names of Biophony inputs.
 // they are dynamically overwriteable later in code!
-q.inNames = q.inNames ? [
-	\kiteMic, \richtMic, \funkMic1,\funkMic2,
-	\micA_innen, \micB_innen, \micC_innen,
-	\stringGang, \stringWind,
-	\plonkBauL, \plonkBauM, \plonkBauR,
-	\line1, \line2, \line3, \line4,
-	\echoShure, \geoLom,
-	\hydroWheel, \hydroFount,
-	\angel, \arianeFunk
-].collect { |name, i| ((i+1).asString ++ name).asSymbol }.postcs;
+NTSS.inNames = NTSS.inNames ?
 
 
 // make nameViews on NdefGuis etc better readable
