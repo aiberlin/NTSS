@@ -74,8 +74,8 @@ NTSS.pmcSaveString = { |dict, pc|
 	var path = pc.getHalo(\mybuf).path;
 	var srcNdef = pc.getHalo(\src);
 	var slots = pc.activeSlotNames;
-	var pcSettings = pc.proxy.getKeysValues;
-	var panSettings = panner.getKeysValues;
+	var pcSettings = pc.proxy.getKeysValues(except: [\micBus, \proxyBus, \bufnum]);
+	var panSettings = panner.getKeysValues(except: [\srcBus]);
 
 	var saveStrings = List[
 		"/*** saved %: ***/".format(pc) ];
