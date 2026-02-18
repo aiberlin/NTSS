@@ -46,7 +46,7 @@ WinBounds.addMake(q.topName, {
 		var label = Button(comp, wid@30).states_([[name]]).font_(f)
 		.action = { Butz(\NTSS).run(name) };
 
-		var inPop = EZPopUpMenu(comp, wid@30, nil, q.inNames, { |pop|
+		var inPop = EZPopUpMenu(comp, wid@30, nil, NTSS.inNames, { |pop|
 			"%: input %, %\n".postf(pch, pop.value, pop.item);
 			pch.set(\micBus, pop.value);
 		}).font_(f2);

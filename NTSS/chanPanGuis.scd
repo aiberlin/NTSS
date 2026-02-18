@@ -10,7 +10,7 @@ ProxyChainGui([0]);
 MFdef(\setPanner).([0], 1);
 MFdef(\setPanner).([0], 0);
 
-q.inNames;
+NTSS.inNames;
 [0].slotNames.size
 [0].getHalo
 */
@@ -120,7 +120,7 @@ NTSS.pchains.do { |pch, i|
 		var inputPop, pxDrag, sfDrag, pchgui, pannerGui, panPop, panguibounds;
 
 		// make input selections: audio inputs
-		inputPop = EZPopUpMenu(w, 160@30, \anaIn, q.inNames,
+		inputPop = EZPopUpMenu(w, 160@30, \anaIn, NTSS.inNames,
 			{ |pop|
 				"%: input %, %\n".postf(pch, pop.value, pop.item);
 				pch.set(\micBus, pop.value);

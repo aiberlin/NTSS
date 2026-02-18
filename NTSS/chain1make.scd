@@ -12,7 +12,13 @@ sndfile module has
 * playrate, looping, modulation
 
 FX chain has
-
+* eq3 - simple 3band EQ
+* freqMod - frequency modulation
+* ampMod - amplitude modulation
+* tilta - a DJ filter, tilt to bass or treble
+* gapz - a granulating filter - mutes a percentage of waveset/grains in the signal.
+* reverb - simple AdCVerb
+* limiter for safety
 
 wishlist:
 - select already loaded buffers
@@ -27,9 +33,9 @@ ProxyChainPreset:
 */
 
 q = q ? ();
-NTSS.numPmcs = NTSS.numPmcs ? 8;
 
-NTSS.allPcNames = [
+NTSS.defaults.numPmcs = 8;
+NTSS.defaults.allPcNames = [
 	\ada, \bob, \cecilia, \dada, \eek,
 	\fifi, \gogo, \hah, \ivy, \jay,
 	\kiki, \lily, \mimi, \nana, \opo,

@@ -8,6 +8,7 @@ more to follow!
 // hardwareBufferSize: bigger is safer,
 // default of 1024 is tested, solid for Windows
 // can try to tune faster to 512, 256 on macOS, linux
+NTSS.hardwareBufferSize
 NTSS.hardwareBufferSize = 1024;
 
 // speakerData is filename for speaker position info.
@@ -16,6 +17,11 @@ NTSS.defaults.speakerData;
 // switch to Silent Green Kuppelhalle:
 NTSS.speakerData = "speakerDataKuppel.scd";
 
+// names for the audio inputs
+NTSS.defaults.inNames;
+
+// set to your own names:
+NTSS.inNames = [\A, \B, \C, \D];
 
 // set how many mixer channels you want:
 NTSS.defaults.numPmcs // defaults to 8
