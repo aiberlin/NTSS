@@ -61,14 +61,14 @@ NTSS.speakersDict = (
 
 	wd14: [ -3.5, 1.0, 0.5, 0.4],
 	wd13: [  3.5, 2.5, 1.0, 0.4],
-	wd12: [ 0.0, 1.0, 0.2, 0.32],
+	wd12: [ -1.0, 1.0, 0.2, 0.32],
 	wd11: [ 1.5, 0.0, 0.2, 0.4],
 	noname: [ 2.4, 4.2, 3.5, 0.5],
 	braun1: [ 5.6, 2.0, 2.2, 1],
 	braun2: [ -0.5, 5.5, 3.0, 0.8],
-	crypt3: [ 5.5, -0.7, 0.0, 1],
+	cryptA: [ 5.5, -0.7, 0.0, 1],
 	behring: [ 1.8, 1.5, 2.0, 0.6],
-	cryptA: [ 3.5, -1.2, 1.0, 0.5],
+	crypt3: [ 3.5, -1.2, 1.0, 0.5],
 	bluecab: [ 2.2, 5.5, 2.2, 0.3],
 
 	///// group as up
@@ -111,13 +111,13 @@ NTSS.spkGroups = (
 // in order of physical outputs :
 NTSS.speakersOrder = [
 	// 7 XLR outs from X32, 7 to Denon amp
-	\bw5,
 	\bw6,
 	\cabass2,
-	\cabass0,
+	\wd14,
 	\cabass1,
 	\ldl7,
-	\ldl8,
+	\wd12,
+	\wd11,
 
 	// last XLR out from X32
 	\gene0,
@@ -135,11 +135,11 @@ NTSS.speakersOrder = [
 	\bluecab,
 
 	// 5 JACK outs from s16-RME-ADAT to Yamaha Amp
-	\wd14,
+	\cabass0,
 	\wd13,
-	\wd12,
-	\wd11,
 	\noname,
+	\ldl8,
+	\bw5,
 
 	// 2 JACK outs from s16-RME-ADAT to stereo amp 1
 	\braun1,
