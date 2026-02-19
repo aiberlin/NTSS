@@ -364,8 +364,9 @@ NTSS.spat.taps = { arg name, speakers, snd;
 	var nspeakers = speakers.size;
 	var dryKr = \dry.kr(1, 1, spec:\amp);
 	var sendKr = \send.kr(1, 1, spec:\amp);
+	var lag = \lag.kr(1, spec:[0.5,3]);
 	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4])
+		name.kr(0, spec:[0,4]).lag(lag)
 	};
 	//(snd*\dry.kr(1, spec:\amp)) + CombC.ar(snd * \send.kr(0, spec:\amp), 4, taps, 6);
 	(snd*dryKr) + CombC.ar(snd * sendKr, 4, taps, 0);
@@ -379,16 +380,18 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 	var dryKr = \dry.kr(1, 1, spec:\amp);
 	var sendKr = \send.kr(1, 1, spec:\amp);
 	var fbKr = \fb.kr(0, spec:\amp);
-
+	var lag = \lag.kr(1, spec:[0.5,3]);
+	var in = snd + (BrownNoise.ar * 80.neg.dbamp);
 	var fb = LocalIn.ar(nspeakers);
 	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4])
+		name.kr(0, spec:[0,4]).lag(lag)
 	};
-	var delayline = DelayC.ar(snd * sendKr + fb, 4, taps);
+	var delayline = DelayC.ar(in * sendKr + fb, 4, taps);
+
 	delayline = PitchShift.ar(delayline, 0.2, {rrand(1.01,0.99)}!nspeakers);
-	LocalOut.ar(delayline * fbKr);
+	LocalOut.ar(Limiter.ar(delayline * fbKr, 0.9));
 	// safety, find out where in tapsfb bad numbers come from
-	((snd * dryKr) + delayline).zap;
+	Limiter.ar(((in * dryKr) + delayline)).zap;
 };
 
 
