@@ -43,6 +43,7 @@ NTSS.spatImagePath = NTSS.dir.setup +/+ "Kuppel.png";
 
 NTSS.speakersDict = (
 	//      x    y    z   amp
+
 	bw5: [ -1, 6, 0.5, 0.4],
 	bw6: [ 6, 2.5, 0.5, 0.35],
 	cabass2: [ 0, 4, 0.5, 0.13],
@@ -54,9 +55,9 @@ NTSS.speakersDict = (
 
 	///// group as up
 	kef0: [ 6, 0.5, 3.0, 0.5],
-	kef1: [ 3, 6.0, 3.0, 0.5],
-	kef2: [ -7, -4.0, 3.0, 0.5],
-	kef3: [ -5, -2.5, 3.0, 0.5],
+	kef1: [ 3, 3.5, 3.0, 0.5],
+	kef2: [ -7, -0.5, 3.0, 0.5],
+	kef3: [ -5, -4, 3.0, 0.5],
 	kef4: [ 7, -1, 3.0, 0.5],
 
 	wd14: [ 3, 5, 0, 0.4],
