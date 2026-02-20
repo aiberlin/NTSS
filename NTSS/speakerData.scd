@@ -1,54 +1,99 @@
 /*
-z = [0.4, 0.35, 0.13, 0.13, 0.14, 0.15, 0.3, 0.7, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.32, 0.4, 0.5, 1, 0.8, 1, 0.6, 0.5, 0.3, 1, 1]
-NTSS.speakers.size
-NTSS.speakersDict[NTSS.speakersActive[0]]
-NTSS.speakersActive.collect { |sp,i| [sp] ++ NTSS.speakersDict[sp][..2] ++ [z[i]] }.do {|el| "%: [ %, %, %, %],".format(*el).postln }
-*/
+i = Image.new("~/Desktop/Kuppel.png");
 
-// the speakers as in Medienhaus 111
-NTSS.speakersDict = (
-	//      x    y    z   amp
-	bw5: [ 1.2, 5.3, 0.0, 0.4],
-	bw6: [ -4.0, -1.0, 1.3, 0.35],
-	cabass2: [ -0.5, 2.7, 0.8, 0.13],
-	cabass0: [ -0.5, 2.9, 0.8, 0.13],
-	cabass1: [ 6.0, 3.8, 3.5, 0.14],
-	ldl7: [ 0.5, -1.0, 2.0, 0.15],
-	ldl8: [ -3.5, 5.2, 0.0, 0.3],
-	gene0: [ 2.0, -0.5, 1.0, 0.7],
-
-	///// group as up
-	kef0: [ -3.0, 3.0, 3.2, 0.5],
-	kef1: [ 0.5, 6.0, 3.2, 0.5],
-	kef2: [ 0.5, -0.6, 3.2, 0.5],
-	kef3: [ 1.5, 1.1, 2.9, 0.5],
-	kef4: [ -3.5, 2.5, 3.0, 0.5],
-
-	wd14: [ -3.5, 1.0, 0.5, 0.4],
-	wd13: [ 6.0, 1.5, 1.0, 0.4],
-	wd12: [ 1.5, 0.5, 0.2, 0.32],
-	wd11: [ 3.5, 0.5, 0.2, 0.4],
-	noname: [ 2.4, 4.0, 3.5, 0.5],
-	braun1: [ 4.5, 2.0, 2.2, 1],
-	braun2: [ -1.0, 3.8, 3.0, 0.8],
-	crypt3: [ 5.5, 0.0, 0.0, 1],
-	behring: [ 2.5, 3.0, 2.0, 0.6],
-	cryptA: [ 4.5, -0.5, 1.0, 0.5],
-	bluecab: [ 2.2, 5.5, 2.2, 0.3],
-
-	// not in any group
-	sub0: [ 0.0, 0.0, 0.0, 1],
-	sub1: [ -4, 3, 0.0, 1],
-
-);
-
-// make 4 rings of 6 speakers each
-NTSS.spkGroups = (
-	// 4 rings: clockwise, always begin at center, so they can be one long twirl
 	left: [\wd12, \cabass2, \wd14, \bw6, \ldl7, \gene0 ],
 	up: [\kef3, \cabass1, \kef1, \kef0, \kef4, \kef2 ], // kefs,
 	back: [ \noname, \bluecab, \bw5, \ldl8, \braun2, \cabass0 ],
 	right: [ \wd11, \cryptA, \crypt3, \wd13, \braun1, \behring],
+
+
+Considerations/constraints>
+• The Kuppelhalle is 15m diameter.
+• Stage in the center, triangle of tables/stage elements
+• mixer, sub, and player tables in the center
+• expander + adat  to go up to balcony
+• speakers on balcony point up, hori, down
+• speakers near center point up, 45 deg,
+• speakers near walls point inward, at angles
+
+center:
+denon amp patched to left ring passives,
+small amps for central 2 of the right and back rings
+actives could be ring around center  ?
+mixer line outs to actives and sub and small amps
+
+right bottom side:
+e.g. S-16 expander feeds bottom 4 and right 4,
+and ADAT feeds the top ring - the kefs on balcony.
+cable lengths:
+from center 3, 6, 8-10m
+from side also max 10m, can go along walls
+LOTS of gaffa tape for the floor!
+with a long ADAT cable, we can put the ADAT
+and its amps up on the balcony, near cabass1 speaker
+cables around balcony are max 20m, 12m, 8m, all passive.
+extra ring:
+6 little mrs + amp + cables.
+
+*/
+
+// the speakers as in Kuppelhalle:
+
+NTSS.spatImagePath = NTSS.dir.setup +/+ "Kuppel.png";
+
+NTSS.speakersDict = (
+	//      x    y    z   amp
+	bw5: [ -1, 6, 0.5, 0.4],
+	bw6: [ 6, 2.5, 0.5, 0.35],
+	cabass2: [ 0, 4, 0.5, 0.13],
+	cabass0: [ -1, 2, 0.5, 0.13],
+	cabass1: [ -2, -3.5, 3.0, 0.14],
+	ldl7: [ 6, 0.5, 0.5, 0.15],
+	ldl8: [ -1, 4, 1, 0.3],
+	gene0: [ 1, 0, 1.5, 0.7],
+
+	///// group as up
+	kef0: [ 6, 0.5, 3.0, 0.5],
+	kef1: [ 3, 6.0, 3.0, 0.5],
+	kef2: [ -7, -4.0, 3.0, 0.5],
+	kef3: [ -5, -2.5, 3.0, 0.5],
+	kef4: [ 7, -1, 3.0, 0.5],
+
+	wd14: [ 3, 5, 0, 0.4],
+	wd13: [ -3, 0, 0, 0.4],
+	wd12: [ 2, 3.5, 1, 0.32],
+	wd11: [ -1, -1.0, 1, 0.4],
+	noname: [ -3, 3.5, 0.5, 0.5],
+	braun1: [ -7, -0.5, 2, 1],
+	braun2: [ -3, 7, 0.5, 0.8],
+	cryptA: [ -2, -3.5, 0.0, 1],
+	behring: [ -1, -0.5, 0.5, 0.6],
+	crypt3: [ 0, -2.5, 0.5, 0.5],
+	bluecab: [ -5, 4, 0, 0.3],
+
+	///// group as up
+	mr0: [ 0.5, 0.5, 1.5, 0.2],
+	mr1: [ 0.5, 0.5, 1.5, 0.2],
+	mr2: [ -0.5, -0.5, 1.5, 0.2],
+	mr3: [ -0.5, 0.5, 1.5, 0.2],
+	mr4: [ -0.5, 2, 1.5, 0.2],
+	mr5: [ 0.5, 2, 1.5, 0.2],
+
+	// not in any group
+	gene1: [ 2, 7, 1.5, 1],
+	sub1: [ -4, 3, 0.0, 1],
+
+);
+
+// make 4 rings of 6 speakers each - may need to change!!!
+
+NTSS.spkGroups = (
+	// 4 rings: clockwise, always begin at center, so they can be one long twirl
+	left: [\wd12, \cabass2, \wd14, \bw6, \ldl7, \gene0 ],
+	up: [\kef3, \cabass1, \kef1, \kef0, \kef4, \kef2 ], // kefs,
+	back: [ \noname, \bluecab, \braun2, \bw5, \ldl8, \cabass0 ],
+	right: [ \wd11, \crypt3, \cryptA, \braun1, \wd13, \behring],
+	center: [ \mr0, \mr1, \mr2, \mr3, \mr4, \mr5],
 	// the subs:
 	subs: [\sub0, \sub1],
 	// same-speakers:
@@ -66,59 +111,65 @@ NTSS.spkGroups = (
 
 // in order of physical outputs :
 NTSS.speakersOrder = [
-	// 7 XLR outs from X32, 7 to Denon amp
-	\bw5,
-	\bw6,
-	\cabass2,
-	\cabass0,
-	\cabass1,
-	\ldl7,
-	\ldl8,
+  // 7 XLR outs from X32, 7 to Denon amp
+  \wd12,
+  \wd13,
+  \ldl7,
+  \bw6,
+  \behring,
+  \wd11,
+  \wd14,
 
-	// last XLR out from X32
-	\gene0,
+  // last XLR out from X32
+  \gene0,
 
-	// 8 XLR outs from s16 to Stereo amps
-	\kef0,
-	\kef1,
-	\kef2,
-	\kef3,
-	\kef4,
+  // 8 XLR outs total from s16
+  // 5 XLRs go to stereoamps and kefs
+  //   ch 8
+  \kef0,
+  \kef1, // DEAD
+  \kef2,
+  \cabass0,
+  \kef3,
+  \kef4, // DEAD
 
-	\empty,
-	\empty,
-	\empty,
+  // ch  14
+  \crypt3,
+  \cryptA,
 
-	// 5 JACK outs from s16-RME-ADAT to Yamaha Amp
-	\wd14,
-	\wd13,
-	\wd12,
-	\wd11,
-	\noname,
+  // 5 JACK outs from s16-RME-ADAT to Yamaha Amp
+  // ch-16
+  \cabass1,
+  \cabass2,
+  \noname,
+  \ldl8,
 
-	// 2 JACK outs from s16-RME-ADAT to stereo amp 1
-	\braun1,
-	\braun2,
+  \bw5,
 
-	// 1 JACK out from s16-RME-ADAT to stereo amp 2
-	\crypt3,
+  // 2 JACK outs from s16-RME-ADAT to stereo amp 1
+  \braun1,
+  \braun2,
 
-	// aux 1-6 from x32 to active speakers
-	\behring,
-	\cryptA,
-	\bluecab,
-	\empty,
-	\empty,
-	\empty,
+  // 1 JACK out from s16-RME-ADAT to stereo amp 2
+  \bluecab,
 
-	// X32 monitor out
-	\sub0,
-	\sub1,
+  // aux 1-6 jacks from x32 to active speakers
+  //   ch24
+  \mr0,
+  \mr1,
+  \mr2,
+  \mr3,
+  \mr4,
+  \mr5,
+
+  // X32 monitor out
+  \gene1,
+  \sub1,
 ];
 
 // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
 NTSS.ringNumSpks = 6;
-NTSS.ringNames = ['left', 'right', 'back', 'up']; // leave out subs
+NTSS.ringNames = ['left', 'right', 'back', 'up', 'center']; // leave out subs
 NTSS.ringNames.do (Spec.add(_, \amp));
 
 // we play only to the connected speakers, so select these:
