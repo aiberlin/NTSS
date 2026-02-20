@@ -116,6 +116,11 @@ NTSS.speakersOrder = [
 	\sub1,
 ];
 
+// ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
+NTSS.ringNumSpks = 6;
+NTSS.ringNames = ['left', 'right', 'back', 'up']; // leave out subs
+NTSS.ringNames.do (Spec.add(_, \amp));
+
 // we play only to the connected speakers, so select these:
 NTSS.speakersActive = NTSS.speakersOrder.reject {|spk| spk == \empty };
 

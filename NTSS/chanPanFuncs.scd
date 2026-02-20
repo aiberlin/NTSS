@@ -28,10 +28,10 @@ Ndef(\pan1).gui;
 NTSS.spkGroups;
 NTSS.spkGroups.keys.postcs;
 
-// ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
-NTSS.ringNumSpks = 6;
-NTSS.ringNames = ['left', 'right', 'back', 'up']; // leave out subs
-NTSS.ringNames.do (Spec.add(_, \amp));
+// // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
+// NTSS.ringNumSpks = 6;
+// NTSS.ringNames = ['left', 'right', 'back', 'up', 'center']; // leave out subs
+// NTSS.ringNames.do (Spec.add(_, \amp));
 
 NTSS.ringsFlat = NTSS.ringNames.collect { |name| NTSS.spkGroups[name] }.flat;
 NTSS.ringsFlatIndices = NTSS.ringsFlat.collect { |spk|
@@ -205,7 +205,6 @@ rotRate:   rate of rotation around the circles of 6, in Hertz.
 pendRate:  rate of one full pendulum swing in Hertz, i.e.
            from center to left to center to reight to center.
 pendDepth: depth of pendulum swing, 1 is 180 deg left, 180 right.");
-
 
 
 Spec.add(\direct, \amp);

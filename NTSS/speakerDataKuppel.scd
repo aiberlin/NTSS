@@ -91,8 +91,9 @@ NTSS.spkGroups = (
 	// 4 rings: clockwise, always begin at center, so they can be one long twirl
 	left: [\wd12, \cabass2, \wd14, \bw6, \ldl7, \gene0 ],
 	up: [\kef3, \cabass1, \kef1, \kef0, \kef4, \kef2 ], // kefs,
-	back: [ \noname, \bluecab, \bw5, \ldl8, \braun2, \cabass0 ],
-	right: [ \wd11, \cryptA, \crypt3, \wd13, \braun1, \behring],
+	back: [ \noname, \bluecab, \braun2, \bw5, \ldl8, \cabass0 ],
+	right: [ \wd11, \crypt3, \cryptA, \braun1, \wd13, \behring],
+	center: [ \mr0, \mr1, \mr2, \mr3, \mr4, \mr5],
 	// the subs:
 	subs: [\sub0, \sub1],
 	// same-speakers:
@@ -160,6 +161,11 @@ NTSS.speakersOrder = [
 	\sub0, // gene1
 	\sub1,
 ];
+
+// ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
+NTSS.ringNumSpks = 6;
+NTSS.ringNames = ['left', 'right', 'back', 'up', 'center']; // leave out subs
+NTSS.ringNames.do (Spec.add(_, \amp));
 
 // we play only to the connected speakers, so select these:
 NTSS.speakersActive = NTSS.speakersOrder.reject {|spk| spk == \empty };
