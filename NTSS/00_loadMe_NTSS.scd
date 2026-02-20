@@ -22,7 +22,7 @@ NTSS.defaults.hardwareBufferSize = 1024;
 
 NTSS.defaults.reboot = true;
 
-NTSS.defaults.speakerData = "speakerData.scd";
+NTSS.defaults.speakerData = "speakerDataKuppel.scd";
 
 // still the inNames from Biophony...
 NTSS.defaults.inNames = [
@@ -88,7 +88,7 @@ Spec.add(\loop, \unipolar);
 
 // These are still the names of Biophony inputs.
 // they are dynamically overwriteable later in code!
-NTSS.inNames = NTSS.inNames ?
+NTSS.inNames.postln;
 
 
 // make nameViews on NdefGuis etc better readable
@@ -206,7 +206,7 @@ s.waitForBoot {
 
 	s.sync;
 	// Note: Spatio has its own bus that it reads from,
-	// and mainFX writes to that bus in the LOGICAL order of 26 speakers.
+	// and mainFX writes to that bus in the LOGICAL order of  speakers.
 	// the remapping to the physical order of the speakers comes later,
 	// at the end of the chain.
 	"spatio.scd".postcs.loadRelative;
@@ -216,7 +216,7 @@ s.waitForBoot {
 	"MainFX.scd".postcs.resolveRelative.loadPaths;
 	"ntss_tester.scd".postcs.loadRelative;
 
-	s.volume = -12;
+	s.volume = 0;
 
 	// load panner functions
 	"chanPanFuncs.scd".postcs.loadRelative;

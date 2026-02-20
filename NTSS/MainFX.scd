@@ -101,18 +101,18 @@ ProxyChain.add3(\mix2four, \filter -> { |in|
 
 
 ProxyChain.add3(
-	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 1|
+	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
 		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp) };
 
-		var spkChans = in.keep(NTSS.speakers.size - 2);
+		var spkChans = in.keep(NTSS.speakers.size - 1);
 		var mixSpks = RLPF.ar(
 			spkChans.sum *  (1/ NTSS.speakers.size.sqrt),
 			subFreq.lag(1)
 		);
-		var subChans = in.drop(NTSS.speakers.size - 2) + (mixSpks * mix2Sub);
+		var subChans = in.drop(NTSS.speakers.size - 1) + (mixSpks * mix2Sub);
 		var allChans = spkChans ++ subChans;
 
-		// measured in class: 26 speakers
+		// measured in class: all speakers
 		var tuning = NTSS.speakersTuning;
 
 		var finalLogicalOut = allChans * (amps * mainvol * tuning);
@@ -144,7 +144,10 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
 
 MainFX(s).clear;
-MainFX(s, NTSS.speakersOrder.size, [\eq3, \mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]);
+MainFX(s, NTSS.speakersOrder.size,
+	[\eq3, \mainMixer, \mix2four, \mix2stereo //, \shiftSpeakers
+
+]);
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);

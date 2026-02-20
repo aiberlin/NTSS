@@ -80,10 +80,10 @@ NTSS.speakersDict = (
 	mr5: [ 0.5, -0.87, 1.0, 0.2],
 
 	// not in any group
-	sub0: [ 0.0, 0.0, 0.0, 1],
+	gene1: [ 0.0, 0.0, 0.0, 1],
 	sub1: [ -4, 3, 0.0, 1],
 
-); // .collect(_ + [1, 0, 0, 0]);
+);
 
 // make 4 rings of 6 speakers each - may need to change!!!
 
@@ -111,55 +111,60 @@ NTSS.spkGroups = (
 
 // in order of physical outputs :
 NTSS.speakersOrder = [
-	// 7 XLR outs from X32, 7 to Denon amp
-	\bw6,
-	\cabass2,
-	\wd14,
-	\cabass1,
-	\ldl7,
-	\wd12,
-	\wd11,
+  // 7 XLR outs from X32, 7 to Denon amp
+  \wd12,
+  \wd13,
+  \ldl7,
+  \bw6,
+  \behring,
+  \wd11,
+  \wd14,
 
-	// last XLR out from X32
-	\gene0,
+  // last XLR out from X32
+  \gene0,
 
-	// 8 XLR outs total from s16
-	// 5 XLRs go to stereoamps and kefs
-	\kef0,
-	\kef1,
-	\kef2,
-	\kef3,
-	\kef4,
-	// 3 XLRs go to actives from S16
-	\behring,
-	\cryptA,
-	\bluecab,
+  // 8 XLR outs total from s16
+  // 5 XLRs go to stereoamps and kefs
+  //   ch 8
+  \kef0,
+  \kef1, // DEAD
+  \kef2,
+  \cabass0,
+  \kef3,
+  \kef4, // DEAD
 
-	// 5 JACK outs from s16-RME-ADAT to Yamaha Amp
-	\cabass0,
-	\wd13,
-	\noname,
-	\ldl8,
-	\bw5,
+  // ch  14
+  \crypt3,
+  \cryptA,
 
-	// 2 JACK outs from s16-RME-ADAT to stereo amp 1
-	\braun1,
-	\braun2,
+  // 5 JACK outs from s16-RME-ADAT to Yamaha Amp
+  // ch-16
+  \cabass1,
+  \cabass2,
+  \noname,
+  \ldl8,
 
-	// 1 JACK out from s16-RME-ADAT to stereo amp 2
-	\crypt3,
+  \bw5,
 
-	// aux 1-6 jacks from x32 to active speakers
-	\mr0,
-	\mr1,
-	\mr2,
-	\mr3,
-	\mr4,
-	\mr5,
+  // 2 JACK outs from s16-RME-ADAT to stereo amp 1
+  \braun1,
+  \braun2,
 
-	// X32 monitor out
-	\sub0, // gene1
-	\sub1,
+  // 1 JACK out from s16-RME-ADAT to stereo amp 2
+  \bluecab,
+
+  // aux 1-6 jacks from x32 to active speakers
+  //   ch24
+  \mr0,
+  \mr1,
+  \mr2,
+  \mr3,
+  \mr4,
+  \mr5,
+
+  // X32 monitor out
+  \gene1,
+  \sub1,
 ];
 
 // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
