@@ -206,7 +206,7 @@ NTSS.pchains.do { |pch, i|
 
 		pch.addHalo(\panPop, panPop);
 
-		Button(w, 80@20).font_(font).states_([["explain"]])
+		Button(w, 80@20).font_(font).states_([["pansplain"]])
 		.action_({ |bt|
 			var panDict = ProxyChain.sourceDicts[pch.getHalo(\panName)];
 			var text = "Sorry, no panDict found";
