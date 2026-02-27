@@ -16,7 +16,7 @@ Ndef(\pan1).gui;
 
 */
 
-/// BIOPHONY Panners: //////
+/// rings-based Panners from BIOPHONY: //////
 
 // was q...panNames = [ \panFixed, \panRoto, \panSnake, \panFeed];
 // // these were the ringnames for biophony ...
@@ -24,9 +24,9 @@ Ndef(\pan1).gui;
 // // separate levels on 4 rings:
 // q.ringNames.do (Spec.add(_, \amp));
 
-// spkGroups have more types of groups,
-NTSS.spkGroups;
-NTSS.spkGroups.keys.postcs;
+// spkGroups have more types of groups:
+// NTSS.spkGroups;
+// NTSS.spkGroups.keys.postcs;
 
 // // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
 // NTSS.ringNumSpks = 6;
@@ -40,13 +40,30 @@ NTSS.ringsFlatIndices = NTSS.ringsFlat.collect { |spk|
 	spkIndex
 };
 
+// // assumes rings have all speakers
+// NTSS.reorderRingsToSpeakers = { |nt, array|
+// 	var res = array.class.newClear(array.size);
+// 	array.do { |item, i|
+// 		res.put(
+// 			NTSS.ringsFlatIndices[i],
+// 			item
+// 		);
+// 	};
+// 	res
+// };
+
 NTSS.reorderRingsToSpeakers = { |nt, array|
-	var res = array.class.newClear(array.size);
+	var res = array.class.fill(NTSS.speakersActive.size, Silent.ar);
 	array.do { |item, i|
-		res.put(
-			NTSS.ringsFlatIndices[i],
-			item
-		);
+		var spkIndex = NTSS.ringsFlatIndices[i];
+		[item, i, spkIndex].postln;
+		case { spkIndex.isNil } {
+			// warn("reorderRingsToSpeakers: no spkIndex at %\n".format(i));
+		} { spkIndex >= NTSS.spk.numLogicOuts } {
+			warn("reorderRingsToSpeakers: spkIndex % outside range.\n".format(spkIndex));
+		} {
+			res.put(spkIndex, item);
+		}
 	};
 	res
 };
@@ -114,9 +131,11 @@ ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 
 	var panned = NTSS.ringNames.collect { |ringname|
 		var ringamp = ringname.kr(0.25, 1);
-		PanAz.ar(NTSS.ringNumSpks, in, srcPos * 0.3333, ringamp * widAmp, width, 0)
+		var ringSize = NTSS.spk.groups[ringname.postln].size.postln;
+		PanAz.ar(ringSize, in, srcPos * 1, ringamp * widAmp, width, 0)
 	}.flat;
 
+	panned;
 	NTSS.reorderRingsToSpeakers(panned);
 });
 
@@ -309,8 +328,6 @@ spread is similar to k
 // was dlypan
 
 
-
-
 NTSS.spat.delayspat = { arg name, speakers, snd;
 	var x = \srcX.kr(0, spec:[-1,1]);
 	var y = \srcY.kr(0, spec:[-1,1]);
@@ -415,6 +432,7 @@ NTSS.spat.peatSoup = { arg name, speakers, snd;
  //NTSS.reorderRingsToSpeakers(panned);
  //PanAz.ar(NTSS.speakers.size, lim, pan, 1, width);
 };
+
 NTSS.spat.keys.do {|spatName|
 	ProxyChain.add3(spatName, NTSS.getSpat(spatName));
 };
