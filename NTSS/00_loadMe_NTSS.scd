@@ -22,7 +22,7 @@ NTSS.defaults.hardwareBufferSize = 1024;
 
 NTSS.defaults.reboot = true;
 
-NTSS.defaults.speakerData = "speakerDataKuppel.scd";
+NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
 
 // still the inNames from Biophony...
 NTSS.defaults.inNames = [
