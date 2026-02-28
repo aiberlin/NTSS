@@ -16,12 +16,12 @@ then runs a little NTSS.finalSetup function.
 //// Some things to set before loading:
 
 // I want that sampleRate:
-s.options.sampleRate = 48000;
+NTSS.sampleRate = 48000;
 
 // for general things:
 q = q ? ();
 
-// special ntss settings would go here...
+// all the things here can be overridden
 NTSS.defaults;
 
 // run NTSS, which configures and boots the server.
