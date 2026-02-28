@@ -3,13 +3,18 @@ Examples for things you can personalize in NTSS setups.
 more to follow!
 */
 
+// NTSS has many defaults for settings:
+NTSS.defaults.keysValuesDo {|k,v| "%: %\n".postf(k.cs, v.cs) }; "";
+
+
 /***** TO run BEFORE NTSS.run : *****/
 
+// you can set them befor starting, e.g.
 // hardwareBufferSize: bigger is safer,
 // default of 1024 is tested, solid for Windows
 // can try to tune faster to 512, 256 on macOS, linux
 NTSS.hardwareBufferSize
-NTSS.hardwareBufferSize = 1024;
+NTSS.hardwareBufferSize = 256; // make it respond faster
 
 // speakerData is filename for speaker position info.
  // default is "speakerData.scd"
@@ -17,7 +22,7 @@ NTSS.defaults.speakerData;
 // switch to Silent Green Kuppelhalle:
 NTSS.speakerData = "speakerDataKuppel.scd";
 
-// names for the audio inputs
+// get names for the audio inputs
 NTSS.defaults.inNames;
 
 // set to your own names:
@@ -26,7 +31,6 @@ NTSS.inNames = [\A, \B, \C, \D];
 // set how many mixer channels you want:
 NTSS.defaults.numPmcs // defaults to 8
 NTSS.numPmcs = 12;    // set to 12
-
 
 // panNames: choose which ones to show on the GUIs:
 NTSS.panNames = [\dbap, \taps, \tapsfb];

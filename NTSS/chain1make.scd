@@ -34,14 +34,6 @@ ProxyChainPreset:
 
 q = q ? ();
 
-NTSS.defaults.numPmcs = 8;
-NTSS.defaults.allPcNames = [
-	\ada, \bob, \cecilia, \dada, \eek,
-	\fifi, \gogo, \hah, \ivy, \jay,
-	\kiki, \lily, \mimi, \nana, \opo,
-	\pepe, \qiqo, \roro, \sisu, \tata,
-	\ubu, \vovo, \wawa, \xoxo, \yoyo, \zazie ];
-
 NTSS.pcNames = NTSS.numPmcs.collect { |i|
 	("ch" ++ (i+ 101).asString.keep(-2) ++ NTSS.allPcNames[i]).asSymbol
 };
