@@ -1,12 +1,11 @@
-q.topName = q.topName ? \BIOPHONIUM;
 
-[Butz, Butz(\NTSS)].do(_.add(q.topName, { WinBounds.showOrMake(q.topName, true) }));
+[Butz, Butz(\NTSS)].do(_.add(NTSS.topName, { WinBounds.showOrMake(NTSS.topName, true) }));
 
-WinBounds.addMake(q.topName, {
+WinBounds.addMake(NTSS.topName, {
 
 	var f = Font("Monaco", 18);
 	var f2 = Font("Monaco", 14);
-	var w = Window(q.topName ++ " - Nontrivial Sound System",
+	var w = Window(NTSS.topName ++ " - Nontrivial Sound System",
 		Rect(520, Window.availableBounds.height - 500, 900, 510)
 	).front;
 	var allViews, leftCol, volSlider;
@@ -36,7 +35,7 @@ WinBounds.addMake(q.topName, {
 		w.bounds = bounds;
 	});
 
-	allViews = q.pchains.collect { |pch, i|
+	allViews = NTSS.pchains.collect { |pch, i|
 		var name = pch.key;
 		var panna = pch.getHalo.panner;
 		var widCol = w.bounds.width - 100 / 8.2, hi = w.bounds.height - 60;
@@ -110,12 +109,12 @@ WinBounds.addMake(q.topName, {
 		};
 		//// inPops:
 		allViews[0].do { |pop, i|
-			var micBusnum = q.pchains[i].proxy.get(\micBus).asInteger;
+			var micBusnum = NTSS.pchains[i].proxy.get(\micBus).asInteger;
 			if (pop.value != micBusnum) { pop.value = micBusnum };
 		};
 		// proxy drag:
 		allViews[1].do { |drag, i|
-			var pc = q.pchains[i];
+			var pc = NTSS.pchains[i];
 			var inProxy = pc.getHalo.src;
 			if (inProxy.notNil) {
 				// [drag.object, inProxy].postcs;
@@ -125,7 +124,7 @@ WinBounds.addMake(q.topName, {
 
 		// sndfile drag:
 		allViews[2].do { |drag, i|
-			var pch = q.pchains[i];
+			var pch = NTSS.pchains[i];
 			var sfname = pch.getHalo.sfname;
 			if (sfname.notNil) {
 				if (drag.object != sfname) { drag.object = sfname };
@@ -133,7 +132,7 @@ WinBounds.addMake(q.topName, {
 		};
 
 		// play/stop buttons:
-		q.pchains.do { |pch, i|
+		NTSS.pchains.do { |pch, i|
 			var panner = pch.getHalo.panner;
 			var playBt = allViews[3][i];
 			var stopBt = allViews[4][i];
@@ -145,7 +144,7 @@ WinBounds.addMake(q.topName, {
 		};
 		//// panPops:
 		allViews[5].do { |pop, i|
-			var currPan = q.pchains[i].getHalo(\panName);
+			var currPan = NTSS.pchains[i].getHalo(\panName);
 			var currPanIndex = pop.items.collect(_.key).indexOf(currPan) ? 0;
 			if (pop.item != currPan) { pop.value = currPanIndex };
 		};

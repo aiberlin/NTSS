@@ -21,6 +21,15 @@ NTSS.defaults.reboot = true;
 
 NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
 
+NTSS.defaults.pcSlots = [\top, \ins, \sndfile,
+	\eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter
+];
+
+// default names //
+NTSS.topName = \N_T_S_S;
+
+
+
 // still the inNames from Biophony...
 NTSS.defaults.inNames = [
 	\kiteMic, \richtMic, \funkMic1,\funkMic2,

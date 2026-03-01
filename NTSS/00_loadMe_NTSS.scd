@@ -11,9 +11,7 @@ ServerOptions.devices.cs
 
 q = q ? ();
 
-q.ntss = q.ntss ? ();
 NTSS.ready = false;
-q.topName = \N_T_S_S;
 
 s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
 s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
@@ -210,7 +208,7 @@ s.waitForBoot {
 
 	// "autopilot.scd".postcs.loadRelative;
 	Butz.run('SpatioScope');
-	Butz.run(q.topName);
+	Butz.run(NTSS.topName);
 	Butz.curr_('NTSS');
 
 	0.2.wait;

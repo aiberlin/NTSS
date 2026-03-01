@@ -64,14 +64,14 @@ Tdef(\tester, { |env|
 	}
 });
 
-q.testpath = thisProcess.nowExecutingPath;
+NTSS.testpath = thisProcess.nowExecutingPath;
 
 Butz(\NTSS).add(\TEST_NTSS, {
-	// Document.open(q.testpath);
+	// Document.open(NTSS.testpath);
 	Tdef(\tester).gui(3);
 });
 
 Butz(\NTSS).add(\openBalance, {
-	Document.open(q.testpath);
+	Document.open(NTSS.testpath);
 });
 );
