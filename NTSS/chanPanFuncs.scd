@@ -56,7 +56,7 @@ NTSS.reorderRingsToSpeakers = { |nt, array|
 	var res = array.class.fill(NTSS.speakersActive.size, Silent.ar);
 	array.do { |item, i|
 		var spkIndex = NTSS.ringsFlatIndices[i];
-		[item, i, spkIndex].postln;
+		// [item, i, spkIndex].postln;
 		case { spkIndex.isNil } {
 			// warn("reorderRingsToSpeakers: no spkIndex at %\n".format(i));
 		} { spkIndex >= NTSS.spk.numLogicOuts } {

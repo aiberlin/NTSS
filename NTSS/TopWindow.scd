@@ -42,7 +42,7 @@ WinBounds.addMake(q.topName, {
 		var widCol = w.bounds.width - 100 / 8.2, hi = w.bounds.height - 60;
 		var wid = widCol - 4;
 		var comp = CompositeView(w, widCol@hi).background_(pch.getHalo.backCol);
-		var flow = comp.addFlowLayout(0@0, 0@0);
+		var flow = comp.addFlowLayout(2@2, 0@0);
 		var label = Button(comp, wid@30).states_([[name]]).font_(f)
 		.action = { Butz(\NTSS).run(name) };
 
@@ -73,7 +73,13 @@ WinBounds.addMake(q.topName, {
 			MFdef(\setPanner).(pch, pop.item);
 		}).font_(f2);
 
-		ProxyMeter.addMonitorGui(moni);
+		defer {
+			moni.zone.background_(Color.clear);
+			moni.ampSl.view.bounds_(Rect(1, 0, wid,220)).background_(Color.clear);
+			moni.ampSl.sliderView.bounds_(Rect(1, 0, wid - 4,220));
+			moni.ampSl.sliderView.background_(Color.clear);
+			ProxyMeter.addMonitorGui(moni);
+		};
 
 		proxyDrag.receiveDragHandler = { arg v;
 			var drag = View.currentDrag.postcs;

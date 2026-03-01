@@ -15,6 +15,39 @@ NTSS.inNames;
 [0].getHalo
 */
 
+MFdef(\pansplain).add(\pan, { |pcFuncName, textview|
+	var funcDict = ProxyChain.sourceDicts[pcFuncName];
+	var text = "Sorry, no dict found for %.".format(pcFuncName.cs);
+	if (funcDict.notNil) { text = funcDict.text };
+	text = text ? "Sorry, no explanation found for %.".format(pcFuncName.cs);
+	textview = textview ?? {
+		TextView(nil, Rect.aboutPoint(Window.availableBounds.center, 200, 100))
+		.name_(\pansplain).front
+	};
+	textview.string_(text);
+});
+
+WinBounds.addMake(\chansplain, {
+	var num = NTSS.pcSlots.size;
+	var wbounds = Rect.aboutPoint(
+		Window.availableBounds.center, 250, (num * 10).max(100)
+	);
+	var tv;
+	var w = Window("NTSS chansplain", wbounds).front;
+	w.layout = HLayout(
+		VLayout(
+			*NTSS.pcSlots.collect { |name|
+				Button(w).minWidth_(80).states_([[name]]).action_({
+					MFdef(\pansplain).(name.postln, tv);
+				})
+			}
+		),
+		tv = TextView(w).minWidth_(400)
+	);
+	w.layout.spacing_(2).margins_(2);
+});
+
+
 (
 MFdef(\updatePchWin).add(\proxySource, { |pch|
 	var h = pch.getHalo;
@@ -199,6 +232,9 @@ NTSS.pchains.do { |pch, i|
 		pchgui.buttons[0].valueAction_(0);
 		defer ({ pchgui.buttons[0].valueAction_(1) }, 0.25);
 
+		Button(w, 100@20).font_(font).states_([["chansplain"]])
+		.action_({ WinBounds.showOrMake(\chansplain) });
+
 		panPop = EZPopUpMenu(w, 200@20, "panMode", NTSS.panNames, { |pop|
 			pop.item.postln;
 			MFdef(\setPanner).(pch, pop.item);
@@ -206,15 +242,9 @@ NTSS.pchains.do { |pch, i|
 
 		pch.addHalo(\panPop, panPop);
 
-		Button(w, 80@20).font_(font).states_([["pansplain"]])
-		.action_({ |bt|
-			var panDict = ProxyChain.sourceDicts[pch.getHalo(\panName)];
-			var text = "Sorry, no panDict found";
-			var loc = bt.absoluteBounds.postln;
-			if (panDict.notNil) { text = panDict.text };
-			text = text ? "Sorry, no explanation found";
-			TextView(nil, Rect.aboutPoint(Window.availableBounds.center, 200, 100))
-				.string_(text).front;
+		Button(w, 100@20).font_(font).states_([["pansplain"]])
+		.action_({
+			MFdef(\pansplain).(pch.getHalo(\panName).postln);
 		});
 
 		pannerGui = NdefGui(pch.getHalo(\panner), 18, w, 490@250);
@@ -227,6 +257,6 @@ NTSS.pchains.do { |pch, i|
 
 		w;
 	});
-	};
+};
 );
 
