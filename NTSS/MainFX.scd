@@ -100,7 +100,8 @@ ProxyChain.add3(\mix2stereo, \filter -> { |in|
 }, 1);
 
 ProxyChain.sourceDicts[\mix2stereo].text =
-"mix2stereo mixes all input channels down to Stereo
+"mix2stereo is a convenience for offline work on NTSS projects:
+It mixes all input channels down to Stereo
 on channels 1, 2 and mutes all other channels.";
 
 
@@ -109,7 +110,8 @@ ProxyChain.add3(\mix2four, \filter -> { |in|
 }, 1);
 
 ProxyChain.sourceDicts[\mix2four]. text =
-"mix2four mixes all input channels down to quadro,
+"mix2four is a convenience for offline work on NTSS projects:
+It mixes all input channels down to quadro,
 on channels 1, 2, 3, 4 and mutes all other channels.";
 
 
@@ -139,6 +141,16 @@ ProxyChain.add3(
 		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
 	)
 );
+
+ProxyChain.sourceDicts[\mainMixer]. text =
+"    mainMixer has several functions:
+mainvol: sets main volume of all channels
+subFreq: the rolloff frequency for the subwoofer channel
+mix2sub: the level of the mono mix (of all active channel) to the subwoofer
+The last channel also plays directly to the subwoofer.
+The controls after mix2sub are for each individual speaker by name. ";
+
+
 
 ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
