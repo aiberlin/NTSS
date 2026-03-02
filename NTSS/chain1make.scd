@@ -51,6 +51,10 @@ ProxyChain.add3(\top, { |micBus, proxyBus = -1, bufnum|
 	bufnum: [0, s.bufferAllocator.size-1, \lin, 1],
 )
 );
+ProxyChain.sourceDicts[\top].text =
+"top is only needed to always put srcBus and proxyBus controls on top."
+"It cannot be turned off, and srcBus and proxyBus are only shown, and not to be changed.";
+
 
 // inputs: mic, pluggable bus-input,
 // pinknoise to simulate analog electronics noise
@@ -74,6 +78,12 @@ ProxyChain.add3(\ins, \mix -> { |micBus = 0, micAmp = 0, proxyBus = 4, proxyAmp 
 )
 )
 );
+ProxyChain.sourceDicts[\ins].text =
+"ins add level controls for 3 inputs:
+micAmp for the mic input set by the anaIn popup,
+proxyAmp for an Ndef dropped into the proxy/chain zone,
+and noiseAmp for a pink noise test sound. ";
+
 
 (
 // sndfile input: plays sndfiles
@@ -96,6 +106,16 @@ ProxyChain.add3(\sndfile, \mix -> { |amp = 0.25, bufnum = 0, playRate = 1, tune 
 )
 )
 );
+
+ProxyChain.sourceDicts[\sndfile].text =
+"sndfile is a player for a soundfile dropped onto the soundfile zone.
+It has controls for
+amp: playback amplitude
+playRate: rate of playback. 1 is normal, 0.5 is half speed, -1 is reverse
+micAmp for amp, mic input set by the anaIn popup,
+proxyAmp for an Ndef plugged into the proxy/chain input drag,
+and noiseAmp for a pink noise test sound. ";
+
 
 ///// Mumma1: freq shift mod, with envelope following
 ///// todo:

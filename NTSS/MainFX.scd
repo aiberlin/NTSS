@@ -90,6 +90,10 @@ ProxyChain.add3(\eq3, \filter -> { |in, treble =0, mid = 0, bass = 0|
 	treble: [-12, 12]
 ));
 
+ProxyChain.sourceDicts[\eq3].text =
+"eq3 is a simple 3 band Equalizer with
+bass, mid, and treble controls of +- 12 dB.";
+
 
 ProxyChain.add3(\mix2stereo, \filter -> { |in|
 	Splay.ar(in.keep(20) ++ DC.ar).clipExtend(in.size);

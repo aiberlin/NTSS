@@ -17,7 +17,7 @@ NTSS.inNames;
 
 MFdef(\pansplain).add(\pan, { |pcFuncName, textview|
 	var funcDict = ProxyChain.sourceDicts[pcFuncName];
-	var text = "Sorry, no dict found for %.".format(pcFuncName.cs);
+	var text = "Sorry, no ProxyChain dict found for %.".format(pcFuncName.cs);
 	if (funcDict.notNil) { text = funcDict.text };
 	text = text ? "Sorry, no explanation found for %.".format(pcFuncName.cs);
 	textview = textview ?? {
@@ -45,6 +45,7 @@ WinBounds.addMake(\chansplain, {
 		tv = TextView(w).minWidth_(400)
 	);
 	w.layout.spacing_(2).margins_(2);
+	w;
 });
 
 
