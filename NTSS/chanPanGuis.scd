@@ -27,16 +27,16 @@ MFdef(\pansplain).add(\pan, { |pcFuncName, textview|
 	textview.string_(text);
 });
 
-WinBounds.addMake(\chansplain, {
-	var num = NTSS.pcSlots.size;
+MFdef(\funcsplainWin).add(\win, { |title, funcNames|
+	var num = funcNames.size;
 	var wbounds = Rect.aboutPoint(
 		Window.availableBounds.center, 250, (num * 10).max(100)
 	);
 	var tv;
-	var w = Window("NTSS chansplain", wbounds).front;
+	var w = Window("NTSS" + title, wbounds).front;
 	w.layout = HLayout(
 		VLayout(
-			*NTSS.pcSlots.collect { |name|
+			*funcNames.collect { |name|
 				Button(w).minWidth_(80).states_([[name]]).action_({
 					MFdef(\pansplain).(name.postln, tv);
 				})
@@ -46,6 +46,10 @@ WinBounds.addMake(\chansplain, {
 	);
 	w.layout.spacing_(2).margins_(2);
 	w;
+});
+
+WinBounds.addMake(\chansplain, {
+	MFdef(\funcsplainWin).value(\chansplain, NTSS.pcSlots).first;
 });
 
 

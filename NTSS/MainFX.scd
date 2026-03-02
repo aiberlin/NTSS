@@ -96,12 +96,22 @@ bass, mid, and treble controls of +- 12 dB.";
 
 
 ProxyChain.add3(\mix2stereo, \filter -> { |in|
-	Splay.ar(in.keep(20) ++ DC.ar).clipExtend(in.size);
+	(Splay.ar(in) ++ DC.ar).clipExtend(in.size);
 }, 1);
 
+ProxyChain.sourceDicts[\mix2stereo].text =
+"mix2stereo mixes all input channels down to Stereo
+on channels 1, 2 and mutes all other channels.";
+
+
 ProxyChain.add3(\mix2four, \filter -> { |in|
-	(SplayAz.ar(4, in.keep(20).clump(5).sum) ++ DC.ar).clipExtend(in.size);
+	(SplayAz.ar(4, in) ++ DC.ar).clipExtend(in.size);
 }, 1);
+
+ProxyChain.sourceDicts[\mix2four]. text =
+"mix2four mixes all input channels down to quadro,
+on channels 1, 2, 3, 4 and mutes all other channels.";
+
 
 
 ProxyChain.add3(
@@ -155,13 +165,28 @@ MainFX(s, NTSS.speakersOrder.size,
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);
+
+
+
+
 WinBounds.addMake(\MainFX, {
 	var mg = MainFXGui(MainFX(s), 34);
+	var splainIndex = MainFX(s).slotNames.size + 2;
 	mg.editGui.paramGui.paramViews[0].enabled_(false);
 	mg.parent.name_(\MainFX);
+
+	mg.buttons[splainIndex].visible_(true).states_([[\mainsplain]])
+	.action_({ WinBounds.showOrMake(\mainsplain) });
+	mg.parent;
 });
-WinBounds.showOrMake(\MainFX);
+
 Butz.add(\MainFX, { WinBounds.showOrMake(\MainFX) });
+
+WinBounds.addMake(\mainsplain, {
+	MFdef(\funcsplainWin).value(\mainsplain,
+		MainFX(s).proxyChain.slotNames.asArray)
+	.first;
+});
 
 /*
 (
