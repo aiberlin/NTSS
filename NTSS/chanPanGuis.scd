@@ -51,6 +51,10 @@ MFdef(\funcsplainWin).add(\win, { |title, funcNames|
 WinBounds.addMake(\chansplain, {
 	MFdef(\funcsplainWin).value(\chansplain, NTSS.pcSlots).first;
 });
+WinBounds.addMake(\pansplain, {
+	MFdef(\funcsplainWin).value(\pansplain, NTSS.panNames.reject(_ == '-')).first;
+});
+
 
 
 (
@@ -249,7 +253,8 @@ NTSS.pchains.do { |pch, i|
 
 		Button(w, 100@20).font_(font).states_([["pansplain"]])
 		.action_({
-			MFdef(\pansplain).(pch.getHalo(\panName).postln);
+			"pansplain".postln;
+			WinBounds.showOrMake(\pansplain)
 		});
 
 		pannerGui = NdefGui(pch.getHalo(\panner), 18, w, 490@250);
