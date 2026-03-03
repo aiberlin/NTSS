@@ -80,9 +80,9 @@ ProxyChain.add3(\ins, \mix -> { |micBus = 0, micAmp = 0, proxyBus = 4, proxyAmp 
 );
 ProxyChain.sourceDicts[\ins].text =
 "ins add level controls for 3 inputs:
-micAmp for the mic input set by the anaIn popup,
-proxyAmp for an Ndef dropped into the proxy/chain zone,
-and noiseAmp for a pink noise test sound. ";
+micAmp: for the mic input set by the anaIn popup,
+proxyAmp: for an Ndef dropped into the proxy/chain zone,
+noiseAmp: for a pink noise test sound. ";
 
 
 (
@@ -112,9 +112,11 @@ ProxyChain.sourceDicts[\sndfile].text =
 It has controls for
 amp: playback amplitude
 playRate: rate of playback. 1 is normal, 0.5 is half speed, -1 is reverse
-micAmp for amp, mic input set by the anaIn popup,
-proxyAmp for an Ndef plugged into the proxy/chain input drag,
-and noiseAmp for a pink noise test sound. ";
+tune: fine control for playRate in semitones
+loop: a switch for looping or not
+- playRate can be modulated by a sine oscillator, with
+rtModFreq: frequency for playRate modulation oscillator.
+rtModDepth: depth for playRate modulation.";
 
 
 ///// Mumma1: freq shift mod, with envelope following
@@ -137,6 +139,14 @@ ProxyChain.add3(\freqMod, \filter -> { |in, carrFreq=5000, filtRatio=1, freqShif
 )
 )
 );
+
+ProxyChain.sourceDicts[\freqMod].text =
+"freqMod is a freqency modulator inspired by Gordon Mumma's mixer for Tudor,
+best understood by experimenting and listening.
+carrFreq: the carrier frequency of the sine modulator
+filtRatio: how much high frequency filtering to apply
+freqShift: the shift in frequencies to apply.";
+
 
 
 // // Mumma2: amplitude modulation with envelope following
@@ -163,6 +173,13 @@ ProxyChain.add3(\ampMod, \filter -> { |in, amFreq = 16, amWidth = 0.5, amRateMod
 )
 );
 
+ProxyChain.sourceDicts[\ampMod].text =
+"ampMod is an amplitude modulator inspired by Gordon Mumma's mixer for Tudor,
+best understood by experimenting and listening.
+amFreq: the frequency of the amplitude modulation sine oscillator
+amWidth: amount of modulation to apply
+amRateMod: amount of osc frequency modulation driven by amplitude.";
+
 
 (
 ProxyChain.add3(\hiPass, \filter -> { |in, hpFreq = 200, hpWidth = 0.5, hpRate = 3, hpRateMod = 0.5|
@@ -182,6 +199,14 @@ ProxyChain.add3(\hiPass, \filter -> { |in, hpFreq = 200, hpWidth = 0.5, hpRate =
 )
 );
 
+ProxyChain.sourceDicts[\hiPass].text =
+"hiPass is a modulatable highpass filter inspired by Gordon Mumma's mixer for Tudor,
+best understood by experimenting and listening.
+hpFreq: the base frequency below which to roll off bass
+hpWidth: amount of sine modulation to apply to filter frequency
+hpRateMod: amount of osc frequency modulation driven by amplitude.";
+
+
 ProxyChain.add3(\gapz, \filter -> { |in, probkeep = 0.5, mindur = 0.01|
 	var trig = Trig1.ar(in.sign, mindur.clip(0, 1));
 	var passamp = Latch.ar(CoinGate.ar(probkeep, trig), trig);
@@ -191,13 +216,24 @@ ProxyChain.add3(\gapz, \filter -> { |in, probkeep = 0.5, mindur = 0.01|
 	\mindur: [0, 0.5, 5.5 ]
 ));
 
+ProxyChain.sourceDicts[\gapz].text =
+"gapz is a granulating filter effect inspired by Tudor's pulser circuits,
+best understood by experimenting and listening.
+Whenever the input signal crosses the zero line, the signal may be muted or not.
+This segments the signal into short grains, also called Wavesets.
+probkeep: decides which percentage of the grains to let pass (0 is none, 1 is all)
+mindur: the minimum duration to wait before deciding mute/unmute again.
+short mindur values create granualr crackliness,
+longer ones become more rhythmical structures.";
+
+
 //// big DJ tilt filter that
 //// goes from closing LPF to HPF
 (
 ProxyChain.add3(\tilta, \filter -> { |in,
 	tilt = 0,
 	// curve = 1, reso = 5,
-	flWidth = 0.5, flRate = 3, flRateMod = 0.5|
+	flRate = 3, flWidth = 0.5, flRateMod = 0.5|
 	var lag = Ndef(\lag).kr[0];
 	var curve = 1;
 
@@ -216,16 +252,24 @@ ProxyChain.add3(\tilta, \filter -> { |in,
 },
 1,
 (
-	// specs go here:
+// specs go here:
 	tilt: \pan,
-	curve: \pan,
-	reso: [1, 11],
+	// curve: \pan,
+	// reso: [1, 11],
 	flWidth: [-1, 1],
 	flRate: [0.1, 50, \exp],
 	flRateMod: [-1, 1]
 )
 )
 );
+ProxyChain.sourceDicts[\tilta].text =
+"tilta is based on DJ mixer main filters.
+It allows tilting the spectrum from very low to very high frequencies.
+tilt: the amount of tilt: -1 is as low as possible, 0 is no filter, 1 is all high.
+flRate: the basic rate of the sine osc modulating the filter freq
+flWidth: the width of the the modulating sine osc
+flRateMod: the amount of amplitude modulation applied to the sine osc frequency.";
+
 
 ProxyChain.add3(\reverb, \filterIn -> { |in, revTime = 2, animRate = 0.1, animDepth = 0.3|
 
@@ -253,6 +297,11 @@ ProxyChain.add3(\reverb, \filterIn -> { |in, revTime = 2, animRate = 0.1, animDe
 \inFilter: [-0.99, 0.99]
 )
 );
+ProxyChain.sourceDicts[\reverb].text =
+"reverb is a simple reverb using the AdCVerb2 class (based on Moorer-Loy)
+revTime: the reverberation time in seconds (for -60 dB decay)
+animRate: the rate at which delaytimes are animated by random modulation
+animDepth: the depth with which delaytimes are animated by random modulation.";
 
 (
 ProxyChain.add3(\limiter, \filter -> { |in,
@@ -265,6 +314,14 @@ ProxyChain.add3(\limiter, \filter -> { |in,
 )
 )
 );
+
+ProxyChain.sourceDicts[\limiter].text =
+"limiter is a simple limiter which also filters for Bad Values.
+It is always on by design - do not turn its top control to less than 1.
+drive: the amount of gain to apply before going into the limiter
+maxLevel: the maximum signal level the limiter will allow.";
+
+
 
 /*
 ProxyChain.all.do(_.clear);

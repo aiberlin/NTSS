@@ -69,13 +69,17 @@ NTSS.spk.data .collect(_.hwOut).sort.plot
 	1, 1, 1, 1,  1, 1, 1, 1
 ];
 
+
+// TO BE DONE at 111:
+// measure how much level adjustment each speaker needs,
+// here for all 32 hardware outs.
+// results should go into relAmp eventually.
+
+/*
 // compare one pair of speakers:
 ~chans = [0, 1];
 ~chans = (0..7); // first 8
 
-// amps to measure for 32 hardware outs,
-// should go into relAmp eventually
-// TO BE DONE at 111!
 (
 ~amps = [
 	2, 2, 2, 2,  2, 1, 1, 1,
@@ -84,7 +88,7 @@ NTSS.spk.data .collect(_.hwOut).sort.plot
 	1, 1, 1, 1,  1, 1, 1, 1
 ];
 );
-
+*/
 (
 // balance tester Tdef
 /*
@@ -109,5 +113,4 @@ Tdef(\tester, { |env|
 	}
 });
 );
-
 )
