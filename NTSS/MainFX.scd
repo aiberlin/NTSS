@@ -195,7 +195,7 @@ WinBounds.addMake(\MainFX, {
 Butz.add(\MainFX, { WinBounds.showOrMake(\MainFX) });
 
 WinBounds.addMake(\mainsplain, {
-	MFdef(\funcsplainWin).value(\mainsplain,
+	MFdef(\funxplainWin).value(\mainsplain,
 		MainFX(s).proxyChain.slotNames.asArray)
 	.first;
 });

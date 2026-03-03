@@ -1,11 +1,7 @@
 /*
 4 kinds of panners for the Pmcs:
 
-fixedPan, rotoPan, feedPan, molens
-
 NTSS.pchains.choose.getHalo;
-
-ProxyChainGui([0]);
 
 MFdef(\setPanner).([0], 1);
 MFdef(\setPanner).([0], 0);
@@ -15,19 +11,21 @@ NTSS.inNames;
 [0].getHalo
 */
 
-MFdef(\pansplain).add(\pan, { |pcFuncName, textview|
+// explainer windows: show explanations functions
+// stored in ProxyChain.allSourceDicts
+MFdef(\funxplain).add(\pan, { |pcFuncName, textview|
 	var funcDict = ProxyChain.sourceDicts[pcFuncName];
 	var text = "Sorry, no ProxyChain dict found for %.".format(pcFuncName.cs);
 	if (funcDict.notNil) { text = funcDict.text };
 	text = text ? "Sorry, no explanation found for %.".format(pcFuncName.cs);
 	textview = textview ?? {
 		TextView(nil, Rect.aboutPoint(Window.availableBounds.center, 200, 100))
-		.name_(\pansplain).front
+		.name_(pcFuncName).front
 	};
 	textview.string_(text);
 });
 
-MFdef(\funcsplainWin).add(\win, { |title, funcNames|
+MFdef(\funxplainWin).add(\win, { |title, funcNames|
 	var num = funcNames.size;
 	var wbounds = Rect.aboutPoint(
 		Window.availableBounds.center, 250, (num * 10).max(100)
@@ -38,7 +36,7 @@ MFdef(\funcsplainWin).add(\win, { |title, funcNames|
 		VLayout(
 			*funcNames.collect { |name|
 				Button(w).minWidth_(80).states_([[name]]).action_({
-					MFdef(\pansplain).(name.postln, tv);
+					MFdef(\funxplain).(name.postln, tv);
 				})
 			}
 		),
@@ -49,13 +47,11 @@ MFdef(\funcsplainWin).add(\win, { |title, funcNames|
 });
 
 WinBounds.addMake(\chansplain, {
-	MFdef(\funcsplainWin).value(\chansplain, NTSS.pcSlots).first;
+	MFdef(\funxplainWin).value(\chansplain, NTSS.pcSlots).first;
 });
 WinBounds.addMake(\pansplain, {
-	MFdef(\funcsplainWin).value(\pansplain, NTSS.panNames.reject(_ == '-')).first;
+	MFdef(\funxplainWin).value(\pansplain, NTSS.panNames.reject(_ == '-')).first;
 });
-
-
 
 (
 MFdef(\updatePchWin).add(\proxySource, { |pch|
@@ -253,7 +249,6 @@ NTSS.pchains.do { |pch, i|
 
 		Button(w, 100@20).font_(font).states_([["pansplain"]])
 		.action_({
-			"pansplain".postln;
 			WinBounds.showOrMake(\pansplain)
 		});
 
