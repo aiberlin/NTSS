@@ -22,9 +22,9 @@ NTSS.spk.find(\bw6).relAmp;
 (
 q = q ? ();
 // the old system of names
-NTSS.speakers.size;
-NTSS.speakersOrder;
-NTSS.speakersActive;
+NTSS.speakersOrder.postcs.size; // all 32 names, 4 empty
+NTSS.speakersActive.postcs.size; // the 28 active ones in logical order
+NTSS.speakers.size; //
 
 // For Butz GUI:
 NTSS.testpath = thisProcess.nowExecutingPath;
@@ -59,9 +59,14 @@ SynthDef(\pink, { |out, amp=0.1, sustain=1|
 NTSS.spk.data.printAll;'';
 NTSS.spk.active;
 NTSS.spk.data .collect(_.hwOut).sort.plot
+
+We measure amps on the logical order,
+so MainFX has to have shiftSpeakers on!
 */
 
-// init space for all 32 hardware out amps
+
+
+// init space for 32 hardware out amps
 ~amps = [
 	1, 1, 1, 1,  1, 1, 1, 1,
 	1, 1, 1, 1,  1, 1, 1, 1,
@@ -80,14 +85,22 @@ NTSS.spk.data .collect(_.hwOut).sort.plot
 ~chans = [0, 1];
 ~chans = (0..7); // first 8
 
+~chans = (0..15); // first 8
+
 (
 ~amps = [
-	2, 2, 2, 2,  2, 1, 1, 1,
-	1, 1, 1, 1,  1, 1, 1, 1,
+	2, 2, 2, 2, 2, // 5 kefs,
+	1, 1, 1,       // 2 cabasses, gene0
+	1, 0.5, 1, 0.4, // crypt3, wd12, braun2, cabass2
+	0.5, 1, 1,   1, // wd11
 	1, 1, 1, 1,  1, 1, 1, 1,
 	1, 1, 1, 1,  1, 1, 1, 1
 ];
 );
+
+~chans = (0..4) ++ (12..15); // first 8
+~chans = (12..15); //
+
 */
 (
 // balance tester Tdef
@@ -96,6 +109,8 @@ Tdef(\tester).play.gui;
 */
 Tdef(\tester).set(\speed, 1);
 Tdef(\tester).addSpec(\speed, [0.25, 4, \exp]);
+
+~chans = (0..31);
 
 Tdef(\tester, { |env|
 
