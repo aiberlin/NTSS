@@ -41,7 +41,7 @@ WinBounds.addMake(\SpatioScope, {
 		view.mouseDownAction = {
 			var name = NTSS.speakersActive[i];
 			"*** q.spat: %, %: %\n".postf(i, name,
-				NTSS.speakersDict[name]
+				NTSS.spk.data.detect { |spk| spk.name == name }
 			);
 		};
 	};
