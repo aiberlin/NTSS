@@ -8,6 +8,8 @@ NTSS.spk.data.collect(_.hwOut).sort.plot
 NTSS.speakerData = "speakerData/speakerData111_32.scd";
 NTSS.run;
 
+Hosek space: 13x7m, 3m hoch in der Mitte, 2.65 am Rand
+
 */
 
 (
@@ -25,63 +27,78 @@ NTSS.spk.data = List[
 
 	/*** on Mixer X32 : ****/
 	///// group kefs as up
-	(name: \kef0, 	x:   5.0, y:  0.5, z: 3.2, 	logicOut: 6, hwOut:  0, relAmp: 2),
-	(name: \kef1, 	x:   3.8, y: -0.5, z: 3.2, 	logicOut: 7, hwOut:  1, relAmp: 2),
-	(name: \kef2, 	x:  -2.5, y: -3.5, z: 2.5, 	logicOut: 8, hwOut:  2, relAmp: 2),
-	(name: \kef3, 	x:  -0.8, y:  2.5, z: 2.5, 	logicOut: 10, hwOut: 3, relAmp: 2),
-	(name: \kef4, 	x:  -2.3, y:  3.0, z: 3.5, 	logicOut: 11, hwOut: 4, relAmp: 2),
+	(name: \kef0, 	x:  -5.0, y:  0.5, z: 3.2, 	logicOut: 0, hwOut:  0 ),
+	(name: \kef1, 	x:  -3.8, y: -0.5, z: 3.2, 	logicOut: 1, hwOut:  1 ),
+	(name: \kef2, 	x:  -2.5, y: -3.5, z: 2.5, 	logicOut: 2, hwOut:  2 ),
+	(name: \kef3, 	x:  -0.8, y:  2.5, z: 2.5, 	logicOut: 3, hwOut:  3 ),
+	(name: \kef4, 	x:  -2.3, y:  3.0, z: 3.5, 	logicOut: 4, hwOut:  4 ),
 
 	// two cabasses on table
-	(name: \cabass0, x: -2.5, y:  0.3, z: 0.8, 	logicOut: 16, hwOut: 5, relAmp: 1),
-	(name: \cabass1, x: -2.5, y: -0.3, z: 0.8, 	logicOut: 2, hwOut:  6, relAmp: 1),
+	(name: \cabass0, x: -2.5, y:  0.4, z: 0.8, 	logicOut: 5, hwOut:  5 ),
+	(name: \cabass1, x: -2.5, y: -0.4, z: 0.8, 	logicOut: 6, hwOut:  6 ),
 
-	(name: \gene0, 	x:   0.8, y: 3.2, z: 0.8, 	logicOut: 4, hwOut: 7, relAmp: 1.2),
+	(name: \gene0, 	x:   0.8, y: 3.2, z: 0.8, 	logicOut: 7, hwOut:  7 ),
 
 
 	/*** on Expander S16 : ****/
-	(name: \crypt3, x:   2.0, y: 4.5, z: 0.5, 	logicOut: 20, hwOut:  8, relAmp: 1.2),
-	(name: \wd12,  	x:   2.0, y: 1.0, z: 0.3, 	logicOut: 3, hwOut:   9, relAmp: 1.2),
-	(name: \braun2, x: -2.5, y: -0.3, z: 0.8, 	logicOut: 23, hwOut: 10, relAmp: 1.2),
-	(name: \cabass2,x:   5.5, y: 1.2, z: 3.0, 	logicOut: 22, hwOut: 11, relAmp: 1.2),
+	(name: \crypt3, x:   2.0, y: 4.5, z: 0.5, 	logicOut: 13, hwOut:  8 ),
+	(name: \wd12,  	x:   2.0, y: 1.0, z: 0.3, 	logicOut: 3, hwOut:   9 ),
+	(name: \braun2, x:   3.5, y: -0.3, z: 0.8, 	logicOut: 23, hwOut: 10 ),
+	(name: \cabass2,x:   5.5, y: 1.2, z: 3.0, 	logicOut: 22, hwOut: 11 ),
 
-	(name: \wd11,	x:   1.0, y: 5.5, z: 1.1, 	logicOut: 21, hwOut: 12, relAmp: 1.2),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 13, relAmp: 1.2),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 14, relAmp: 1.2),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 15, relAmp: 1.2),
+	(name: \wd11,	x:   1.0, y: 5.5, z: 1.1, 	logicOut: 21, hwOut: 12 ),
+	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 13 ),
+	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 14 ),
+	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 15 ),
 
 	/*** on RME ADAT : ****/
-	(name: \behring,x:   1.0, y: -0.4, z: 2.0, 	logicOut: 24, hwOut: 16, relAmp: 1.2),
-	(name: \bluecab,x:   0.7, y: -2.5, z: 2.2, 	logicOut: 13, hwOut: 17, relAmp: 1.2),
-	(name: \gene1,  x:   0.7, y: -0.7, z: 1.1, 	logicOut: 15, hwOut: 18, relAmp: 1.2),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 19, relAmp: 1.2),
+	(name: \behring,x:   1.0, y: -0.4, z: 2.0, 	logicOut: 24, hwOut: 16 ),
+	(name: \bluecab,x:   0.7, y: -2.5, z: 2.2, 	logicOut: 13, hwOut: 17 ),
+	(name: \gene1,  x:   0.2, y: -1.0, z: 1.1, 	logicOut: 15, hwOut: 18 ),
+	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 19 ),
 
-	(name: \wd14,  	x:  -0.6, y: -2.7, z: 0.2, 	logicOut: 18, hwOut: 20, relAmp: 1.2),
-	(name: \noname, x:   0.6, y: -2.0, z: 3.0, 	logicOut: 12, hwOut: 21, relAmp: 1.2),
+	(name: \wd14,  	x:  -0.6, y: -2.7, z: 0.2, 	logicOut: 18, hwOut: 20 ),
+	(name: \noname, x:   0.6, y: -2.0, z: 3.0, 	logicOut: 12, hwOut: 21 ),
 	// shaker - soft
-	(name: \blech,  x:   0.5, y: -0.6, z: 2.4, 	logicOut: 25, hwOut: 22, relAmp: 1.2),
-	(name: \b_o,   	x:   1.0, y: -1.5, z: 1.0, 	logicOut: 14, hwOut: 23, relAmp: 1.2),
+	(name: \blech,  x:   0.5, y:  0.6, z: 2.4, 	logicOut: 25, hwOut: 22 ),
+	(name: \b_o,   	x:   1.0, y: -1.5, z: 1.0, 	logicOut: 14, hwOut: 23 ),
 
 	// shaker - very soft
-	(name: \harp,   x:  -2.5, y: -0.3, z: 3.5, 	logicOut: 26, hwOut: 24, relAmp: 1.2),
-	(name: \braun1, x: -2.5, y: -0.1, z: 2.5, 	logicOut: 9, hwOut: 25, relAmp: 1.2),
-	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 1, hwOut:  26, relAmp: 1.2),
-	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 0, hwOut: 27, relAmp: 1.2),
+	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24 ),
+	(name: \braun1, x: -2.5, y: -0.0, z: 2.5, 	logicOut: 9,  hwOut: 25 ),
+	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 1,  hwOut: 26 ),
+	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 0,  hwOut: 27 ),
 
-	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 17, hwOut: 28, relAmp: 1.2),
-	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 5, hwOut: 29, relAmp: 1.2),
-	(name: \cryptA, x:  3.2, y:  4.0, z: 1.1, 	logicOut: 19, hwOut: 30, relAmp: 1.2),
-	(name: \sub,   	x: -1.0, y:  2.5, z: 0.4, 	logicOut: 27, hwOut: 31, relAmp: 1.2),
+	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 17, hwOut: 28 ),
+	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 5,  hwOut: 29 ),
+	(name: \cryptA, x:  3.2, y:  4.0, z: 1.1, 	logicOut: 19, hwOut: 30 ),
+	(name: \sub,   	x: -1.0, y:  2.0, z: 0.4, 	logicOut: 27, hwOut: 31 ),
 
 
 ];
+
+// collected with ntss_tester file, Tdef(\tester)
+// used in MainFX for hardware channel amp balance
+NTSS.hwRelAmps = [
+	2, 2, 2, 2,         // kefs 0..3,
+	2, 1, 1, 1,         // kef4, 2 cabasses, gene0
+	0.5, 0.25, 1, 0.25, // crypt3, wd12, braun2, cabass2
+	0.25, 1, 1,   1,    // wd11, empty, e, e
+	0.25, 0.25, 1, 2,   // behring, bluecab, gene1, b_o
+	0.5, 3, 2, 1,       // wd14, noname, blech,b_o
+	2, 0.6, 0.5, 1,     // harp, braun1, wd13, bw6
+	1, 0.5, 0.3, 0.5    // ldl8, ldl7, cryptA, sub
+];
+
 
 NTSS.spk.data.size.postln;
 
 NTSS.spk.active = NTSS.spk.data.reject { |spk| spk.name == \empty };
 "*** NTSS.spk.active : % speakers.\n".postf(NTSS.spk.active.size);
 // backwards compat for now:
-NTSS.speakers = NTSS.spk.active.collect { |line| [line.x, line.y, line.z] * 0.16 };
+NTSS.speakers = NTSS.spk.active.collect { |line| [line.x, line.y.neg + 1, line.z] * 0.16 };
 NTSS.speakersActive = NTSS.spk.active.collect { |line| line.name };
+NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
 NTSS.speakersTuning = NTSS.spk.active.collect { |line| line.relAmp };
 NTSS.speakersOrder = NTSS.spk.data.copy.sort { |a, b| a.hwOut < b.hwOut }.collect(_.name);
 

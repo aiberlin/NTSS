@@ -171,9 +171,8 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
 MainFX(s).clear;
 MainFX(s, NTSS.speakersOrder.size,
-	[\eq3, \mainMixer, \mix2four, \mix2stereo //, \shiftSpeakers
-
-]);
+	[\eq3, \mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]
+);
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);
