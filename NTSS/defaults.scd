@@ -21,7 +21,7 @@ NTSS.defaults.reboot = true;
 
 NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
 
-NTSS.defaults.pcSlots = [\top, \ins, \sndfile,
+NTSS.defaults.pcSlots = [\top, \ins, \sndfile, \pulsy,
 	\eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter
 ];
 

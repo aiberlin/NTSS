@@ -119,6 +119,29 @@ rtModFreq: frequency for playRate modulation oscillator.
 rtModDepth: depth for playRate modulation.";
 
 
+
+// pulsy2 is a stereo random ping generator
+ProxyChain.add3(\pulsy, \mix -> { |dens=3, freq1 = 200, freq2 = 2000, decay = 0.2|
+	Ringz.ar(Dust2.ar(dens ! 2),
+		LFDNoise3.kr(1 ! 2 ).exprange(freq1, freq2),
+		decay);
+}, 0.2, (
+	\dens: [0.1, 100, \exp],
+	\freq1: \freq,
+	\freq2: \freq,
+	\decay: [0.001, 1, \exp]
+)
+);
+
+ProxyChain.sourceDicts[\pulsy].text =
+"pulsy2 generates random pings on 2 channels.
+It has controls for
+dens: how many pings per second on each channel
+freq1, freq2: range within which ping frequency will drift
+decay: decay time of the ping envelope.";
+
+
+
 ///// Mumma1: freq shift mod, with envelope following
 ///// todo:
 ///// - add vibrato mode, maybe parallel to shift?
