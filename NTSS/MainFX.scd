@@ -167,6 +167,18 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 	outs;
 }, 1);
 
+ProxyChain.sourceDicts[\shiftSpeakers]. text =
+"shiftSpeakers should always be ON, except when testing levels.
+The sound channels come from the panners in a logical order,
+and shiftSpeakers reorders them so they go to the right speakers.
+NTSS.spk.data is the place where this info is stored.
+E.g. NTSS.spk.data[12] is:
+('name': wd11, 'x': 1.0, 'logicOut': 21, 'y': 5.5,
+  'relAmp': 0.25, 'hwOut': 12, 'z': 1.1)
+which means speaker wd11 has logical output 21 from the panners,
+and shiftSpeakers reorders it to hardware output hwOut: 12.";
+
+
 
 MainFX(s).clear;
 MainFX(s, NTSS.speakersOrder.size,
