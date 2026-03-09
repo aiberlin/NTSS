@@ -30,6 +30,7 @@ if (NTSS.sampleRate.notNil) {
 	s.options.sampleRate = NTSS.sampleRate;
 };
 
+"*** NTSS.speakerData: ".post;
 NTSS.speakerData.postcs.loadRelative;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains

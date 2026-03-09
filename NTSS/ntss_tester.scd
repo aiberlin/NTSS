@@ -21,10 +21,12 @@ NTSS.spk.find(\bw6).relAmp;
 /**** Setup for 111 NTSS : ****/
 (
 q = q ? ();
-// the old system of names
+/*
+// using the old system of names:
 NTSS.speakersOrder.postcs.size; // all 32 names, 4 empty
 NTSS.speakersActive.postcs.size; // the 28 active ones in logical order
 NTSS.speakers.size; //
+*/
 
 // For Butz GUI:
 NTSS.testpath = thisProcess.nowExecutingPath;
