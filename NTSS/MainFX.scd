@@ -115,10 +115,9 @@ It mixes all input channels down to quadro,
 on channels 1, 2, 3, 4 and mutes all other channels.";
 
 
-
 ProxyChain.add3(
 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
-		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp) };
+		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp4) };
 
 		var spkChans = in.keep(NTSS.speakers.size - 1);
 		var mixSpks = RLPF.ar(
@@ -131,10 +130,10 @@ ProxyChain.add3(
 		// measured in class: all speakers
 		var tuning = NTSS.speakersTuning;
 
-		var finalLogicalOut = allChans * (amps * mainvol * tuning);
+		var finalLogicalOut = allChans * (amps * mainvol);
 		Out.ar(NTSS.spatbus, finalLogicalOut);
 
-		finalLogicalOut
+		finalLogicalOut  * tuning
 	},
 	1,
 	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(

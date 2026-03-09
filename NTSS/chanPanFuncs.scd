@@ -382,7 +382,7 @@ NTSS.spat.taps = { arg name, speakers, snd;
 	var sendKr = \send.kr(1, 1, spec:\amp);
 	var lag = \lag.kr(1, spec:[0.5,3]);
 	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4]).lag(lag)
+		name.kr(0, spec:[0,4, \amp]).lag(lag)
 	};
 	//(snd*\dry.kr(1, spec:\amp)) + CombC.ar(snd * \send.kr(0, spec:\amp), 4, taps, 6);
 	(snd*dryKr) + CombC.ar(snd * sendKr, 4, taps, 0);
