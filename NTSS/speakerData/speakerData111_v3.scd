@@ -40,8 +40,8 @@ NTSS.spk.data = List[
 	(name: \gene0, 	x:   0.5, y:  3.2, z: 0.8, 	logicOut: 7, hwOut:  7, path: \direct ),
 
 	/*** on Expander S16 : ****/
-	(name: \crypt3, x:   2.0, y:  4.5, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
-	(name: \wd12,  	x:   2.0, y:  1.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
+	(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
+	(name: \wd12,  	x:   1.0, y:  2.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
 	(name: \braun2, x:   3.5, y:  0.2, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam1_SL ),
 	(name: \cabass2,x:   5.5, y: -1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam1_SR ),
 
@@ -70,7 +70,7 @@ NTSS.spk.data = List[
 
 	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \bt4_R ),
 	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 24,  hwOut: 29, path: \bt4_L ),
-	(name: \cryptA, x:  3.2, y:  3.5, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
+	(name: \cryptA, x:  3.5, y:  3.2, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
 	(name: \sub,   	x: -1.5, y:  2.5, z: 0.4, 	logicOut: 27, hwOut: 31, path: \direct ),
 
 ];
@@ -109,8 +109,8 @@ NTSS.spk.groups = (
 	// rings: clockwise, always begin at center, so they can be one long twirl
 	left: [\bw6, \wd13, \cabass0, \wd12,  \gene0, \ldl7 ],
 	up: [\kef0, \kef1, \kef2, \braun1, \kef3, \kef4 ], // kefs,
-	back: [ /*\noname,*/ \bluecab, \b_o, \gene1, \cabass0, \ldl8, \wd14],
-	right: [ \cryptA, \crypt3, \wd11, \cabass2, \braun2, \behring],
+	back: [ /*\noname,*/ \ldl8, \wd14, \bluecab, \b_o, \gene1, \cabass0, ],
+	right: [  \behring, \braun2, \cabass2, \wd11, \crypt3, \cryptA],
 	// center: [ \mr0, \mr1, \mr2, \mr3, \mr4, \mr5],
 
 	// same-speakers:
