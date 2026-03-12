@@ -1,15 +1,14 @@
 // put default values for NTSS setups here
 
 NTSS.defaults.sampleRate = 48000;
-NTSS.defaults.numInputChannels = 30;
-NTSS.defaults.numOutputChannels = 32;
+NTSS.defaults.numInputBusChannels = 30;
+NTSS.defaults.numOutputBusChannels = 32;
 
 // works for macOS, to test for others
 NTSS.defaults.inDevice = "X-USB"; // Behringer X-32 mixer in macOS
 NTSS.defaults.outDevice = "X-USB";
 NTSS.defaults.device = "X-USB";
-NTSS.defaults.numInputBusChannels = 30;
-NTSS.defaults.numOutputBusChannels = 32;
+
 NTSS.defaults.memSize = 8192 * 32; // boost to 256MB for delaylines
 NTSS.defaults.numAudioBusChannels = 2048;
 NTSS.defaults.maxNodes = 4096;
@@ -21,6 +20,7 @@ NTSS.defaults.reboot = true;
 
 NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
 
+NTSS.defaults.numPmcs = 8;
 NTSS.defaults.pcSlots = [\top, \ins, \sndfile, \pulsy,
 	\eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter
 ];
