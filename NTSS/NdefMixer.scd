@@ -18,13 +18,12 @@ q.ndef.mixspace = q.ndef.mixspace ?? { ProxySpace.new };
 q.ndef.groupNames = q.ndef.groupNames ? q.ndef.groups.keys(Array).sort;
 
 
-
 q.ndef.groupNames = q.ndef.groupNames ++ (q.ndef.groups.keys(Array).sort.removeAll(q.ndef.groupNames));
 
 // each button adds or removes Ndefs for that group:
 MFdef('mixBut').add(\mixBut, { |bt, mod = 0|
 	var name = bt.states[0][0].asSymbol;
-	var group = q.ndef.groups[name];
+	var group = q.ndef.groups[name].value; // value to allow
 	// hold alt key to show only one group
 	if (group.isNil) {
 		"*** q.ndef group % not found!\n".postf(name.cs);

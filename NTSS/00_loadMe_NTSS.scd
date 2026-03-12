@@ -107,7 +107,8 @@ Butz(\NTSS).add(\allSrcNdefs, { WinBounds.showOrMake(\allSrcNdefs) });
 
 // default groupNames
 q.ndef = q.ndef ? ();
-q.ndef.groupNames = q.ndef.groupNames ? [\ntssChan, \ntssPan];
+q.ndef.groups.put(\all, { Ndef.dictFor(s) });
+q.ndef.groupNames = q.ndef.groupNames ? [\all,\ntssChan, \ntssPan];
 "NdefMixer.scd".postcs.loadRelative;
 
 WinBounds.addMake(\Levels, {
