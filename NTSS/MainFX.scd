@@ -114,32 +114,62 @@ ProxyChain.sourceDicts[\mix2four]. text =
 It mixes all input channels down to quadro,
 on channels 1, 2, 3, 4 and mutes all other channels.";
 
+/////////// OLD VERSION
+// ProxyChain.add3(
+// 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
+// 		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp4) };
+//
+// 		var spkChans = in.keep(NTSS.speakers.size - 1);
+// 		var mixSpks = RLPF.ar(
+// 			spkChans.sum *  (1/ NTSS.speakers.size.sqrt),
+// 			subFreq.lag(1)
+// 		);
+// 		var subChans = in.drop(NTSS.speakers.size - 1) + (mixSpks * mix2Sub);
+// 		var allChans = spkChans ++ subChans;
+//
+// 		// measured in class: all speakers
+// 		var tuning = NTSS.speakersTuning;
+//
+// 		var finalLogicalOut = allChans * (amps * mainvol);
+// 		Out.ar(NTSS.spatbus, finalLogicalOut);
+//
+// 		finalLogicalOut  * tuning
+// 	},
+// 	1,
+// 	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(
+// 		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
+// 	)
+// );
 
+///// new data structure:
 ProxyChain.add3(
 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
-		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp4) };
-
-		var spkChans = in.keep(NTSS.speakers.size - 1);
+		// logical order
+		var logicChans = in;
+		var ampCtls = NTSS.spk.logicOrder.collect {|spk| spk.name.kr(1, spec:\amp4) };
+		var spkChans = logicChans.drop(-1); // last is sub
 		var mixSpks = RLPF.ar(
-			spkChans.sum *  (1/ NTSS.speakers.size.sqrt),
+			spkChans.sum *  (1/ spkChans.size.sqrt),
 			subFreq.lag(1)
 		);
-		var subChans = in.drop(NTSS.speakers.size - 1) + (mixSpks * mix2Sub);
+		var subChans = in.drop(spkChans.size) + (mixSpks * mix2Sub);
 		var allChans = spkChans ++ subChans;
 
 		// measured in class: all speakers
-		var tuning = NTSS.speakersTuning;
+		var relAmpValues = NTSS.spk.logicOrder.collect(_.relAmp);
 
-		var finalLogicalOut = allChans * (amps * mainvol);
+		// write to spatBus before relAmpComp
+		var finalLogicalOut = allChans * (ampCtls * mainvol);
 		Out.ar(NTSS.spatbus, finalLogicalOut);
 
-		finalLogicalOut  * tuning
+		finalLogicalOut  * relAmpValues
 	},
 	1,
 	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(
 		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
 	)
 );
+
 
 ProxyChain.sourceDicts[\mainMixer]. text =
 "    mainMixer has several functions:
@@ -153,17 +183,14 @@ The controls after mix2sub are for each individual speaker by name. ";
 
 ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
-	var currentSpeakers = NTSS.speakers.size;
+	var outs = Silent.ar ! s.options.numOutputBusChannels;
 
-	var outs = Silent.ar!s.options.numOutputBusChannels;
-	var counter = 0;
-	NTSS.speakersOrder.do {|speaker,i|
-		if (speaker != \empty) {
-			outs[i] = in[counter];
-			counter = counter + 1;
+	NTSS.spk.logicOrder.do {|spkDict, logicIdx|
+		if (spkDict.name != \empty) {
+			outs[spkDict.hwOut] = in[logicIdx];
 		};
 	};
-	outs.size.postln;
+
 	outs;
 }, 1);
 
@@ -181,7 +208,7 @@ and shiftSpeakers reorders it to hardware output hwOut: 12.";
 
 
 MainFX(s).clear;
-MainFX(s, NTSS.speakersOrder.size,
+MainFX(s, NTSS.numOutputBusChannels,
 	[\eq3, \mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]
 );
 //MainFX(s).add(\levels, 1);
