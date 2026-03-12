@@ -4,18 +4,38 @@ This patch is for testing that all speakers work,
 and for finding volume levels for each speaker
 so they all sound similarly loud.
 
-// ~chans sets which speakers will test-play
-~chans = (0..13); // (0..13) should play on first 14 speakers
-// Tdef(\tester) plays sounds round-robin on ~chans,
-with relAmp from
-Tdef(\tester).play;
-NTSS.spk.find = { |dict, name|
-	NTSS.spk.data.detect { |dict| dict.name == name }
-};
-NTSS.spk.find(\bw6).relAmp;
+// first test with Tdef testHW:
+// in MainFX, turn off mainMixer and shiftSpeakers;
+// then check all spaekers are here:
 
+MainFX(s).remove(\mainMixer);
+MainFX(s).remove(\shiftSpeakers);
 
-().find
+Tdef(\testHW).play;
+
+~chans = (0..31); // all
+~chans = (0..7);  // groups of 8
+~chans = (8..15); // 5 here 3 empty
+~chans = (16..23);
+~chans = (24..31); // one empty
+
+// set all amps equal
+~amps = 1 ! 32;
+// set all amps to last measured data
+~amps = NTSS.hwRelAmps;
+
+Tdef(\testHW).stop;
+
+// then test with Tdef testLogic
+
+MainFX(s).add(\mainMixer, 1);
+MainFX(s).add(\shiftSpeakers, 1);
+~chans = (0..27);
+
+Tdef(\testLogic).play;
+
+Tdef(\testLogic).stop;
+
 ***/
 
 /**** Setup for 111 NTSS : ****/
@@ -32,8 +52,12 @@ NTSS.speakers.size; //
 NTSS.testpath = thisProcess.nowExecutingPath;
 
 Butz(\NTSS).add(\TEST_NTSS, {
+	w = Window("TEST_NTSS", Rect.aboutPoint(Window.availableBounds.center, 150, 100)).front;
+	w.view.addFlowLayout;
 	// Document.open(NTSS.testpath);
-	Tdef(\tester).gui(3);
+	TdefGui(Tdef(\testHW), 3, w.view);
+	TdefGui(Tdef(\testLogic), 3, w);
+
 });
 
 Butz(\NTSS).add(\openBalance, {
@@ -89,6 +113,7 @@ so MainFX has to have shiftSpeakers on!
 
 ~chans = (0..15); // first 8
 
+~amps = NTSS.hwRelAmps
 (
 ~amps = [
 	2, 2, 2, 2, 2, // 5 kefs,
@@ -107,14 +132,14 @@ so MainFX has to have shiftSpeakers on!
 (
 // balance tester Tdef
 /*
-Tdef(\tester).play.gui;
+Tdef(\testHW).play.gui;
 */
-Tdef(\tester).set(\speed, 1);
-Tdef(\tester).addSpec(\speed, [0.25, 4, \exp]);
+Tdef(\testHW).set(\speed, 1);
+Tdef(\testHW).addSpec(\speed, [0.25, 4, \exp]);
 
 ~chans = (0..31);
 
-Tdef(\tester, { |env|
+Tdef(\testHW, { |env|
 
 	inf.do { |i|
 		var chan = ~chans.wrapAt(i);
@@ -128,6 +153,27 @@ Tdef(\tester, { |env|
 		).postln.play;
 		(env.speed.reciprocal).max(0.1).wait;
 	}
+});
+
+
+Tdef(\testLogic, { |env|
+
+	inf.do { |i|
+		var chan = ~chans.wrapAt(i);
+		var spkDict = NTSS.spk.logicOrder[chan];
+		if (spkDict.isNil) {
+			"*** no speaker at logicOut %!\n".postf(chan);
+		} {
+			var info = "% : %".format(chan, spkDict.name);
+			"*** %\n".postf(info);
+			env.speaker = info;
+			(instrument: \pink,
+				out: spkDict,
+				amp: 0.1
+			).postln.play;
+		};
+		(env.speed.reciprocal).max(0.1).wait;
+	};
 });
 );
 )
