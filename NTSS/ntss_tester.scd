@@ -26,7 +26,8 @@ Tdef(\testHW).play;
 
 Tdef(\testHW).stop;
 
-// then test with Tdef testLogic
+//////////////////////////////////////
+// then test with Tdef testLogic:
 
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);
@@ -155,6 +156,8 @@ Tdef(\testHW, { |env|
 	}
 });
 
+Tdef(\testLogic).set(\speed, 1);
+Tdef(\testLogic).addSpec(\speed, [0.25, 4, \exp]);
 
 Tdef(\testLogic, { |env|
 
@@ -168,7 +171,7 @@ Tdef(\testLogic, { |env|
 			"*** %\n".postf(info);
 			env.speaker = info;
 			(instrument: \pink,
-				out: spkDict,
+				out: spkDict.logicOut,
 				amp: 0.1
 			).postln.play;
 		};
