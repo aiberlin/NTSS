@@ -30,48 +30,48 @@ NTSS.spk.data = List[
 	(name: \kef0, 	x:  -5.0, y:  0.5, z: 3.2, 	logicOut: 0, hwOut:  0, path: \denon_FL ),
 	(name: \kef1, 	x:  -3.8, y: -0.5, z: 3.2, 	logicOut: 1, hwOut:  1, path: \denon_FR ),
 	(name: \kef2, 	x:  -2.5, y: -3.5, z: 2.5, 	logicOut: 2, hwOut:  2, path: \denon_SL ),
-	(name: \kef3, 	x:  -0.8, y:  2.5, z: 2.5, 	logicOut: 3, hwOut:  3, path: \denon_SR ),
-	(name: \kef4, 	x:  -2.3, y:  3.0, z: 3.5, 	logicOut: 4, hwOut:  4, path: \denon_SBL ),
+	(name: \kef3, 	x:  -0.8, y:  2.0, z: 2.5, 	logicOut: 3, hwOut:  3, path: \denon_SR ),
+	(name: \kef4, 	x:  -2.3, y:  4.5, z: 3.5, 	logicOut: 4, hwOut:  4, path: \denon_SBL ),
 
 	// two cabasses on table
 	(name: \cabass0, x: -2.5, y:  0.4, z: 0.8, 	logicOut: 5, hwOut:  5, path: \denon_SBR ),
 	(name: \cabass1, x: -2.5, y: -0.4, z: 0.8, 	logicOut: 6, hwOut:  6, path: \denon_C ),
 
-	(name: \gene0, 	x:   0.5, y: 3.2, z: 0.8, 	logicOut: 7, hwOut:  7, path: \direct ),
+	(name: \gene0, 	x:   0.5, y:  3.2, z: 0.8, 	logicOut: 7, hwOut:  7, path: \direct ),
 
 	/*** on Expander S16 : ****/
-	(name: \crypt3, x:   2.0, y: 4.5, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
-	(name: \wd12,  	x:   2.0, y: 1.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
-	(name: \braun2, x:   3.5, y: -0.3, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam1_SL ),
-	(name: \cabass2,x:   5.5, y: 1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam1_SR ),
+	(name: \crypt3, x:   2.0, y:  4.5, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
+	(name: \wd12,  	x:   2.0, y:  1.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
+	(name: \braun2, x:   3.5, y:  0.2, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam1_SL ),
+	(name: \cabass2,x:   5.5, y: -1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam1_SR ),
 
-	(name: \wd11,	x:   1.0, y: 5.5, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam1_C ),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 13 ),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 14 ),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 15 ),
+	(name: \wd11,	x:   5.5, y:  1.0, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam1_C ),
+	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 13 ),
+	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 14 ),
+	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 15 ),
 
 	/*** on RME ADAT : ****/
 	(name: \behring,x:   1.0, y: -0.4, z: 2.0, 	logicOut: 17, hwOut: 16, path: \direct ),
-	(name: \bluecab,x:   0.7, y: -2.5, z: 2.2, 	logicOut: 13, hwOut: 17, path: \direct ),
+	(name: \bluecab,x:   0.7, y: -3.0, z: 2.2, 	logicOut: 13, hwOut: 17, path: \direct ),
 	(name: \gene1,  x:   0.2, y: -1.0, z: 1.1, 	logicOut: 16, hwOut: 18, path: \direct ),
-	(name: \empty,  x:  -2.5, y: -0.3, z: 0.8, 	logicOut: -1, hwOut: 19 ),
+	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 19 ),
 
-	(name: \wd14,  	x:  -0.6, y: -2.7, z: 0.2, 	logicOut: 12, hwOut: 20, path: \bt1_L ),
-	(name: \noname, x:   0.6, y: -2.0, z: 3.0, 	logicOut: 14, hwOut: 21, path: \dyna_L ),
+	(name: \wd14,  	x:  -0.6, y: -2.8, z: 0.2, 	logicOut: 12, hwOut: 20, path: \bt1_L ),
+	(name: \noname, x:   0.5, y: -2.0, z: 3.0, 	logicOut: 14, hwOut: 21, path: \dyna_L ),
 	// shaker - soft
-	(name: \blech,  x:   0.5, y:  0.6, z: 2.4, 	logicOut: 25, hwOut: 22, path: \dyna_R ),
-	(name: \b_o,   	x:   1.0, y: -1.5, z: 1.0, 	logicOut: 15, hwOut: 23, path: \direct ),
+	(name: \blech,  x:   0.5, y:  0.0, z: 2.4, 	logicOut: 25, hwOut: 22, path: \dyna_R ),
+	(name: \b_o,   	x:   1.2, y: -2.2, z: 1.0, 	logicOut: 15, hwOut: 23, path: \direct ),
 
 	// shaker - very soft
 	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24, path: \bt2_R ),
-	(name: \braun1, x: -2.5, y: -0.0, z: 2.5, 	logicOut: 10,  hwOut: 25, path: \bt2_L ),
+	(name: \braun1, x: -2.5, y:  0.0, z: 2.5, 	logicOut: 10,  hwOut: 25, path: \bt2_L ),
 	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 9,  hwOut: 26, path: \bt3_R ),
 	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 8,  hwOut: 27, path: \bt3_L ),
 
 	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \bt4_R ),
 	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 24,  hwOut: 29, path: \bt4_L ),
-	(name: \cryptA, x:  3.2, y:  4.0, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
-	(name: \sub,   	x: -1.0, y:  2.0, z: 0.4, 	logicOut: 27, hwOut: 31, path: \direct ),
+	(name: \cryptA, x:  3.2, y:  3.5, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
+	(name: \sub,   	x: -1.5, y:  2.5, z: 0.4, 	logicOut: 27, hwOut: 31, path: \direct ),
 
 ];
 
