@@ -7,12 +7,13 @@ ServerOptions.devices.cs
 
 */
 // get all defaults first:
-(NTSS.dir.setup +/+ "defaults.scd").loadPaths;
+(NTSS.dir.setup +/+ "defaults.scd".postln).loadPaths;
 
 q = q ? ();
 
 NTSS.ready = false;
 
+// server settings from defaults, or set before NTSS.run:
 s.options.inDevice = s.options.inDevice ? NTSS.inDevice;
 s.options.outDevice = s.options.outDevice ? NTSS.outDevice;
 if (s.options.device.isKindOf(Array).not) { s.options.device = s.options.device ? NTSS.device };
@@ -34,10 +35,7 @@ if (NTSS.sampleRate.notNil) {
 NTSS.speakerData.postcs.loadRelative;
 
 // number of Pepsi mixer channels (see David Tudor) as ProxyChains
-NTSS.numPmcs = NTSS.numPmcs ? 8;
-
-NTSS.numIOchans = NTSS.speakersOrder.size;
-s.options.numOutputBusChannels = NTSS.numIOchans;
+"NTSS.numPmcs: %\n".postf(NTSS.numPmcs);
 
 // general specs for everything
 Spec.add(\amp4, [0, 4, \amp]);
@@ -60,10 +58,9 @@ Spec.add(\loop, \unipolar);
 
 // These are still the names of Biophony inputs.
 // they are dynamically overwriteable later in code!
-NTSS.inNames.postln;
+// NTSS.inNames.postln;
 
-
-// make nameViews on NdefGuis etc better readable
+// utility: make nameViews on NdefGuis etc better readable
 q.tuneNameView = { |q, obj|
 	var nameFont = Font(Font.defaultSansFace, 14);
 	if (obj.respondsTo(\nameView)) { obj = obj.nameView };
