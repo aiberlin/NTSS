@@ -297,7 +297,7 @@ NTSS.getSpat = { arg ntss, name;
 NTSS.spat.dbap = { arg name, speakers, snd;
 	var d, g, norm, srcPos;
 	var x = \srcX.kr(0, spec:[-1,1]);
-	var y = \srcY.kr(0, spec:[-1,1]);
+	var y = \srcY.kr(0, spec:[-1,1]).neg;
 	// because srcWidth is 0-1 generally, use that spec and rescale
 	var k = \srcWidth.kr(1).linlin(0, 1, 10, 1);
 	var sig;
@@ -330,7 +330,7 @@ spread is similar to k
 
 NTSS.spat.delayspat = { arg name, speakers, snd;
 	var x = \srcX.kr(0, spec:[-1,1]);
-	var y = \srcY.kr(0, spec:[-1,1]);
+	var y = \srcY.kr(0, spec:[-1,1]).neg;
 	var z = \spkScale.kr(1, spec:[1,30]);
 	var k = \xyScale.kr(1, spec:[1,10]);
 	var spread = \spread.kr(1, spec:[1,10]);

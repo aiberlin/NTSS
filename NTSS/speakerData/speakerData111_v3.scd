@@ -88,20 +88,22 @@ NTSS.hwRelAmps = [
 	1, 0.5, 0.3, 0.5    // ldl8, ldl7, cryptA, sub
 ];
 
-
+// nonempties:
 NTSS.spk.active = NTSS.spk.data.reject { |spk| spk.name == \empty };
+// and sort tehm in logic order:
+NTSS.spk.active.sort { |a, b| a.logicOut < b.logicOut };
 "*** NTSS.spk.active : % speakers.\n".postf(NTSS.spk.active.size);
+NTSS.spk.logicOrder = NTSS.spk.active;
 
 // backwards compat for now:
 // speaker x y z for Spatio
 NTSS.speakers = NTSS.spk.active.collect { |line| [line.x, line.y.neg + 1, line.z] * 0.16 };
 // just the names in same order, filtered by active
-NTSS.speakersActive = NTSS.spk.active.collect { |line| line.name };
+NTSS.speakersActive = NTSS.spk.logicOrder.collect { |line| line.name };
 // put the measured  amp compensation levels into spk.data
 NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
 // get them out again in the speakers
 NTSS.speakersTuning = NTSS.spk.active.collect { |line| line.relAmp };
-NTSS.spk.logicOrder = NTSS.spk.active.copy.sort { |a, b| a.logicOut < b.logicOut };
 NTSS.speakersOrder = NTSS.spk.logicOrder.collect(_.name);
 
 
