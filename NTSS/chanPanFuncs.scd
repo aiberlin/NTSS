@@ -11,7 +11,7 @@ x, y are positions of left and right channels
 NTSS.getSpat = { arg ntss, name;
 	{ arg srcBus;
 		var in = InFeedback.ar(srcBus);
-		NTSS.spat[name].(name, NTSS.speakers, in);
+		NTSS.spat[name].(name, NTSS.spk.positions, in);
 	};
 };
 
