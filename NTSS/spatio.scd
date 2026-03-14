@@ -1,7 +1,7 @@
 NTSS.showRing = { |nt, ringName, show=true|
 	if (show, "SHOWING %:\n", "HIDING %:\n").postf(ringName);
 	NTSS.ringDict[ringName].do { |spkName|
-		var index = NTSS.speakersActive.indexOf(spkName);
+		var index = NTSS.spk.names.indexOf(spkName);
 		q.spat.ampViews[index].visible_(show);
 		"  %: %\n".postf(index, spkName);
 	};
@@ -24,7 +24,7 @@ NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.speakers.size) };
 
 WinBounds.addMake(\SpatioScope, {
 	q.spat = SpatioScope.new(
-		NTSS.speakers.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500),
+		NTSS.spk.positions.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500),
 		busOffset: NTSS.spatbus.index
 	);
 
@@ -36,13 +36,11 @@ WinBounds.addMake(\SpatioScope, {
 
 	q.spat.ampViews.do(_.stringColor_(Color.white));
 	q.spat.ampViews.do {|view,i|
+		var spkDict = NTSS.spk.ordered[i];
 		view.bounds = view.bounds.height_(30);
-		view.string = NTSS.speakersActive[i];
+		view.string = spkDict.name;
 		view.mouseDownAction = {
-			var name = NTSS.speakersActive[i];
-			"*** q.spat: %, %: %\n".postf(i, name,
-				NTSS.spk.data.detect { |spk| spk.name == name }
-			);
+			"*** q.spat: %, %: %\n".postf(i, spkDict.name, spkDict);
 		};
 	};
 	if (NTSS.spatImagePath.notNil) {
