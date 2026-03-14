@@ -1,12 +1,41 @@
 /*
-// test that logicOut and hwOut are complete:
-NTSS.spk.data.collect(_.logicOut).sort.plot
-NTSS.spk.active.collect(_.logicOut).sort.plot
 
-NTSS.spk.data.collect(_.hwOut).sort.plot
+This is the speaker setup in room 111 on March 14 2026.
 
-NTSS.speakerData = "speakerData/speakerData111_32.scd";
+
+NTSS.spk.data is one list that collects all information
+on all the speakers in the system -
+name, x y z position data, and connection info:
+(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, ...
+
+The speakers have two orderings:
+*** HARDWARE order - which outputs are they connected to, and
+*** LOGICAL order - in which order do the panners deliver the channels.
+in NTSS.spk.data, these are notated as logicOut and hwOut:
+
+(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
+
+NTSS.spk.data also has info on
+the signal path: which amplifier, which channel,
+and relAmp: the amplitude compensation that each one equally loud.
+
+
+**** TESTS ****
+// test that hwOut are complete:
+NTSS.spk.data.collect(_.hwOut).sort.postln.plot;
+// -> 0..31, one line, no repeats
+
+//  test that logicOut are complete:
+NTSS.spk.data.collect(_.logicOut).sort.postln.plot;
+// -> some -1 for empty, then one line from 0..27
+
+// NTSS.spk.ordered are in logical order:
+NTSS.spk.ordered.collect(_.logicOut).plot;
+// -> 0..27
+
+
 NTSS.run;
+
 
 Hosek space: 13x7m, 3m hoch in der Mitte, 2.65 am Rand
 
@@ -15,6 +44,7 @@ Hosek space: 13x7m, 3m hoch in der Mitte, 2.65 am Rand
 (
 // all speaker data go here:
 NTSS.spk = NTSS.spk ? ();
+NTSS.spk.setupName = "111_March2026";
 NTSS.spk.data; // the current speaker set
 
 NTSS.spk.numLogicOuts = 28; // currently
@@ -33,19 +63,20 @@ NTSS.spk.data = List[
 	(name: \kef3, 	x:  -0.8, y:  2.0, z: 2.5, 	logicOut: 3, hwOut:  3, path: \denon_SR ),
 	(name: \kef4, 	x:  -2.3, y:  4.5, z: 3.5, 	logicOut: 4, hwOut:  4, path: \denon_SBL ),
 
-	// two cabasses on table
+	// two cabasses on the center table
 	(name: \cabass0, x: -2.5, y:  0.4, z: 0.8, 	logicOut: 5, hwOut:  5, path: \denon_SBR ),
 	(name: \cabass1, x: -2.5, y: -0.4, z: 0.8, 	logicOut: 6, hwOut:  6, path: \denon_C ),
 
 	(name: \gene0, 	x:   0.5, y:  3.2, z: 0.8, 	logicOut: 7, hwOut:  7, path: \direct ),
 
-	/*** on Expander S16 : ****/
+	/*** on Expander S16, right side : ****/
 	(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
 	(name: \wd12,  	x:   1.0, y:  2.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
 	(name: \braun2, x:   3.5, y:  0.2, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam1_SL ),
 	(name: \cabass2,x:   5.5, y: -1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam1_SR ),
-
 	(name: \wd11,	x:   5.5, y:  1.0, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam1_C ),
+
+	// 3 empty here
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 13 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 14 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 15 ),
@@ -79,32 +110,34 @@ NTSS.spk.data = List[
 // used in MainFX for hardware channel amp balance
 NTSS.hwRelAmps = [
 	2, 2, 2, 2,         // kefs 0..3,
-	2, 1, 1, 1,         // kef4, 2 cabasses, gene0
+	2, 1, 1, 1,         // kef4, cabass0, cabass1, gene0
 	0.5, 0.25, 1, 0.25, // crypt3, wd12, braun2, cabass2
-	0.25, 1, 1,   1,    // wd11, empty, e, e
-	0.5, 0.5, 1, 2,   // behring, bluecab, gene1, b_o
-	0.5, 3, 2, 1,       // wd14, noname, blech,b_o
+	0.25, 1, 1, 1,      // wd11, empty, empty, empty
+	0.5, 0.5, 1, 2,     // behring, bluecab, gene1, empty
+	0.5, 3, 2, 1,       // wd14, noname, blech, b_o
 	2, 0.6, 0.5, 1,     // harp, braun1, wd13, bw6
 	1, 0.5, 0.3, 0.5    // ldl8, ldl7, cryptA, sub
 ];
+// put the measured amp compensation levels into spk.data
+NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
 
-// nonempties:
-NTSS.spk.active = NTSS.spk.data.reject { |spk| spk.name == \empty };
-// and sort tehm in logic order:
-NTSS.spk.active.sort { |a, b| a.logicOut < b.logicOut };
-"*** NTSS.spk.active : % speakers.\n".postf(NTSS.spk.active.size);
-NTSS.spk.logicOrder = NTSS.spk.active;
+
+// select non-empties, and sort them in logical order;
+// we only use logical order from here on.
+NTSS.spk.ordered = NTSS.spk.data.reject { |spk| spk.name == \empty }
+.sort { |a, b| a.logicOut < b.logicOut };
+NTSS.spk.names = NTSS.spk.ordered.collect(_.name);
+"*** NTSS.spk.ordered : % speakers.\n".postf(NTSS.spk.ordered.size);
+"*** NTSS.spk.names: ".postln;
+NTSS.spk.names.postcs;
 
 // backwards compat for now:
 // speaker x y z for Spatio
-NTSS.speakers = NTSS.spk.active.collect { |line| [line.x, line.y.neg + 1, line.z] * 0.16 };
+NTSS.spk.positions = NTSS.spk.ordered.collect { |line| [line.x, line.y.neg + 1, line.z] * 0.16 };
 // just the names in same order, filtered by active
-NTSS.speakersActive = NTSS.spk.logicOrder.collect { |line| line.name };
-// put the measured  amp compensation levels into spk.data
-NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
+// NTSS.speakersActive = NTSS.spk.names;
 // get them out again in the speakers
-NTSS.speakersTuning = NTSS.spk.active.collect { |line| line.relAmp };
-NTSS.speakersOrder = NTSS.spk.logicOrder.collect(_.name);
+// NTSS.speakersTuning = NTSS.spk.ordered.collect { |line| line.relAmp };
 
 
 NTSS.spk.groups = (
@@ -136,6 +169,6 @@ NTSS.ringNames = ['left', 'right', 'back', 'up'/*, 'center'*/]; // leave out sub
 NTSS.ringNames.do (Spec.add(_, \amp));
 
 // names to use for setting output amps
-NTSS.amp_names = NTSS.speakersActive;
+NTSS.amp_names = NTSS.spk.names;
 
 );
