@@ -376,7 +376,7 @@ NTSS.pchains.do { |pc, i|
 	var mybuf, panNdefName, panner;
 	panNdefName = NTSS.pannerNames[i];
 	panner = Ndef(panNdefName);
-	panner.ar(NTSS.speakers.size);
+	panner.ar(NTSS.spk.ordered.size);
 	panner.fadeTime = 3;
 	panner.vol = 0.25;
 	panner.set(\srcBus, pc.proxy.index);

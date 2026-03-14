@@ -88,8 +88,8 @@ NTSS.spat.direct = { arg name, speakers, snd;
 // for each source channel, set level for each speaker
 NTSS.spat.mixer = { arg name, speakers, snd;
 	var nchannels = speakers.size;
-	var outs = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec: \amp)
+	var outs = NTSS.spk.names.collect {|name|
+		name.kr(0, spec: [0,4, \amp])
 	};
 	snd * outs;
 };
@@ -103,7 +103,7 @@ NTSS.spat.taps = { arg name, speakers, snd;
 	var dryKr = \dry.kr(1, 1, spec:\amp);
 	var sendKr = \send.kr(1, 1, spec:\amp);
 	var lag = \lag.kr(1, spec:[0.5,3]);
-	var taps = NTSS.speakersActive.collect {|name|
+	var taps = NTSS.spk.names.collect {|name|
 		name.kr(0, spec:[0,4, \amp]).lag(lag)
 	};
 	//(snd*\dry.kr(1, spec:\amp)) + CombC.ar(snd * \send.kr(0, spec:\amp), 4, taps, 6);
@@ -121,8 +121,8 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 	var lag = \lag.kr(1, spec:[0.5,3]);
 	var in = snd + (BrownNoise.ar * 80.neg.dbamp);
 	var fb = LocalIn.ar(nspeakers);
-	var taps = NTSS.speakersActive.collect {|name|
-		name.kr(0, spec:[0,4]).lag(lag)
+	var taps = NTSS.spk.names.collect {|name|
+		name.kr(0, spec: [0,4, \amp]).lag(lag)
 	};
 	var delayline = DelayC.ar(in * sendKr + fb, 4, taps);
 
@@ -149,7 +149,7 @@ NTSS.spat.peatSoup = { arg name, speakers, snd;
    (db.linexp(mid, -10, 0.01, maxRot)*polarity.neg) +
    (db.linexp(-80, mid, maxRot, 0.01)*polarity))
  );
- var panned = PanAz.ar(NTSS.speakersActive.size, lim, pan, 1, width); //NTSS.ringsFlat.size
+ var panned = PanAz.ar(NTSS.spk.names.size, lim, pan, 1, width); //NTSS.ringsFlat.size
  panned;
  //NTSS.reorderRingsToSpeakers(panned);
  //PanAz.ar(NTSS.speakers.size, lim, pan, 1, width);
@@ -183,7 +183,7 @@ outChan:   which speakers to play to."
 
 ProxyChain.sourceDicts[\mixer].put(\text,
 	"mixer allows setting level for each speaker by name:
-" ++ NTSS.speakersActive.cs
+" ++ NTSS.spk.names.cs
 );
 
 ProxyChain.sourceDicts[\taps].put(\text,

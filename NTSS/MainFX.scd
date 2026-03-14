@@ -146,7 +146,7 @@ ProxyChain.add3(
 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
 		// logical order
 		var logicChans = in;
-		var ampCtls = NTSS.spk.logicOrder.collect {|spk| spk.name.kr(1, spec:\amp4) };
+		var ampCtls = NTSS.spk.ordered.collect {|spk| spk.name.kr(1, spec:\amp4) };
 		var spkChans = logicChans.drop(-1); // last is sub
 		var mixSpks = RLPF.ar(
 			spkChans.sum *  (1/ spkChans.size.sqrt),
@@ -156,7 +156,7 @@ ProxyChain.add3(
 		var allChans = spkChans ++ subChans;
 
 		// measured in class: all speakers
-		var relAmpValues = NTSS.spk.logicOrder.collect(_.relAmp);
+		var relAmpValues = NTSS.spk.ordered.collect(_.relAmp);
 
 		// write to spatBus before relAmpComp
 		var finalLogicalOut = allChans * (ampCtls * mainvol);
@@ -185,7 +185,7 @@ ProxyChain.add3(\shiftSpeakers, \filter -> {|in|
 
 	var outs = Silent.ar ! s.options.numOutputBusChannels;
 
-	NTSS.spk.logicOrder.do {|spkDict, logicIdx|
+	NTSS.spk.ordered.do {|spkDict, logicIdx|
 		if (spkDict.name != \empty) {
 			outs[spkDict.hwOut] = in[logicIdx];
 		};
