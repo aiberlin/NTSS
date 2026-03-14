@@ -20,7 +20,7 @@ NTSS.showRing(\back, false);
 NTSS.showRing(\back);
 */
 
-NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.speakers.size) };
+NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.spk.ordered.size) };
 
 WinBounds.addMake(\SpatioScope, {
 	q.spat = SpatioScope.new(
