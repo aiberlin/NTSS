@@ -192,6 +192,7 @@ s.waitForBoot {
 	// load panner functions
 	"ringPanFuncs.scd".postcs.loadRelative;
 	"chanPanFuncs.scd".postcs.loadRelative;
+	"ringPanFuncs2.scd".postcs.loadRelative;
 
 	NTSS.panNames = NTSS.panNames ? NTSS.allPanNames;
 
