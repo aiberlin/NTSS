@@ -111,7 +111,7 @@ NTSS.spk.groups = (
 	// rings: clockwise, always begin at center, so they can be one long twirl
 	left: [\bw6, \wd13, \cabass0, \wd12,  \gene0, \ldl7 ],
 	up: [\kef0, \kef1, \kef2, \braun1, \kef3, \kef4 ], // kefs,
-	back: [ /*\noname,*/ \ldl8, \wd14, \bluecab, \b_o, \gene1, \cabass0, ],
+	back: [ /*\noname,*/ \ldl8, \wd14, \bluecab, \b_o, \gene1, \cabass1 ],
 	right: [  \behring, \braun2, \cabass2, \wd11, \crypt3, \cryptA],
 	// center: [ \mr0, \mr1, \mr2, \mr3, \mr4, \mr5],
 

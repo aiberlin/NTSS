@@ -1,4 +1,4 @@
-"panModes: Using new panner param names.".postln;
+"NTSS mono panners loading.".postln;
 
 /* Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
 
@@ -31,41 +31,35 @@ Ndef(\pan1).gui;
 // // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
 // NTSS.ringNumSpks = 6;
 // NTSS.ringNames = ['left', 'right', 'back', 'up', 'center']; // leave out subs
-// NTSS.ringNames.do (Spec.add(_, \amp));
+NTSS.ringNames.do (Spec.add(_, \amp4));
 
 NTSS.ringsFlat = NTSS.ringNames.collect { |name| NTSS.spkGroups[name] }.flat;
-NTSS.ringsFlatIndices = NTSS.ringsFlat.collect { |spk|
-	var spkIndex = NTSS.speakersActive.indexOf(spk);
-	// [ spk, spkIndex ].postln;
-	spkIndex
-};
 
-// // assumes rings have all speakers
-// NTSS.reorderRingsToSpeakers = { |nt, array|
-// 	var res = array.class.newClear(array.size);
-// 	array.do { |item, i|
-// 		res.put(
-// 			NTSS.ringsFlatIndices[i],
-// 			item
-// 		);
-// 	};
-// 	res
-// };
+NTSS.spk.atName = { |spk, name| spk.data.detect { |dict| dict.name == name } ? () };
 
-NTSS.reorderRingsToSpeakers = { |nt, array|
-	var res = array.class.fill(NTSS.speakersActive.size, Silent.ar);
-	array.do { |item, i|
-		var spkIndex = NTSS.ringsFlatIndices[i];
-		// [item, i, spkIndex].postln;
-		case { spkIndex.isNil } {
-			// warn("reorderRingsToSpeakers: no spkIndex at %\n".format(i));
-		} { spkIndex >= NTSS.spk.numLogicOuts } {
-			warn("reorderRingsToSpeakers: spkIndex % outside range.\n".format(spkIndex));
+NTSS.spk.atName(\bw6).logicOut;
+NTSS.spk.atName(\cab0).logicOut; // wrong name
+NTSS.spk.atName(\cabass0).logicOut; //
+
+// array is in order of NTSS.ringsFlat;
+// output should be to logical order
+// if overlap in logic channels;
+// maybe add them up if already replaced.
+NTSS.reorderRingsToSpeakers = { |ntss, array|
+	var nameList = NTSS.ringsFlat;
+	var outSigs = array.class.fill(NTSS.spk.numLogicOuts, Silent.ar);
+	array.do { |chan, i|
+		var spkDict = NTSS.spk.atName(nameList[i]);
+		var logicOut = if (spkDict.notNil) { spkDict.logicOut };
+		case { logicOut.isNil } {
+			warn("reorderRingsToSpeakers: no spkIndex at %\n".format(i));
+		} { logicOut >= NTSS.spk.numLogicOuts } {
+			warn("reorderRingsToSpeakers: spkIndex % outside range.\n".format(logicOut));
 		} {
-			res.put(spkIndex, item);
-		}
+			outSigs.put(logicOut, chan);
+		};
 	};
-	res
+	outSigs // in logic order
 };
 
 NTSS.addPanNames = { |q ... names|
@@ -119,7 +113,7 @@ NTSS.addPanNames([ \panFixed, \panRoto, \panSnake, \panFeed]);
 // the input buses coming from the PMCs
 Spec.add(\srcBus, [s.options.firstPrivateBus] + [0, 31] ++ [\lin, 1]);
 // angle position on the ring
-Spec.add(\srcPos, NTSS.ringNumSpks * [-1, 1]);
+Spec.add(\srcPos, [-2, 2]); // +2 is one full rotation
 // source width on the ring (scaled PanAz width)
 Spec.add(\srcWidth, \unipolar);
 
