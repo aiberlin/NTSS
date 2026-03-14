@@ -83,7 +83,7 @@ NTSS.updatePanNames = { |newNames|
 
 /**** tests
 // reordering ringNames by indices
-NTSS.reorderRingsToSpeakers(NTSS.ringsFlat) == NTSS.speakersActive.drop(-2);
+NTSS.reorderRingsToSpeakers(NTSS.ringsFlat) == NTSS.spk.names.drop(-2);
 
 // should switch between 4 rings!
 Ndef(\testRings, {
@@ -97,7 +97,7 @@ Ndef(\testRings, {
 	var arr = Silent.ar ! 24, snd = Dust2.ar(500);
 	var ring = NTSS.spkGroups.up;
 	ring.do { |name|
-		var index = NTSS.speakersActive.indexOf(name);
+		var index = NTSS.spk.names.indexOf(name);
 		(name.cs + index).postln;
 		arr.put(index, snd);
 	};

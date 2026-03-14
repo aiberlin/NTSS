@@ -42,12 +42,6 @@ Tdef(\testLogic).stop;
 /**** Setup for 111 NTSS : ****/
 (
 q = q ? ();
-/*
-// using the old system of names:
-NTSS.speakersOrder.postcs.size; // all 32 names, 4 empty
-NTSS.speakersActive.postcs.size; // the 28 active ones in logical order
-NTSS.speakers.size; //
-*/
 
 // For Butz GUI:
 NTSS.testpath = thisProcess.nowExecutingPath;
@@ -84,7 +78,7 @@ SynthDef(\pink, { |out, amp=0.1, sustain=1|
 
 // check data
 NTSS.spk.data.printAll;'';
-NTSS.spk.active;
+NTSS.spk.ordered;
 NTSS.spk.data .collect(_.hwOut).sort.plot
 
 We measure amps on the logical order,
@@ -102,10 +96,10 @@ so MainFX has to have shiftSpeakers on!
 ];
 
 
-// TO BE DONE at 111:
+// TO DO when making new setups:
 // measure how much level adjustment each speaker needs,
 // here for all 32 hardware outs.
-// results should go into relAmp eventually.
+// results should go into NTSS.hwRelAmps relAmp eventually.
 
 /*
 // compare one pair of speakers:
@@ -163,7 +157,7 @@ Tdef(\testLogic, { |env|
 
 	inf.do { |i|
 		var chan = ~chans.wrapAt(i);
-		var spkDict = NTSS.spk.logicOrder[chan];
+		var spkDict = NTSS.spk.ordered[chan];
 		if (spkDict.isNil) {
 			"*** no speaker at logicOut %!\n".postf(chan);
 		} {
