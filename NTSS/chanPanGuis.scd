@@ -210,7 +210,7 @@ NTSS.pchains.do { |pch, i|
 		Button(w, 20@30).alpha_(0.7).states_([["?"]]).font_(font)
 		.action_{ |b|
 			Dialog.openPanel({ |path|
-				if (MFdef(\setSndfile).(pch, path)[0]) {
+				if (MFdef(\setSndfile).(pch, path)[0].notNil) {
 					sfDrag.object = pch.getHalo.sfpath;
 					sfDrag.string = pch.getHalo.sfname;
 				};
@@ -220,7 +220,7 @@ NTSS.pchains.do { |pch, i|
 
 		sfDrag.receiveDragHandler = { arg v;
 			var path = View.currentDrag.postln;
-			if (MFdef(\setSndfile).(pch, path)[0]) {
+			if (MFdef(\setSndfile).(pch, path)[0].notNil) {
 				v.object = pch.getHalo.sfpath;
 				v.string = pch.getHalo.sfname;
 			};
