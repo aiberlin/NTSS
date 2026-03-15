@@ -1,5 +1,5 @@
 
-"/// NTSS distance-based spat Panners: //////".postln;
+"/// NTSS distance-based spat mono Panners: //////".postln;
 
 NTSS.spat = NTSS.spat ? ();
 
