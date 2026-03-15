@@ -92,7 +92,7 @@ ProxyChain.add3(\sndfile, \mix -> { |amp = 0.25, bufnum = 0, playRate = 1, tune 
 	// play 100 Hz samplerate at speed * 10
 	var bufRateMinRatio = (1000 / BufSampleRate.kr(bufnum)).max(1);
 	var pbrate = playRate * SinOsc.kr(rtModFreq, 0, rtModDepth).midiratio;
-	PlayBuf.ar(1, bufnum,
+	PlayBuf.ar(2, bufnum,
 		pbrate * BufRateScale.kr(bufnum) * bufRateMinRatio * tune.midiratio,
 		loop: loop)
 	* amp;
@@ -383,7 +383,7 @@ NTSS.pchains.do { |pc, i|
 	pc.addHalo(\panner, panner);
 	// pc.getHalo(\mybuf).postln;
 	if (pc.getHalo(\mybuf).isNil) {
-		mybuf = Buffer.sendCollection(s, 0!16, 1);
+		mybuf = Buffer.sendCollection(s, 0!16, 2);
 		pc.addHalo(\mybuf, mybuf);
 		pc.set(\bufnum, pc.getHalo(\mybuf).bufnum);
 	};
@@ -403,7 +403,7 @@ q.ndef.groupNames = q.ndef.groupNames ? [\ntssChan, \ntssPan];
 q.ndef.groupNames.postcs;
 
 MFdef(\setSndfile).add(\setFile, { |pc, pathOrSF|
-	var sfname;
+	var sfname, chansToLoad = [0, 0], sndfile;
 	if(pathOrSF.isKindOf(String)) {
 		pathOrSF = SoundFile.collect(pathOrSF).first
 	};
@@ -413,7 +413,10 @@ MFdef(\setSndfile).add(\setFile, { |pc, pathOrSF|
 	} { // we have a soundfile
 		sfname = pathOrSF.path.basename.splitext[0].asSymbol;
 		"OK! loading %\n".postf(sfname);
-		pc.getHalo(\mybuf).allocReadChannel(pathOrSF.path, channels: [0]);
+		if (pathOrSF.numChannels == 2) { chansToLoad = [0, 1] };
+
+		pc.getHalo(\mybuf).allocReadChannel(pathOrSF.path, channels: chansToLoad);
+
 		pc.addHalo(\sfname, sfname);
 		pc.addHalo(\sfpath, pathOrSF);
 		pathOrSF;
