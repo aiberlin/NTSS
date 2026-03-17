@@ -104,7 +104,7 @@ NTSS.spk.data = List[
  NTSS.hwRelAmps = [
 	1, 1, 1, 1,  1,// kefs
 	0.3, 0.3, 0.3, // cabasse
-	4, 0.4,// ldls
+	1, 0.4,// ldls
 	1, 1, // empty
 	2, 1, 1, 1,
 
