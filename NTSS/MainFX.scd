@@ -145,14 +145,14 @@ on channels 1, 2, 3, 4 and mutes all other channels.";
 ProxyChain.add3(
 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
 		// logical order
-		var logicChans = in;
+		var logicChans = in.keep(NTSS.spk.ordered.size);
 		var ampCtls = NTSS.spk.ordered.collect {|spk| spk.name.kr(1, spec:\amp4) };
 		var spkChans = logicChans.drop(-1); // last is sub
 		var mixSpks = RLPF.ar(
-			spkChans.sum *  (1/ spkChans.size.sqrt),
+			spkChans.sum, // (1/ spkChans.size.sqrt),
 			subFreq.lag(1)
 		);
-		var subChans = in.drop(spkChans.size) + (mixSpks * mix2Sub);
+		var subChans = logicChans.drop(spkChans.size) + (mixSpks * mix2Sub);
 		var allChans = spkChans ++ subChans;
 
 		// measured in class: all speakers
