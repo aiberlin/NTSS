@@ -82,8 +82,12 @@ NTSS.updatePanNames = { |newNames|
 };
 
 /**** tests
+// all speakers in rings are unique
+NTSS.ringsFlat
+NTSS.ringsFlat.size == NTSS.ringsFlat.asSet.size
 // reordering ringNames by indices
-NTSS.reorderRingsToSpeakers(NTSS.ringsFlat) == NTSS.spk.names.drop(-2);
+NTSS.reorderRingsToSpeakers(NTSS.ringsFlat) == NTSS.spk.names;
+
 
 // should switch between 4 rings!
 Ndef(\testRings, {
@@ -95,7 +99,7 @@ Ndef(\testRings, {
 // test one ring:
 Ndef(\testRings, {
 	var arr = Silent.ar ! 24, snd = Dust2.ar(500);
-	var ring = NTSS.spkGroups.up;
+	var ring = NTSS.spk.groups[NTSS.ringNames.choose.postln];
 	ring.do { |name|
 		var index = NTSS.spk.names.indexOf(name);
 		(name.cs + index).postln;
@@ -125,12 +129,12 @@ ProxyChain.add3(\panFixed, { |srcBus = 0, srcPos = 0, srcWidth = 0|
 
 	var panned = NTSS.ringNames.collect { |ringname|
 		var ringamp = ringname.kr(0.25, 1);
-		var ringSize = NTSS.spk.groups[ringname.postln].size.postln;
+		var ringSize = NTSS.spk.groups[ringname].size;
+		// "panFixed: % has % spks.\n".postf(ringname, ringSize);
 		PanAz.ar(ringSize, in, srcPos * 1, ringamp * widAmp, width, 0)
-	}.flat;
-
-	panned;
-	NTSS.reorderRingsToSpeakers(panned);
+	};
+	// panned.printAll.shape.postln;
+	NTSS.reorderRingsToSpeakers(panned.flat);
 });
 
 ProxyChain.sourceDicts[\panFixed].put(\text,
@@ -159,7 +163,7 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 	var cirPan2 = Pan2.ar(in, cirWidth ** 2 * 2 - 1, circleAmp);
 	var cirWidth2 = (cirWidth  ** 2).linlin(0, 1, 2, 6);
 	var circleMagnet =  circle + ((circle * -2pi).sin * 0.15)/2;
-	var circles = PanAz.ar(4, cirPan2[0], circleMagnet.lag(1), 1, cirWidth2, 0)
+	var circles = PanAz.ar(NTSS.ringNames.size, cirPan2[0], circleMagnet.lag(1), 1, cirWidth2, 0)
 	+ cirPan2[1].dup(4);
 
 	var posAmp = srcWidth.linexp(0, 1, 1, 0.4);
@@ -171,8 +175,10 @@ ProxyChain.add3(\panRoto, { |srcBus = 64,
 	// Out.kr(krBus, [posAll, srcWidth2, circleMagnet.lag(1), cirWidth2]);
 
 	var panned = circles.collect { |cirChan, i|
+		var ringname = NTSS.ringNames[i];
+		var ringSize = NTSS.spk.groups[ringname].size;
 		var posPan2 = Pan2.ar(cirChan, panPos2, posAmp);
-		PanAz.ar(NTSS.ringNumSpks, posPan2[0], posAll, 1, srcWidth2, 0) + posPan2[1].dup(5);
+		PanAz.ar(ringSize, posPan2[0], posAll, 1, srcWidth2, 0) + posPan2[1].dup(5);
 	}.flat;
 
 	NTSS.reorderRingsToSpeakers(panned);
@@ -202,7 +208,7 @@ ProxyChain.add3(\panSnake, { |srcBus = 0, srcPos = 0, srcWidth = 0, amp = 0.25,
 	var in = InFeedback.ar(srcBus);
 	var rotPos = LFSaw.kr(rotRate ** 2);
 	var posMod = SinOsc.kr((pendRate / pendDepth.lag(2).max(1)).lag(2), 0, pendDepth.lag(2));
-	var posAll = (srcPos.lag(2) * 2 / NTSS.ringNames.size) + posMod + rotPos;
+	var posAll = (srcPos.lag(2)) + posMod + rotPos;
 
 	var panned = PanAz.ar(NTSS.ringsFlat.size, in, posAll, (amp * widAmp).lag(1), width, 0);
 
@@ -253,6 +259,9 @@ ProxyChain.add3(\panFeed, { |srcBus, srcPos = 0, srcWidth = 0,
 
 	mixedouts = ((in * direct.lag(2)) + (rotated * delayed.lag(2)));
 	panned = (mixedouts *.t ringAmps).flop.flat;
+
+	// should be adjustable for different ringsizes ...
+	// leave the 24 for now, should be OK
 
 	NTSS.reorderRingsToSpeakers(panned);
 

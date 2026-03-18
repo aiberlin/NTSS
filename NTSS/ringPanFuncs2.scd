@@ -90,12 +90,15 @@ ProxyChain.add3(\ringRoto2, { |srcBus = 64,
 		var circles = PanAz.ar(4, cirPan2[0], circleMagnet.lag(1), 1, cirWidth2, 0) + cirPan2[1].dup(4);
 
 		circles.collect { |cirChan, i|
+			var ringname = NTSS.ringNames[i];
+			var ringSize = NTSS.spk.groups[ringname].size;
 			var posPan2 = Pan2.ar(cirChan, panPos2, posAmp);
-			PanAz.ar(NTSS.ringNumSpks, posPan2[0], panAzPos, 1, srcWidth2, 0) + posPan2[1].dup(5);
+
+			PanAz.ar(ringSize, posPan2[0], panAzPos, 1, srcWidth2, 0) + posPan2[1].dup(5);
 		}.flat;
 	}.sum;
 
-	panned.shape.postln;
+	// panned.shape.postln;
 	// panned.postln;
 
 	NTSS.reorderRingsToSpeakers(panned);
@@ -152,6 +155,8 @@ Spec.add(\delayed, \amp);
 Spec.add(\feedback, \amp);
 Spec.add(\rotate, NTSS.ringNumSpks * [-1,1]);
 
+// how to accomodate different ring sizes here? later ...
+
 ProxyChain.add3(\ringFeed2, { |srcBus, srcPos = 0, srcPosD = 0.5, srcWidth = 0,
 	direct = 1, delayed = 0.8, feedback = 0.8, delaytime = 2, rotate = 1|
 
@@ -192,14 +197,14 @@ ProxyChain.add3(\ringFeed2, { |srcBus, srcPos = 0, srcPosD = 0.5, srcWidth = 0,
 
 ProxyChain.sourceDicts[\ringFeed2].put(\text,
 	"ringFeed2 pans into 4 rings of 6 speakers each,
-	with delay and feedback that can be rotated.
-	srcPos:    circular position, now on the long ring,
-	srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
-	direct:    level of direct panned sound
-	delayed:   level of delayed sound
-	feedback:  level of feedback in delayed sound
-	delaytime: delaytime of delayed sound
-	rotate:    number of speakers by which delay is rotated against source.
-	0 is none, 1 is 1 spk. clockwise, 3 is opposite on ring of 6."
+with delay and feedback that can be rotated.
+srcPos:    circular position, now on the long ring,
+srcWidth:  0 is max 2 speakers on the ring, 1 is all speakers
+direct:    level of direct panned sound
+delayed:   level of delayed sound
+feedback:  level of feedback in delayed sound
+delaytime: delaytime of delayed sound
+rotate:    number of speakers by which delay is rotated against source.
+0 is none, 1 is 1 spk. clockwise, 3 is opposite on ring of 6."
 );
 )
