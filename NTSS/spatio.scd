@@ -1,23 +1,12 @@
-NTSS.showRing = { |nt, ringName, show=true|
-	if (show, "SHOWING %:\n", "HIDING %:\n").postf(ringName);
-	NTSS.ringDict[ringName].do { |spkName|
-		var index = NTSS.spk.names.indexOf(spkName);
-		q.spat.ampViews[index].visible_(show);
-		"  %: %\n".postf(index, spkName);
-	};
-};
+
+
 
 /*
-NTSS.showRing(\subs, false);
-NTSS.showRing(\subs);
-NTSS.showRing(\left, false);
-NTSS.showRing(\left);
-NTSS.showRing(\up, false);
-NTSS.showRing(\up);
-NTSS.showRing(\right, false);
-NTSS.showRing(\right);
-NTSS.showRing(\back, false);
-NTSS.showRing(\back);
+
+NTSS.spk.selected = NTSS.spk.groups.choose.postln; "";
+NTSS.spk.selected = NTSS.spk.groups.choose.postln; "";
+
+NTSS.spk.selected = [];
 */
 
 NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.spk.ordered.size) };
@@ -49,5 +38,30 @@ WinBounds.addMake(\SpatioScope, {
 		);
 	};
 	q.spat.parent.moveTo(120, 480);
+
+	/////// show groups:
+	NTSS.spk.selected = Set[];
+	NTSS.spk.groups.skeys.do { |groupName, i|
+		Button(q.spat.parent, Rect(2, 20 * i + 30, 50, 20))
+		.states_([[groupName, nil, Color.grey(0.5, 0.5)],
+			[groupName, nil, Color.grey(1, 0.6)]])
+		.action_{ |bt|
+			if (bt.value > 0) {
+				NTSS.spk.selected.addAll(NTSS.spk.groups[groupName]);
+			} {
+				NTSS.spk.selected.removeAll(NTSS.spk.groups[groupName])
+			}
+		};
+	};
+
+	q.spat.getHalo(\groupShow).stop;
+	q.spat.addHalo(\groupShow, SkipJack({
+		NTSS.spk.selected.do { |spkName|
+			var index = NTSS.spk.names.indexOf(spkName);
+			var view = q.spat.ampViews[index];
+			view.background_(Color.rand(0.3, 0.8));
+		};
+	}, 0.2, { q.spat.parent.isClosed }));
+
 	q.spat.parent
 });

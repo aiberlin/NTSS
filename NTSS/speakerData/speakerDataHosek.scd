@@ -137,6 +137,7 @@ NTSS.spk.positions = NTSS.spk.ordered.collect { |line| [line.x, line.y.neg + 1, 
 
 
 NTSS.spk.groups = (
+	all: NTSS.spk.names,
 	// rings: clockwise, always begin at center, so they can be one long twirl
 	up: [\kef0, \kef1, \kef2, \kef3, \kef4 ], // kefs,
 	center: [ \cabass0, \cabass2, \cabass1, \ldl7, \ldl8],
