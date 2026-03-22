@@ -114,45 +114,34 @@ ProxyChain.sourceDicts[\mix2four]. text =
 It mixes all input channels down to quadro,
 on channels 1, 2, 3, 4 and mutes all other channels.";
 
-/////////// OLD VERSION
-// ProxyChain.add3(
-// 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
-// 		var amps = NTSS.amp_names.collect {|name| name.kr(1, spec:\amp4) };
-//
-// 		var spkChans = in.keep(NTSS.speakers.size - 1);
-// 		var mixSpks = RLPF.ar(
-// 			spkChans.sum *  (1/ NTSS.speakers.size.sqrt),
-// 			subFreq.lag(1)
-// 		);
-// 		var subChans = in.drop(NTSS.speakers.size - 1) + (mixSpks * mix2Sub);
-// 		var allChans = spkChans ++ subChans;
-//
-// 		// measured in class: all speakers
-// 		var tuning = NTSS.speakersTuning;
-//
-// 		var finalLogicalOut = allChans * (amps * mainvol);
-// 		Out.ar(NTSS.spatbus, finalLogicalOut);
-//
-// 		finalLogicalOut  * tuning
-// 	},
-// 	1,
-// 	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(
-// 		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
-// 	)
-// );
 
-///// new data structure:
+
+////// set main volume,
+////// submix of all bass components to sub,
+///// optional individual hipass filters for all speakers,
+///// output still plays to logical channels.
 ProxyChain.add3(
 	\mainMixer,  \filter -> { |in, mainvol = 0.25, subFreq = 100, mix2Sub = 0.25|
 		// logical order
 		var logicChans = in.keep(NTSS.spk.ordered.size);
 		var ampCtls = NTSS.spk.ordered.collect {|spk| spk.name.kr(1, spec:\amp4) };
 		var spkChans = logicChans.drop(-1); // last is sub
+
 		var mixSpks = RLPF.ar(
 			spkChans.sum, // (1/ spkChans.size.sqrt),
 			subFreq.lag(1)
 		);
 		var subChans = logicChans.drop(spkChans.size) + (mixSpks * mix2Sub);
+
+		// individually filter away bass load on small speakers:
+		var spkChansFiltered = spkChans.collect { |chan, i|
+			var spkData = NTSS.spk.ordered[i];
+			if (spkData.hpf.isNumber) {
+				spkData.postln;
+				chan = RHPF.ar(chan, spkData.hpf.clip(20, 200))
+			};
+			chan
+		}; // last is sub
 		var allChans = spkChans ++ subChans;
 
 		// measured in class: all speakers
@@ -169,6 +158,7 @@ ProxyChain.add3(
 		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
 	)
 );
+
 
 
 ProxyChain.sourceDicts[\mainMixer]. text =
