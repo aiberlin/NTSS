@@ -84,15 +84,16 @@ NTSS.spk.data = List[
 	(name: \braun2,  x:   -3.5, y:  -3, z: 2.0,	logicOut: 21, hwOut: 23, hpf: 60 ),
 
 	// 24, 25, 26 are free maybe use for shaker?
-	(name: \ceil,   x:  2.5, y:  0.0, z: 3.2, 	logicOut: 23, hwOut: 24 ),
-	(name: \floor,  x:  3.5, y: -1.0, z: 0.0, 	logicOut: 24, hwOut: 25 ),
+	(name: \floor,  x:  3.5, y: -1.0, z: 0.0, 	logicOut: 24, hwOut: 24 ),
+	(name: \ceil,   x:  2.5, y:  0.0, z: 3.2, 	logicOut: 23, hwOut: 25 ),
 	(name: \plank,  x:  4.0, y:  4.5, z: 0.0, 	logicOut: 25, hwOut: 26 ),
-	// broken
+	// output broken on UMC1820 gencomp, so skip this one
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 27 ),
 
 	(name: \behring,  x:   4, y:  2, z: 1.5, 	logicOut: 22, hwOut: 28 ),
 	(name: \sub,  x:   -3, y:  -5, z: 0.0,  	logicOut: 26, hwOut: 29 ),
 
+	// spdifs, so skip for now
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 30 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 31 ),
 
