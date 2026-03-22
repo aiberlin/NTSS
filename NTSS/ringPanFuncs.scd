@@ -24,16 +24,16 @@ Ndef(\pan1).gui;
 // // separate levels on 4 rings:
 // q.ringNames.do (Spec.add(_, \amp));
 
-// spkGroups have more types of groups:
-// NTSS.spkGroups;
-// NTSS.spkGroups.keys.postcs;
+// spk.groups have more types of groups:
+// NTSS.spk.groups;
+// NTSS.spk.groups.keys.postcs;
 
 // // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
 // NTSS.ringNumSpks = 6;
 // NTSS.ringNames = ['left', 'right', 'back', 'up', 'center']; // leave out subs
 NTSS.ringNames.do (Spec.add(_, \amp4));
 
-NTSS.ringsFlat = NTSS.ringNames.collect { |name| NTSS.spkGroups[name] }.flat;
+NTSS.ringsFlat = NTSS.ringNames.collect { |name| NTSS.spk.groups[name] }.flat;
 
 NTSS.spk.atName = { |spk, name| spk.data.detect { |dict| dict.name == name } ? () };
 
