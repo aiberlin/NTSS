@@ -43,8 +43,8 @@ WinBounds.addMake(\SpatioScope, {
 	NTSS.spk.selected = Set[];
 	NTSS.spk.groups.skeys.do { |groupName, i|
 		Button(q.spat.parent, Rect(2, 20 * i + 30, 50, 20))
-		.states_([[groupName, nil, Color.grey(0.5, 0.5)],
-			[groupName, nil, Color.grey(1, 0.6)]])
+		.states_([[groupName, Color.grey(0.8), Color.grey(0.5, 0.5)],
+			[groupName, Color.grey(1.0), Color.grey(0.8, 0.6)]])
 		.action_{ |bt|
 			if (bt.value > 0) {
 				NTSS.spk.selected.addAll(NTSS.spk.groups[groupName]);
@@ -58,8 +58,12 @@ WinBounds.addMake(\SpatioScope, {
 	q.spat.addHalo(\groupShow, SkipJack({
 		NTSS.spk.selected.do { |spkName|
 			var index = NTSS.spk.names.indexOf(spkName);
-			var view = q.spat.ampViews[index];
-			view.background_(Color.rand(0.3, 0.8));
+			if (index.isNil) {
+				"q.spat: speaker % not found.\n".postf(spkName.cs);
+			} {
+				var view = q.spat.ampViews[index];
+				view.background_(Color.rand(0.3, 0.8))
+			}
 		};
 	}, 0.2, { q.spat.parent.isClosed }));
 
