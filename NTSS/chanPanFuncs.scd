@@ -134,25 +134,27 @@ NTSS.spat.tapsfb = { arg name, speakers, snd;
 
 
 NTSS.spat.peatSoup = { arg name, speakers, snd;
- var polarity = 2 * \polarity.kr(0, spec:[0,1,\lin,1]) - 1;
- var sig = snd * \preamp.kr(1, spec:[0,10,\amp]);
- var weightedSound = BLowShelf.ar(MidEQ.ar(sig, 2000, 0.5, 12), 300, 1,  \bass.kr(12, spec:[-6,20,\lin]) * (-1));
- var lpass = BLowPass.ar(sig, 2500);
- var lim = Limiter.ar(lpass, \limiter.kr(-30, spec:[-50,-6,\db]).dbamp);
- var amp = Amplitude.ar(weightedSound, \atk.kr(2, spec:[0,10]), \rls.kr(2, spec:[0,10]));
- var db = amp.ampdb;
- var mid = \midDb.kr(-40, spec:[-60,-20]);
- var maxRot = \maxRotation.kr(1, spec:[0.01, 100, \exp]);
- var width = db.linlin(mid - 20, mid + 20, speakers.size/1, 2);
- var pan = LFSaw.ar(
-  (
-   (db.linexp(mid, -10, 0.01, maxRot)*polarity.neg) +
-   (db.linexp(-80, mid, maxRot, 0.01)*polarity))
- );
- var panned = PanAz.ar(NTSS.spk.names.size, lim, pan, 1, width); //NTSS.ringsFlat.size
- panned;
- //NTSS.reorderRingsToSpeakers(panned);
- //PanAz.ar(NTSS.speakers.size, lim, pan, 1, width);
+	var polarity = 2 * \polarity.kr(0, spec:[0,1,\lin,1]) - 1;
+	var sig = snd * \preamp.kr(1, spec:[0,10,\amp]);
+	var weightedSound = BLowShelf.ar(MidEQ.ar(sig, 2000, 0.5, 12), 300, 1,  \bass.kr(12, spec:[-6,20,\lin]) * (-1));
+	var lpass = BLowPass.ar(sig, 2500);
+	var lim = Limiter.ar(lpass, \limiter.kr(-30, spec:[-50,-6,\db]).dbamp);
+	var amp = Amplitude.ar(weightedSound, \atk.kr(2, spec:[0,10]), \rls.kr(2, spec:[0,10]));
+	var db = amp.ampdb;
+	var mid = \midDb.kr(-40, spec:[-60,-20]);
+	var maxRot = \maxRotation.kr(1, spec:[0.01, 100, \exp]);
+	var width = db.linlin(mid - 20, mid + 20, speakers.size/1, 2);
+	var pan = LFSaw.ar(
+		(
+			(db.linexp(mid, -10, 0.01, maxRot)*polarity.neg) +
+			(db.linexp(-80, mid, maxRot, 0.01)*polarity))
+	);
+
+	var equied = lim.equi;
+	var panned = PanAz.ar(NTSS.spk.names.size, equied, pan, 1, width); //NTSS.ringsFlat.size
+	panned;
+	//NTSS.reorderRingsToSpeakers(panned);
+	//PanAz.ar(NTSS.speakers.size, lim, pan, 1, width);
 };
 
 NTSS.spat.keys.do {|spatName|
@@ -205,7 +207,7 @@ bw5..sub1: delay time in seconds for each speaker.
 );
 
 ProxyChain.sourceDicts[\peatSoup].put(\text,
- "peatSoup is a NTSS version of Nic Collins' Pea Soup, where the negative feedback mechanism happens through rotating the playback position:
+	"peatSoup is a NTSS version of Nic Collins' Pea Soup, where the negative feedback mechanism happens through rotating the playback position:
 polarity:  rotation clockwise or counter-clockwise
 preamp:    input gain before limiter
 limiter:   limiter threshold
