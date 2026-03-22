@@ -47,19 +47,19 @@ NTSS.spk.data = List[
 
 	/*** on Mixer  ****/
 	///// group kefs as up, right font is 0, clockwise
-	(name: \kef0, 	x:  1.5, y:  4, z: 2.2, 	logicOut: 0, hwOut:  0, path: \yam1_FL ),
-	(name: \kef1, 	x:  1,   y: -1, z: 2.2, 	logicOut: 1, hwOut:  1, path: \yam1_FR ),
-	(name: \kef2, 	x:  0,   y: -4.2, z: 2.2, 	logicOut: 2, hwOut:  2, path: \yam1_SL ),
-	(name: \kef3, 	x: -1,   y: -1, z: 2.2, 	logicOut: 3, hwOut:  3, path: \yam1_SR ),
-	(name: \kef4, 	x: -1,   y:  4, z: 2.2, 	logicOut: 4, hwOut:  4, path: \yam1_C ),
+	(name: \kef0, 	x:  1.5, y:  4, z: 2.2, 	logicOut: 0, hwOut:  0, path: \yam1_FL, hpf: 100 ),
+	(name: \kef1, 	x:  1,   y: -1, z: 2.2, 	logicOut: 1, hwOut:  1, path: \yam1_FR, hpf: 100 ),
+	(name: \kef2, 	x:  0,   y: -4.2, z: 2.2, 	logicOut: 2, hwOut:  2, path: \yam1_SL, hpf: 100 ),
+	(name: \kef3, 	x: -1,   y: -1, z: 2.2, 	logicOut: 3, hwOut:  3, path: \yam1_SR, hpf: 100 ),
+	(name: \kef4, 	x: -1,   y:  4, z: 2.2, 	logicOut: 4, hwOut:  4, path: \yam1_C, hpf: 100 ),
 
 	// center line
 	// which cabasse is where?
-	(name: \cabass2, x: 0.2, y:  -0.3, z: 0.0,  logicOut: 5, hwOut:  5, path: \yam2_FL ),
-	(name: \cabass0, x: 0.2, y:   0.3, z: 0.0, 	logicOut: 6, hwOut:  6, path: \yam2_FR ),
-	(name: \cabass1, x: -0.3, y:  0.0, z: 0.0,  logicOut: 7, hwOut:  7, path: \yam2_SL ),
-	(name: \ldl7,    x: 0.0, y:  4.5, z: 0.0,  	logicOut: 8, hwOut:  8, path: \yam2_SR ),
-	(name: \ldl8,    x: 0.0, y: -5.0, z: 0.0,  	logicOut: 9, hwOut:  9, path: \yam2_C ),
+	(name: \cabass2, x: 0.2, y:  -0.3, z: 0.0,  logicOut: 5, hwOut:  5, path: \yam2_FL, hpf: 60 ),
+	(name: \cabass0, x: 0.2, y:   0.3, z: 0.0, 	logicOut: 6, hwOut:  6, path: \yam2_FR, hpf: 60 ),
+	(name: \cabass1, x: -0.3, y:  0.0, z: 0.0,  logicOut: 7, hwOut:  7, path: \yam2_SL, hpf: 60 ),
+	(name: \ldl7,    x: 0.0, y:  4.5, z: 0.0,  	logicOut: 8, hwOut:  8, path: \yam2_SR, hpf: 40 ),
+	(name: \ldl8,    x: 0.0, y: -5.0, z: 0.0,  	logicOut: 9, hwOut:  9, path: \yam2_C,  hpf: 40 ),
 
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 10 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 11 ),
@@ -78,20 +78,20 @@ NTSS.spk.data = List[
 
 	// middle ring:
 	(name: \bluecab,  x:   4, y:  -2.5, z: 1.5, logicOut: 17, hwOut: 19 ),
-	(name: \braun1,  x:   3.5, y:  -3, z: 2.0, 	logicOut: 18, hwOut: 20 ),
-	(name: \minibose,  x:  -4, y:  -2, z: 1.5, 	logicOut: 19, hwOut: 21 ),
+	(name: \braun1,  x:   3.5, y:  -3, z: 2.0, 	logicOut: 18, hwOut: 20, hpf: 60 ),
+	(name: \minibose,  x:  -4, y:  -2, z: 1.5, 	logicOut: 19, hwOut: 21, hpf: 60 ),
 	(name: \noname,  x:   -4, y:  2, z: 1.5, 	logicOut: 20, hwOut: 22 ),
-	(name: \braun2,  x:   -3.5, y:  -3, z: 2.0,	logicOut: 21, hwOut: 23 ),
+	(name: \braun2,  x:   -3.5, y:  -3, z: 2.0,	logicOut: 21, hwOut: 23, hpf: 60 ),
 
 	// 24, 25, 26 are free maybe use for shaker?
-	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 24 ),
-	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 25 ),
-	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 26 ),
+	(name: \ceil,   x:  2.5, y:  0.0, z: 3.2, 	logicOut: 23, hwOut: 24 ),
+	(name: \floor,  x:  3.5, y: -1.0, z: 0.0, 	logicOut: 24, hwOut: 25 ),
+	(name: \plank,  x:  4.0, y:  4.5, z: 0.0, 	logicOut: 25, hwOut: 26 ),
 	// broken
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 27 ),
 
 	(name: \behring,  x:   4, y:  2, z: 1.5, 	logicOut: 22, hwOut: 28 ),
-	(name: \sub,  x:   -3, y:  -5, z: 0.0,  	logicOut: 23, hwOut: 29 ),
+	(name: \sub,  x:   -3, y:  -5, z: 0.0,  	logicOut: 26, hwOut: 29 ),
 
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 30 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 31 ),
@@ -110,7 +110,7 @@ NTSS.spk.data = List[
 
 	1.5, 1.5, 1, 0.5,  // 16
 	1, 1, 1, 1,
-	1, 1, 1, 1,  // 24-27 empty
+	1, 1, 1, 1,  // 24-26 shakers, 27 empty
 	0.6, 0.3, // berh, sub
 	1, 1    /// empty
 ];
@@ -154,16 +154,13 @@ NTSS.spk.groups = (
 	braun: [\braun1, \braun2],
 	amps: [\behring, \bluecab],
 	crypt: [\cryptA, \crypt3],
-	// shaka: [\blech, \harp]
+	shake: [\ceil, \floor, \plank]
 );
 
-NTSS.spkGroups = NTSS.spk.groups;
 
 // ringnames for NTSS are a subset - 4 ring-zones of 6 speakers each
 NTSS.ringNumSpks = 6;
-NTSS.ringNames = ['center', 'up', 'floor', 'mid'/*, 'center'*/]; // leave out subs
+NTSS.ringNames = ['center', 'up', 'floor', 'mid' ]; // leave out subs
 NTSS.ringNames.do (Spec.add(_, \amp));
 
-// names to use for setting output amps
-NTSS.amp_names = NTSS.spk.names;
 );
