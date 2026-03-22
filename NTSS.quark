@@ -1,3 +1,4 @@
+// recommended:
 (
 	\name: "NTSS",
 	\path: "NTSS",
@@ -8,5 +9,7 @@
 	\since: "2025",
 	\dependencies: [
 		"JITLibExtensions", "adclib", "SpeakersCorner",
+		"SafetyNet", "EQui",
+		// recommended: "StartupFile", "Modality-toolkit",
 	]
 )

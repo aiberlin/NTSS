@@ -83,7 +83,9 @@ q.tuneNameView(g);
 
 Butz.numButz = 24;
 Butz.addMiniMax;
-Butz.add(\StartupDial, { StartupFile.dialog });
+if (\StartupFile.asClass.notNil) {
+	Butz.add(\StartupDial, { \StartupFile.asClass.dialog });
+};
 Butz.add(\SpatioScope, { WinBounds.showOrMake(\SpatioScope) });
 Butz.add(\NdefMixer, { WinBounds.showOrMake(\NdefMixer) });
 Butz.add(\Levels, { WinBounds.showOrMake(\Levels) });
