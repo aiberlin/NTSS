@@ -104,7 +104,7 @@ WinBounds.addMake(NTSS.topName, {
 	SkipJack({
 		var currVol = MainFX(s).proxy.get('mainvol');
 		// mainVol slider
-		if (volSlider.value != currVol) {
+		if (currVol.notNil and: { volSlider.value != currVol }) {
 			volSlider.value = currVol
 		};
 		//// inPops:
