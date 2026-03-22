@@ -155,7 +155,7 @@ ProxyChain.add3(
 	},
 	1,
 	specs: (\mainvol: \amp, subFreq: [20, 150, \exp], mix2Sub: \amp).putAll(
-		NTSS.amp_names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
+		NTSS.spk.names.collect { |name| [name, [0,1,\amp]] }.flatten.asDict
 	)
 );
 
