@@ -74,7 +74,7 @@ NTSS.spk.data = List[
 	(name: \bw6,  x:   -3, y:  5.5, z: 0.0, 	logicOut: 15, hwOut: 17, path: \denon_SBR ),
 
 	// check cryptA and crypt3 positions
-	(name: \cryptA,  x:   3, y:  3.5, z: 0.0, 	logicOut: 16, hwOut: 18 ),
+	(name: \cryptA,  x:   3.5, y:  0.5, z: 0.0, 	logicOut: 16, hwOut: 18 ),
 
 	// middle ring:
 	(name: \bluecab,  x:   4, y:  -2.5, z: 1.5, logicOut: 17, hwOut: 19 ),
@@ -84,9 +84,9 @@ NTSS.spk.data = List[
 	(name: \braun2,  x:   -3.5, y:  -3, z: 2.0,	logicOut: 21, hwOut: 23, hpf: 60 ),
 
 	// 24, 25, 26 are free maybe use for shaker?
-	(name: \floor,  x:  3.5, y: -1.0, z: 0.0, 	logicOut: 24, hwOut: 24 ),
-	(name: \ceil,   x:  2.5, y:  0.0, z: 3.2, 	logicOut: 23, hwOut: 25 ),
-	(name: \plank,  x:  4.0, y:  4.5, z: 0.0, 	logicOut: 25, hwOut: 26 ),
+	(name: \floor,  x:  3.5, y: -2.0, z: 0.0, 	logicOut: 23, hwOut: 24 ),
+	(name: \ceil,   x:  3.0, y:  0.2, z: 3.2, 	logicOut: 24, hwOut: 25 ),
+	(name: \plank,  x:  4.0, y:  3.5, z: 2.0, 	logicOut: 25, hwOut: 26 ),
 	// output broken on UMC1820 gencomp, so skip this one
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 27 ),
 
