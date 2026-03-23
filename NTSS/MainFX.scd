@@ -128,9 +128,12 @@ ProxyChain.add3(
 		var spkChans = logicChans.drop(-1); // last is sub
 
 		var mixSpks = RLPF.ar(
-			spkChans.sum, // (1/ spkChans.size.sqrt),
-			subFreq.lag(1)
-		);
+			RLPF.ar(
+				spkChans.sum, // (1/ spkChans.size.sqrt),
+				subFreq.lag(1)
+			), subFreq.lag(1)
+		)
+		;
 		var subChans = logicChans.drop(spkChans.size) + (mixSpks * mix2Sub);
 
 		// individually filter away bass load on small speakers:
@@ -191,7 +194,7 @@ and shiftSpeakers reorders them so they go to the right speakers.
 NTSS.spk.data is the place where this info is stored.
 E.g. NTSS.spk.data[12] is:
 ('name': wd11, 'x': 1.0, 'logicOut': 21, 'y': 5.5,
-  'relAmp': 0.25, 'hwOut': 12, 'z': 1.1)
+'relAmp': 0.25, 'hwOut': 12, 'z': 1.1)
 which means speaker wd11 has logical output 21 from the panners,
 and shiftSpeakers reorders it to hardware output hwOut: 12.";
 
