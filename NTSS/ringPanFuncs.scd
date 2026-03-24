@@ -1,4 +1,4 @@
-"NTSS mono panners loading.".postln;
+"// NTSS ring-based mono panners loading. //".postln;
 
 /* Switchable panners for a Mono Ndef bus going to rings of 4 * 6 speakers:
 

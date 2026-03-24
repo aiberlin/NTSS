@@ -59,7 +59,7 @@ ProxyChain.add3(\molens, \filter -> { | in, ampWh = 1, rotWh = 0.051, sizeWh=16,
 	).reciprocal.lag3(1));
 	in = Limiter.ar(in.sum  * dAmp * ampWh.lag(0.1) , 0.97, 0.1);
 	ut = DelayC.ar(in, 0.5, dt);
-	PanAz.ar(4, ut, ring-1 / 2.25).flop.postln; // how to scale ring pos properly?
+	PanAz.ar(4, ut, ring-1 / 2.25).flop; // how to scale ring pos properly?
 },
 1,
 [
@@ -140,7 +140,7 @@ ProxyChain.add3(
 		var spkChansFiltered = spkChans.collect { |chan, i|
 			var spkData = NTSS.spk.ordered[i];
 			if (spkData.hpf.isNumber) {
-				spkData.postln;
+				// spkData.postln;
 				chan = RHPF.ar(chan, spkData.hpf.clip(20, 200))
 			};
 			chan

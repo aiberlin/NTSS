@@ -1,4 +1,4 @@
-"NTSS panners to stereo.".postln;
+"// NTSS ring-based stereo panners loading. //".postln;
 
 /* Switchable panners for a Stereo Ndef bus going to rings of 4 * 6 speakers:
 

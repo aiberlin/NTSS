@@ -1,4 +1,4 @@
-/// NTSS distance-based Stereo Panners, NTSS.spat2: //////
+"// NTSS distance-based spat stereo Panners loading //".postln;
 
 NTSS.spat2 = NTSS.spat2 ? ();
 
