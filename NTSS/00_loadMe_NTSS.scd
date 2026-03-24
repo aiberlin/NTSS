@@ -107,6 +107,9 @@ Butz(\NTSS).add(\MainFX, { WinBounds.showOrMake(\MainFX) });
 // on one window as dragsources.
 Butz(\NTSS).add(\allSrcNdefs, { WinBounds.showOrMake(\allSrcNdefs) });
 
+Butz(\NTSS).add(\nanoNTSS, { WinBounds.showOrMake(\nanoNTSS) });
+
+
 // default groupNames
 q.ndef = q.ndef ? ();
 q.ndef.groups = q.ndef.groups ? ();
@@ -171,6 +174,8 @@ if (NTSS.reboot) {
 	"*** NTSS.rebooting...".postln;
 	s.quit({ s.boot });
 };
+
+"nanoNTSS.scd".loadRelative;
 
 s.waitForBoot {
 
