@@ -56,10 +56,6 @@ Spec.add(\delaytime, [0.01, 10, \exp]);
 
 Spec.add(\loop, \unipolar);
 
-// These are still the names of Biophony inputs.
-// they are dynamically overwriteable later in code!
-// NTSS.inNames.postln;
-
 // utility: make nameViews on NdefGuis etc better readable
 q.tuneNameView = { |q, obj|
 	var nameFont = Font(Font.defaultSansFace, 14);
@@ -123,19 +119,6 @@ WinBounds.addMake(\Levels, {
 
 "NTSS_save.scd".postcs.loadRelative;
 
-/*
-NTSS.showRing(\subs, false);
-NTSS.showRing(\subs);
-NTSS.showRing(\left, false);
-NTSS.showRing(\left);
-NTSS.showRing(\up, false);
-NTSS.showRing(\up);
-NTSS.showRing(\right, false);
-NTSS.showRing(\right);
-NTSS.showRing(\back, false);
-NTSS.showRing(\back);
-*/
-
 // get all desired source Ndefs :
 // everything audio except the chains and panners.
 // can be modified, e.g. for use with NTMI.
@@ -172,12 +155,17 @@ WinBounds.stored.putAll( (
 // reboot by default, because we NTSS needs its settings:
 if (NTSS.reboot) {
 	"*** NTSS.rebooting...".postln;
-	s.quit({ s.boot });
+	s.reboot;
+} {
+	if (s.serverRunning.not) {
+		"*** NTSS.boot...".postln;
+		s.boot
+	}
 };
 
 "nanoNTSS.scd".loadRelative;
 
-s.waitForBoot {
+s.doWhenBooted {
 
 	"*** NTSS has booted.".postln;
 	Butz.numButz_(24).show;
