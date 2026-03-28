@@ -1,4 +1,5 @@
-MKtl(\nanoNTSS, "*trol2");
+
+MKtl(\nanoNTSS, NTSS.nanoID ? "*trol2");
 
 MKtl(\nanoNTSS).elAt(\kn, 7).elemDesc.label = "mainVol";
 MKtl(\nanoNTSS).elAt(\kn, 7).action = { |sl|
@@ -28,22 +29,33 @@ MKtl(\nanoNTSS).elAt(\sl).do { |sl, i|
 	}
 };
 
+MKtl(\nanoNTSS).elAt(\bt, \M).do { |bt, i|
+	bt.elemDesc.label = "stop" + (i+1);
+	bt.action = { |bt|
+		var pchain = NTSS.pchains[i];
+		var panner = pchain.getHalo.panner;
+		if (bt.isOn) {
+			panner.end;
+			pchain.proxy.end;
+		}
+	}
+};
+
 MKtl(\nanoNTSS).elAt(\bt, \R).do { |bt, i|
 	bt.elemDesc.label = "play" + (i+1);
 	bt.action = { |bt|
 		var pchain = NTSS.pchains[i];
 		var panner = pchain.getHalo.panner;
 		if (bt.isOn) {
-			if (panner.monitor.isPlaying) {
-				"%: stop\n".postf(panner.key);
-				panner.stop
-			} {
-				"%: play\n".postf(panner.key);
-				panner.play
-			}
+			panner.play;
+			pchain.proxy.send;
+			if (pchain.getHalo.src.notNil) {
+				pchain.getHalo.src.send;
+			};
 		}
 	}
 };
+
 
 MKtl(\nanoNTSS).elAt(\bt, \S).do { |bt, i|
 	bt.elemDesc.label = "gui" + (i+1);
@@ -57,17 +69,17 @@ MKtl(\nanoNTSS).elAt(\bt, \S).do { |bt, i|
 
 MKtl(\nanoNTSS).elAt(\tr, \mset).elemDesc.label = "spat";
 MKtl(\nanoNTSS).elAt(\tr, \mset).action = { |bt|
-	defer { Butz(\NTSS).run(\spatio) }
+	defer { WinBounds.showOrMake(\SpatioScope).front }
 };
 
-MKtl(\nanoNTSS).elAt(\tr, \mleft).elemDesc.label = "setSrc";
+MKtl(\nanoNTSS).elAt(\tr, \mleft).elemDesc.label = "srcs";
 MKtl(\nanoNTSS).elAt(\tr, \mleft).action = { |bt|
-	defer { Butz(\NTSS).run(\allSrcNdefs) }
+	defer { WinBounds.showOrMake(\allSrcNdefs).front }
 };
 
-MKtl(\nanoNTSS).elAt(\tr, \mright).elemDesc.label = "setSrc";
-MKtl(\nanoNTSS).elAt(\tr, \mset).action = { |bt|
-	defer { Butz(\NTSS).run(\allSrcNdefs) }
+MKtl(\nanoNTSS).elAt(\tr, \mright).elemDesc.label = "mnFX";
+MKtl(\nanoNTSS).elAt(\tr, \mright).action = { |bt|
+	defer { WinBounds.showOrMake(\MainFX).front }
 };
 
 WinBounds.addMake(\nanoNTSS, {
@@ -75,3 +87,5 @@ WinBounds.addMake(\nanoNTSS, {
 });
 
 Butz(\NTSS).actions.addAfter(\nanoNTSS, {WinBounds.showOrMake(\nanoNTSS) }, \allSrcNdefs); "";
+
+defer ({ MKtl(\nanoNTSS).postln.gui.showLabels }, 1);

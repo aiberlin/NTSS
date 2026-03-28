@@ -56,16 +56,16 @@ WinBounds.addMake(NTSS.topName, {
 
 		var moni = MonitorGui(panna, comp, wid@220);
 
-		var playBt = Button(comp, wid@30).states_([
-			["PLAY"],["PLAY", Color.black, Color.green]
-		]).font_(f)
-		.action_({ |bt| panna.play; stopBt.value = 0 });
-
 		var stopBt = Button(comp, wid@30).states_([
 			["STOP"],
 			["STOP", Color.white, Color.red],
 		]).font_(f)
 		.action_({ |bt| panna.stop; playBt.value = 0 });
+
+		var playBt = Button(comp, wid@30).states_([
+			["PLAY"],["PLAY", Color.black, Color.green]
+		]).font_(f)
+		.action_({ |bt| panna.play; stopBt.value = 0 });
 
 		var panPop = EZPopUpMenu(comp, wid@30, nil, NTSS.panNames, { |pop|
 			pop.item.postln;
