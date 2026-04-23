@@ -202,7 +202,7 @@ and shiftSpeakers reorders it to hardware output hwOut: 12.";
 
 MainFX(s).clear;
 MainFX(s, NTSS.numOutputBusChannels,
-	[\eq3, \mainMixer, \mix2four, \mix2stereo, \shiftSpeakers]
+	NTSS.mfx.slotNames ? [\eq3, \aooReceive, \mainMixer, \aooSend, \mix2four, \mix2stereo, \shiftSpeakers]
 );
 //MainFX(s).add(\levels, 1);
 MainFX(s).add(\mainMixer, 1);
@@ -214,7 +214,7 @@ MainFX(s).add(\shiftSpeakers, 1);
 WinBounds.addMake(\MainFX, {
 	var mg = MainFXGui(MainFX(s), 34);
 	var splainIndex = MainFX(s).slotNames.size + 2;
-	mg.editGui.paramGui.paramViews[0].enabled_(false);
+	// mg.editGui.paramGui.paramViews[0].enabled_(false);
 	mg.parent.name_(\MainFX);
 
 	mg.buttons[splainIndex].visible_(true).states_([[\mainsplain]])
