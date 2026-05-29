@@ -29,7 +29,7 @@ NTSS.defaults.inNames;
 NTSS.inNames = [\A, \B, \C, \D];
 
 // set how many mixer channels you want:
-NTSS.defaults.numPmcs // defaults to 8
+NTSS.defaults.numPmcs; // defaults to 8
 NTSS.numPmcs = 12;    // set to 12
 
 // panNames: choose which ones to show on the GUIs:
