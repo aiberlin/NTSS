@@ -93,7 +93,8 @@ NTSS.spk.data = List[
 	(name: \blech,  x:   0.5, y:  0.0, z: 2.4, 	logicOut: 25, hwOut: 22, path: \dyna_R ),
 	(name: \b_o,   	x:   1.2, y: -2.2, z: 1.0, 	logicOut: 15, hwOut: 23, path: \direct ),
 
-	// shaker - very soft
+	// X-32 again, 6 Auxes, 2 headphone/monitor out channels
+	// shakers - very soft
 	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24, path: \bt2_R ),
 	(name: \braun1, x: -2.5, y:  0.0, z: 2.5, 	logicOut: 10,  hwOut: 25, path: \bt2_L ),
 	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 9,  hwOut: 26, path: \bt3_R ),
