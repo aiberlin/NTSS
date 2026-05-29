@@ -373,7 +373,7 @@ Spec.add(\srcBus, [ NTSS.pchainIndices.minItem, NTSS.pchainIndices.maxItem] ++ [
 // make the buffer and panner for each pch:
 (
 NTSS.pchains.do { |pc, i|
-	var mybuf, panNdefName, panner;
+	var mybuf, panNdefName, panner, makeBuf;
 	panNdefName = NTSS.pannerNames[i];
 	panner = Ndef(panNdefName);
 	panner.ar(NTSS.spk.numLogicOuts);
@@ -381,12 +381,14 @@ NTSS.pchains.do { |pc, i|
 	panner.vol = 0.25;
 	panner.set(\srcBus, pc.proxy.index);
 	pc.addHalo(\panner, panner);
-	// pc.getHalo(\mybuf).postln;
-	if (pc.getHalo(\mybuf).isNil) {
+
+	makeBuf = {
 		mybuf = Buffer.sendCollection(s, 0!16, 2);
 		pc.addHalo(\mybuf, mybuf);
 		pc.set(\bufnum, pc.getHalo(\mybuf).bufnum);
 	};
+	if (pc.getHalo(\mybuf).isNil, makeBuf);
+	ServerBoot.add(makeBuf, s);
 
 	pc.addHalo(\backCol, Color.hsv(i / NTSS.numPmcs, 0.7, 0.8))
 };
