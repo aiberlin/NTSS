@@ -113,7 +113,7 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 		synthCtl = MainFX(s).proxy.objects[aoo.mfxIndexSend.postln].postln;
 		// create Synth + controller
 		aoo.sendCtl = AooSendCtl(
-			(server: s, nodeID: synthCtl.nodeID).postln, nil,
+			Synth.basicNew(\wht, s, synthCtl.nodeID).postln, nil,
 			synthCtl.synthDef);
 		// wait until fully initialized
 		0.2.wait;
@@ -133,7 +133,7 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 			if (format.notNil) {
 					"AooSend: stream format: %".format(format).postln;
 				// start stream
-				// aoo.sendCtl.start;
+				aoo.sendCtl.start;
 			}
 		});
 	};
@@ -141,7 +141,6 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 	logicOuts
 }, 1);
 );
-
 
 /// MFdef to make a test sender with SynthDef/Synth construction
 (
