@@ -19,7 +19,7 @@ NTSS.defaults.hardwareBufferSize = 1024;
 NTSS.defaults.reboot = true;
 
 NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
-NTSS.defaults.speakerData = "speakerData/speakerDataHosek.scd";
+// NTSS.defaults.speakerData = "speakerData/speakerDataHosek.scd";
 
 NTSS.defaults.numPmcs = 8;
 NTSS.defaults.pcSlots = [\top, \ins, \sndfile, \pulsy,
