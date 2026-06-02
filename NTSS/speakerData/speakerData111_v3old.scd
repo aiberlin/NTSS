@@ -70,11 +70,11 @@ NTSS.spk.data = List[
 	(name: \gene0, 	x:   0.5, y:  3.2, z: 0.8, 	logicOut: 7, hwOut:  7, path: \direct ),
 
 	/*** on Expander S16, right side : ****/
-	(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam2_FL ),
-	(name: \wd12,  	x:   1.0, y:  2.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam2_FR ),
-	(name: \braun2, x:   3.5, y:  0.2, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam2_SL ),
-	(name: \cabass2,x:   5.5, y: -1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam2_SR ),
-	(name: \wd11,	x:   5.5, y:  1.0, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam2_C ),
+	(name: \crypt3, x:   4.5, y:  2.0, z: 0.5, 	logicOut: 22, hwOut:  8, path: \Yam1_FL ),
+	(name: \wd12,  	x:   1.0, y:  2.0, z: 0.3, 	logicOut: 18, hwOut:  9, path: \Yam1_FR ),
+	(name: \braun2, x:   3.5, y:  0.2, z: 0.8, 	logicOut: 19, hwOut: 10, path: \Yam1_SL ),
+	(name: \cabass2,x:   5.5, y: -1.2, z: 3.0, 	logicOut: 20, hwOut: 11, path: \Yam1_SR ),
+	(name: \wd11,	x:   5.5, y:  1.0, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam1_C ),
 
 	// 3 empty here
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 13 ),
@@ -95,12 +95,12 @@ NTSS.spk.data = List[
 
 	// X-32 again, 6 Auxes, 2 headphone/monitor out channels
 	// shakers - very soft
-	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24, path: \Yam1_FLA ),
-	(name: \braun1, x: -2.5, y:  0.0, z: 2.5, 	logicOut: 10, hwOut: 25, path: \Yam1_FRA ),
-	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 9,  hwOut: 26, path: \Yam1_SL ),
-	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 8,  hwOut: 27, path: \Yam1_SR ),
+	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24, path: \bt2_R ),
+	(name: \braun1, x: -2.5, y:  0.0, z: 2.5, 	logicOut: 10, hwOut: 25, path: \bt2_L ),
+	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 9,  hwOut: 26, path: \bt3_R ),
+	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 8,  hwOut: 27, path: \bt3_L ),
 
-	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \Yam1_C ),
+	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \bt4_R ),
 	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 24,  hwOut: 29, path: \bt4_L ),
 	(name: \cryptA, x:  3.5, y:  3.2, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
 	(name: \sub,   	x: -1.5, y:  2.5, z: 0.4, 	logicOut: 27, hwOut: 31, path: \direct ),
