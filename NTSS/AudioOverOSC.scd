@@ -53,7 +53,8 @@ NTSS.aoo = (
 	recvID: 42,
 	recvport: 39999,
 	destAddr: AooAddr("192.168.111.183", 39999),
-	format: AooFormatPCM(32, 256),
+	//format: AooFormatPCM(32, 256),
+	format: AooFormatOpus(32, 512),
 	// index in MainFX proxy objects is needed for AooReceiveCtl
 	mfxIndexRecv: 20,
 	// index in MainFX proxy objects is needed for AooSendCtl
