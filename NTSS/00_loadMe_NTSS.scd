@@ -179,6 +179,10 @@ s.doWhenBooted {
 
 	s.sync;
 
+	if (\Aoo.asClass.notNil) {
+		"AudioOverOSC.scd".postcs.resolveRelative.loadPaths;
+	};
+
 	"MainFX.scd".postcs.resolveRelative.loadPaths;
 	"ntss_tester.scd".postcs.loadRelative;
 
