@@ -63,6 +63,17 @@ NTSS.aoo = (
 	verbose: false
 );
 
+// switch NetAddr on the fly
+Butz(\NTSS).add(\setAoo, {
+	Document("setAoo",
+		"// set Aoo address:\n"
+		"NTSS.aoo.destAddr = AooAddr(%, %);\n".format(
+			NTSS.aoo.destAddr.ip.cs, NTSS.aoo.destAddr.port)
+	);
+});
+
+
+
 // start/stop it here in MainFX
 
 ProxyChain.add3(\aooReceive, \mix -> {
