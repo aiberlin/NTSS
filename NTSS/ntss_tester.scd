@@ -1,5 +1,7 @@
 /*** NTSS version
 
+NEEDS UPDATE!!!!
+
 This patch is for testing that all speakers work,
 and for finding volume levels for each speaker
 so they all sound similarly loud.

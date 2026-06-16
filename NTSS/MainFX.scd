@@ -153,6 +153,8 @@ ProxyChain.add3(
 		// write to spatBus before relAmpComp
 		var finalLogicalOut = allChans * (ampCtls * mainvol);
 		Out.ar(NTSS.spatbus, finalLogicalOut);
+		"relAmp values:".postln;
+		relAmpValues.clump(4).printAll;
 
 		finalLogicalOut  * relAmpValues
 	},

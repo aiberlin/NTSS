@@ -107,21 +107,38 @@ NTSS.spk.data = List[
 
 ];
 
-// collected with ntss_tester file, Tdef(\tester)
+// collected with ntss_tester file, which needs update!
 // used in MainFX for hardware channel amp balance
+
+(
+/// these are in hardware order!
 NTSS.hwRelAmps = [
 	2, 2, 2, 2,         // kefs 0..3,
-	2, 1, 1, 1,         // kef4, cabass0, cabass1, gene0
-	0.5, 0.25, 1, 0.25, // crypt3, wd12, braun2, cabass2
-	0.25, 1, 1, 1,      // wd11, empty, empty, empty
+	2, 0.6, 0.6, 0.6,   // kef4, cabass0, cabass1, gene0
+	1, 0.3, 1, 0.3,     // crypt3, wd12, braun2, cabass2
+	0.5, 1, 1, 1,      // wd11, empty, empty, empty
 	0.5, 0.5, 1, 2,     // behring, bluecab, gene1, empty
-	0.5, 3, 2, 1,       // wd14, noname, blech, b_o
-	2, 0.6, 0.5, 1,     // harp, braun1, wd13, bw6
-	1, 0.5, 0.3, 0.5    // ldl8, ldl7, cryptA, sub
+	2, 4, 2, 1.5,       // wd14, noname, blech, b_o
+	10, 2, 1, 1.5,     // harp, braun1, wd13, bw6
+	1.5, 0.5, 3, 0.5    // ldl8, ldl7, cryptA, sub
 ];
 // put the measured amp compensation levels into spk.data
 NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
 
+/**** which channels to compare?
+~chans = [0, 1, 2, 3, 4, 5, 6, 7];
+~chans = [0, 1, 8, 9, 10, 11];
+~chans = [0, 1, 12, 13, 14, 15];
+~chans = [0, 1] ++ [16, 17, 18, 19];
+~chans = [0, 1] ++ [20, 21, 22, 23];
+~chans = [0, 1] ++ [24, 25, 26, 27];
+~chans = (0..31);
+*****/
+//////
+///// when tuning volumes, uncomment to update MainFX !
+// MainFX(s).remove(\mainMixer);
+// MainFX(s).add(\mainMixer, 1);
+);
 
 // select non-empties, and sort them in logical order;
 // we only use logical order from here on.
