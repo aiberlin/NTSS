@@ -98,7 +98,7 @@ MKtl(\nanoNTSS).elAt(\kn, (0..5)).do { |kn, i|
 			param = panner.controlKeys[i + 1];
 			if (param.notNil) {
 				// FIXME: this will jump
-				panner.setUni(*[param, kn.value].postcs);
+				panner.softSet(param, kn.value, lastVal: kn.prevValue, mapped: false);
 			}
 		}
 	}
