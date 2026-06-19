@@ -89,3 +89,17 @@ WinBounds.addMake(\nanoNTSS, {
 Butz(\NTSS).actions.addAfter(\nanoNTSS, {WinBounds.showOrMake(\nanoNTSS) }, \allSrcNdefs); "";
 
 defer ({ MKtl(\nanoNTSS).postln.gui.showLabels }, 1);
+
+MKtl(\nanoNTSS).elAt(\kn, (0..5)).do { |kn, i|
+	kn.action = {
+		var panner, param;
+		if (NTSS.frontChainIndex.notNil) {
+			panner = NTSS.pchains[NTSS.frontChainIndex].getHalo.panner;
+			param = panner.controlKeys[i + 1];
+			if (param.notNil) {
+				// FIXME: this will jump
+				panner.setUni(*[param, kn.value].postcs);
+			}
+		}
+	}
+};

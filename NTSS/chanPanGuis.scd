@@ -151,11 +151,23 @@ NTSS.pchains.do { |pch, i|
 		var horizStagger = (Window.screenBounds.width - 200 - 500 / NTSS.pchains.size).round;
 		var vertiStagger = (Window.availableBounds.height - 830 / NTSS.pchains.size).round;
 		var winrect = Rect(horizStagger * i + 200, NTSS.pchains.size - i * vertiStagger, 500, 820);
-		var w = Window(pch.key, winrect.postln).front.background_(pch.getHalo.backCol);
+		var w = Window(pch.key, winrect.postln).background_(pch.getHalo.backCol);
 		var flow = w.addFlowLayout;
 		var font = Font(Font.defaultMonoFace, 14);
-
 		var inputPop, pxDrag, sfDrag, pchgui, pannerGui, panPop, panguibounds;
+
+		\toFront.postln;
+		w.toFrontAction = {
+			("toFront: " + w.name).postcs;
+			NTSS.frontChainIndex = i;
+			"NTSS.frontChainIndex: %\n".postf(i);
+		};
+
+		w.endFrontAction = {
+			("endFront: " + w.name).postcs;
+		};
+
+		defer ({ w.front }, 0.1);
 
 		// make input selections: audio inputs
 		inputPop = EZPopUpMenu(w, 160@30, \anaIn, NTSS.inNames,
