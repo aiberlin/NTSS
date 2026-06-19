@@ -32,7 +32,7 @@ if (NTSS.sampleRate.notNil) {
 };
 
 "*** NTSS.speakerData: ".post;
-NTSS.speakerData.resolveRelative.postcs;
+NTSS.speakerDataPath = NTSS.speakerData.resolveRelative.postcs;
 NTSS.speakerData.loadRelative;
 
 

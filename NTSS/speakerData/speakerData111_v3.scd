@@ -98,7 +98,7 @@ NTSS.spk.data = List[
 	(name: \harp,   x: -2.5, y:  5.0, z: 3.5, 	logicOut: 26, hwOut: 24, path: \Yam1_FLA ),
 	(name: \braun1, x: -2.5, y:  0.0, z: 2.5, 	logicOut: 10, hwOut: 25, path: \Yam1_FRA ),
 	(name: \wd13, 	x: -4.5, y:  2.5, z: 0.3, 	logicOut: 9,  hwOut: 26, path: \Yam1_SL ),
-	(name: \bw6, 	x: -5.5, y:  4.0, z: 1.5, 	logicOut: 8,  hwOut: 27, path: \Yam1_SR ),
+	(name: \bw6, 	x: -5.0, y:  4.0, z: 1.5, 	logicOut: 8,  hwOut: 27, path: \Yam1_SR ),
 
 	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \Yam1_C ),
 	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 24,  hwOut: 29, path: \bt4_L ),
