@@ -1,38 +1,56 @@
 /*** NTSS version
 
-NEEDS UPDATE!!!!
-
-This patch is for testing that all speakers work,
+This patch is for testing that all NTSS speakers work,
 and for finding volume levels for each speaker
 so they all sound similarly loud.
 
-// first test with Tdef testHW:
+NTSS can be adapted to different speaker layouts;
+NTSS.speakerData  // tells you which one is currently used.
+By default, this is speakerData111v3.scd.
+
+
+// First test with Tdef testHW:
 // in MainFX, turn off mainMixer and shiftSpeakers;
-// then check all spaekers are here:
+// then check all speakers are here:
 
 MainFX(s).remove(\mainMixer);
 MainFX(s).remove(\shiftSpeakers);
 
 Tdef(\testHW).play;
 
-~chans = (0..31); // all
-~chans = (0..7);  // groups of 8
-~chans = (8..15); // 5 here 3 empty
-~chans = (16..23);
-~chans = (24..31); // one empty
+/// these hardware channels are selected to play in testHW:
 
-// set all amps equal
+~chans = (0..31);  // all 32
+~chans = (0..7);   // 1st group of 8, Mixer outs - in 111v3, the KEFs and left side
+~chans = (8..15);  // 2nd group - in 111v3, 5 here 3 empty
+~chans = (16..23); // 3rd group of 8, in 111
+~chans = (24..31); // 4th group, one is empty
+
+// set all amps to equal starting volume:
 ~amps = 1 ! 32;
 // set all amps to last measured data
 ~amps = NTSS.hwRelAmps;
 
+// see which ones may need changes;
+// and write the changes into NTSS.hwRelAmps, e.g.
+NTSS.hwRelAmps[14] = 1;
+
+// when done, store the collected NTSS.hwRelAmps
+// back into the current speakerData file,
+// and rerun that file to load it.
+
 Tdef(\testHW).stop;
 
 //////////////////////////////////////
-// then test with Tdef testLogic:
+// Test with Tdef testLogic:
+// this is in the logical order of speakers;
+// some panning algorithms use that logical order.
 
+// enable mainMixer and shiftSpeakers:
 MainFX(s).add(\mainMixer, 1);
 MainFX(s).add(\shiftSpeakers, 1);
+
+// 28 logical channels in NTTS 111v3
 ~chans = (0..27);
 
 Tdef(\testLogic).play;
@@ -88,7 +106,7 @@ so MainFX has to have shiftSpeakers on!
 */
 
 
-
+// for a new space/layout/order,
 // init space for 32 hardware out amps
 ~amps = [
 	1, 1, 1, 1,  1, 1, 1, 1,
