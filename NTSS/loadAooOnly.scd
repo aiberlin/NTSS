@@ -128,6 +128,7 @@ s.doWhenBooted {
 
 
 	Butz.add('plotTree', { s.plotTree });
+	Butz.add('TEST_NTSS', { Butz(\NTSS).run(\TEST_NTSS) });
 
 	0.1.wait;
 
