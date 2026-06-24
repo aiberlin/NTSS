@@ -9,7 +9,7 @@ NTSS.spk.selected = [];
 NTSS.spatbus = NTSS.spatbus ?? { Bus.audio(s, NTSS.spk.ordered.size) };
 
 WinBounds.addMake(\SpatioScope, {
-	var spkDataName = NTSS.speakerDataPath.basename.splitext.first;
+	var spkDataName = NTSS.speakerData.basename.splitext.first;
 	q.spat = SpatioScope.new(
 		NTSS.spk.positions.collect {|sp| Point(*sp)}, bounds: Rect(0,0,500,500),
 		busOffset: NTSS.spatbus.index
