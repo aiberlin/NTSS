@@ -141,6 +141,10 @@ s.doWhenBooted {
 
 	NTSS.ready = true;
 
+	0.2.wait;
+
+	MainFX(s).add(\aooReceive, 1);
+
 	// put next setup script in NTSS.finalSetup,
 	// so it runs here:
 	NTSS.finalSetup;
