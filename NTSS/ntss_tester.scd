@@ -67,10 +67,17 @@ q = q ? ();
 NTSS.testpath = thisProcess.nowExecutingPath;
 
 Butz(\NTSS).add(\TEST_NTSS, {
-	w = Window("TEST_NTSS", Rect.aboutPoint(Window.availableBounds.center, 150, 100)).front;
+	w = Window("TEST_NTSS", Rect.aboutPoint(Window.availableBounds.center, 150, 150)).front;
 	w.view.addFlowLayout;
-	// Document.open(NTSS.testpath);
+	TextView(w.view, 300@50).string_(
+		"for testHW, speakers are in hardware order:
+On MainFX window, turn shiftSpeakers OFF!"
+	);
 	TdefGui(Tdef(\testHW), 3, w.view);
+	TextView(w.view, 300@50).string_(
+		"for testLogic, speakers are in logical order:
+On MainFX window and turn shiftSpeakers ON!"
+	);
 	TdefGui(Tdef(\testLogic), 3, w);
 
 });
