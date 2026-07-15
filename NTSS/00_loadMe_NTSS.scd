@@ -166,7 +166,10 @@ if (NTSS.reboot) {
 	}
 };
 
-"nanoNTSS.scd".loadRelative;
+
+if (NTSS.useNano) {
+	"nanoNTSS.scd".loadRelative;
+};
 
 s.doWhenBooted {
 

@@ -26,6 +26,8 @@ NTSS.defaults.pcSlots = [\top, \ins, \sndfile, \pulsy,
 	\eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter
 ];
 
+NTSS.defaults.useNano = true;
+
 // default names //
 NTSS.topName = \N_T_S_S;
 
