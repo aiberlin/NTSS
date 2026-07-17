@@ -47,7 +47,7 @@ NTSS.spk = NTSS.spk ? ();
 NTSS.spk.setupName = "111_March2026";
 NTSS.spk.data; // the current speaker set
 
-NTSS.spk.numLogicOuts = 28; // currently
+// NTSS.spk.numLogicOuts = 29; // currently
 NTSS.spk.numHWOuts = 32;
 
 // possible SpatioScope background image:
@@ -77,7 +77,7 @@ NTSS.spk.data = List[
 	(name: \wd11,	x:   5.5, y:  1.0, z: 1.1, 	logicOut: 23, hwOut: 12, path: \Yam2_C ),
 
 	// 3 empty here
-	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 13 ),
+	(name: \bshaker,x:   0.0, y:  0.0, z: 0.0, 	logicOut: 27, hwOut: 13 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 14 ),
 	(name: \empty,  x:   0.0, y:  0.0, z: 0.0, 	logicOut: -1, hwOut: 15 ),
 
@@ -103,7 +103,7 @@ NTSS.spk.data = List[
 	(name: \ldl8, 	x: -5.0, y: -1.5, z: 0.6, 	logicOut: 11, hwOut: 28, path: \Yam1_C ),
 	(name: \ldl7, 	x: -1.0, y:  4.0, z: 1.5, 	logicOut: 24,  hwOut: 29, path: \bt4_L ),
 	(name: \cryptA, x:  3.5, y:  3.2, z: 1.1, 	logicOut: 21, hwOut: 30, path: \direct ),
-	(name: \sub,   	x: -1.5, y:  2.5, z: 0.4, 	logicOut: 27, hwOut: 31, path: \direct ),
+	(name: \sub,   	x: -1.5, y:  2.5, z: 0.4, 	logicOut: 28, hwOut: 31, path: \direct ),
 
 ];
 
@@ -148,6 +148,7 @@ NTSS.spk.names = NTSS.spk.ordered.collect(_.name);
 "*** NTSS.spk.ordered : % speakers.\n".postf(NTSS.spk.ordered.size);
 "*** NTSS.spk.names: ".postln;
 NTSS.spk.names.postcs;
+NTSS.spk.numLogicOuts = NTSS.spk.names.size;
 
 // backwards compat for now:
 // speaker x y z for Spatio
