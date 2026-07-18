@@ -116,6 +116,9 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 	var aoo = NTSS.aoo;
 	var synthCtl;
 	var sendingChans = AooSend.ar(aoo.recvport, aoo.recvID, logicOuts);
+	"AooSend recvport: %, recvID: %.\n".postf(
+		aoo.recvport, aoo.recvID
+	);
 
 	// wait for server sync, then build sendCtl:
 	fork {
@@ -139,6 +142,8 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 		});
 
 		// add destination sink
+		"AooSendCtl destAddr: %, recvID: %.\n".postf(aoo.destAddr, aoo.recvID);
+
 		aoo.sendCtl.addSink(aoo.destAddr, aoo.recvID);
 		// // set stream format
 		aoo.sendCtl.setFormat(aoo.format.postln, { |format|
