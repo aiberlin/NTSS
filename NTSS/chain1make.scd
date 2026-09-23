@@ -345,6 +345,32 @@ drive: the amount of gain to apply before going into the limiter
 maxLevel: the maximum signal level the limiter will allow.";
 
 
+ProxyChain.add3(\bandPass,
+	\filter -> { |in, bandFreqs = #[200, 2000], gain=1,loReso=1, hiReso=1|
+		var loFreq = bandFreqs[0].clip(20, 20000).lag(0.2);
+		var hiFreq = bandFreqs[1].clip(20, 20000).lag(0.2);
+
+		var snd = RHPF.ar(in, loFreq, (1/loReso.clip(1, 11)).lag(0.2));
+		snd = RLPF.ar(snd, hiFreq, (1/hiReso.clip(1, 11)).lag(0.2));
+		snd * gain.lag(0.2);
+
+	}, 1, (
+		bandFreqs: \freq,
+		gain: [0, 11, \amp],
+		loReso: [1, 11, \amp],
+		hiReso: [1, 11, \amp],
+
+	)
+);
+
+ProxyChain.sourceDicts[\bandPass].text =
+"bandPass limits the freqency band of the input, and allows resonance on the filters.
+bandFreqs: the low and high cutoff frequencies of the filters
+gain: gain control to compensate for level changes by filtering
+loReso: amount of resonance on the lower filter freq
+loReso: amount of resonance on the higher filter freq.";
+
+
 
 /*
 ProxyChain.all.do(_.clear);

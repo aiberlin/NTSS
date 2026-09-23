@@ -23,7 +23,7 @@ NTSS.defaults.speakerData = "speakerData/speakerData111_v3.scd";
 
 NTSS.defaults.numPmcs = 8;
 NTSS.defaults.pcSlots = [\top, \ins, \sndfile, \pulsy,
-	\eq3, \freqMod, \ampMod, \tilta, \gapz, \reverb, \limiter
+	\eq3, \freqMod, \ampMod, \bandPass, \tilta, \gapz, \reverb, \limiter
 ];
 
 NTSS.defaults.useNano = true;
