@@ -249,20 +249,24 @@ NTSS.pchains.do { |pch, i|
 		pchgui.buttons[0].valueAction_(0);
 		defer ({ pchgui.buttons[0].valueAction_(1) }, 0.25);
 
-		Button(w, 100@20).font_(font).states_([["chansplain"]])
+		Button(w, 100@30).font_(font).states_([["chansplain"]])
 		.action_({ WinBounds.showOrMake(\chansplain) });
 
-		panPop = EZPopUpMenu(w, 200@20, "panMode", NTSS.panNames, { |pop|
+		panPop = EZPopUpMenu(w, 200@30, "panMode", NTSS.panNames, { |pop|
 			pop.item.postln;
 			MFdef(\setPanner).(pch, pop.item);
 		}).font_(font);
 
 		pch.addHalo(\panPop, panPop);
 
-		Button(w, 100@20).font_(font).states_([["pansplain"]])
+		Button(w, 100@30).font_(font).states_([["pansplain"]])
 		.action_({
 			WinBounds.showOrMake(\pansplain)
 		});
+		DragBoth(w, 80@30).font_(font).object_(i).string_("dragDrop")
+		.receiveDragHandler = { |obj|
+			MFdef(\copyPan).(View.currentDrag, i);
+		};
 
 		pannerGui = NdefGui(pch.getHalo(\panner), 18, w, 490@250);
 		pannerGui.paramGui.paramViews[0].enabled_(false);

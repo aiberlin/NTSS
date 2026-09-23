@@ -480,6 +480,18 @@ MFdef(\setSrc).add(\setSrc, { |pc, drag|
 	}
 });
 
+// copy panner choice and settings to another channel:
+MFdef(\copyPan).add(\copy, { |sourceIndex, destIndex|
+	var srcchain = NTSS.pchains[sourceIndex];
+	var destchain = NTSS.pchains[destIndex];
+
+	var srcpanner = srcchain.getHalo.panner;
+	var destpanner = destchain.getHalo.panner;
+	var srcpan = srcchain.getHalo.panName;
+	MFdef(\setPanner).(destchain, srcpan);
+	destpanner.set(*srcpanner.getKeysValues.flatten);
+});
+
 /*
 MFdef(\setSrc).(NTSS.pchains[0]);
 MFdef(\setSrc).(NTSS.pchains[0], \x);
