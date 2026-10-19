@@ -246,6 +246,12 @@ NTSS.pchains.do { |pch, i|
 		pchgui.buttons[pch.slotNames.size - 1].enabled_(false);
 		ProxyMeter.addNdefGui(pchgui.editGui);
 
+		Button(pchgui.butZone, 100@20).states_([[\playN]])
+		.action_({
+			MFdef(\playOnGui).(pch.proxy, nil, nil,
+			NTSS.spk.colorNames ++ NTSS.spk.ringNames)
+		});
+
 		pchgui.buttons[0].valueAction_(0);
 		defer ({ pchgui.buttons[0].valueAction_(1) }, 0.25);
 

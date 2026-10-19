@@ -194,6 +194,7 @@ s.doWhenBooted {
 
 	s.volume = 0;
 
+
 	// load panner functions
 	"ringPanFuncs.scd".postcs.loadRelative;
 	"chanPanFuncs.scd".postcs.loadRelative;
@@ -201,6 +202,9 @@ s.doWhenBooted {
 	"spatPanFuncs2.scd".postcs.loadRelative;
 
 	NTSS.panNames = NTSS.panNames ? NTSS.allPanNames;
+
+	// simple playN by GUI for static
+	"playN_NTSS.scd".postcs.loadRelative;
 
 	// make Pepsi Mixer Channels (see David Tudor) as ProxyChains
 	"chain1make.scd".postcs.loadRelative;

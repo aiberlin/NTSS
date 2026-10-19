@@ -190,4 +190,15 @@ NTSS.ringNames.do (Spec.add(_, \amp));
 // names to use for setting output amps
 NTSS.amp_names = NTSS.spk.names;
 
+// more names of different kinds of groups:
+// groups by loudspeaker color
+NTSS.spk.colorNames = ['ldl', 'kef', 'wd', 'amps', 'crypt', 'shaka', 'braun', 'cabass'];
+
+// groups by ring membership
+NTSS.spk.ringNames = ['back', 'up', 'left', 'right'];
+
+// use /show them in this order
+NTSS.spk.groupNames = NTSS.spk.colorNames ++ NTSS.spk.ringNames;
+
+
 );
