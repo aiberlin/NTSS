@@ -488,8 +488,9 @@ MFdef(\copyPan).add(\copy, { |sourceIndex, destIndex|
 	var srcpanner = srcchain.getHalo.panner;
 	var destpanner = destchain.getHalo.panner;
 	var srcpan = srcchain.getHalo.panName;
+	var keysValues = srcpanner.getKeysValues.reject {|keyValue| keyValue[0] == \srcBus};
 	MFdef(\setPanner).(destchain, srcpan);
-	destpanner.set(*srcpanner.getKeysValues.flatten);
+	destpanner.set(*keysValues.flatten);
 });
 
 /*
