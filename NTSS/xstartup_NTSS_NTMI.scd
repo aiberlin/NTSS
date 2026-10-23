@@ -54,19 +54,39 @@ NTSS.finalSetup = {
 	// tell NTMI what to do when done:
 	NTMI.finalSetup = {
 		//make sure the NTMI sounds play directly:
-		NTMI.processes.do(_.set(\amp, 0.25));
+		NTMI.processes.do(_.set(\amp, 0.5));
 		q.ndef.groups.keys.postcs;
-		q.ndef.groups.put(\NTMI, NTMI.processes);
+		q.ndef.groups.put(\NTMI, NTMI.slots.zz ++ NTMI.processes);
 
 		q.ndef.groups.keys;
 
 		// for choosing Ndefs as NTSS sources,
 		// get these from NTMI:
-		q.ntss.getSrcNdefs = {
+		NTSS.getSrcNdefs = {
 			NTMI.slots.zz ++
 			NTMI.ndefs ++
 			NTMI.processes.copy.removeAll(NTMI.ndefs);
 		};
+
+		NTMI.slots.zz.do(_.play(vol: 0));
+
+		NTMI.slots.zz.do { |zz, i|
+			MFdef(\setSrc).(NTSS.pchains[i], zz);
+			NTSS.pchains[i].set(\proxyAmp, 1);
+			NTSS.pchains[i].getHalo(\panner).vol_(0);
+		};
+
+		0.5.wait;
+
+		NTMI.slots.addActive(0, NTMI.ndefs[0]);
+		NTMI.slots.addActive(1, NTMI.ndefs[1]);
+		NTMI.slots.addActive(2, NTMI.ndefs[2]);
+		NTMI.slots.addActive(3, NTMI.ndefs[3]);
+
+		MFdef(\setPanner).(NTSS.pchains[0], \ringRoto2);
+		MFdef(\setPanner).(NTSS.pchains[1], \ringSnake2);
+		MFdef(\setPanner).(NTSS.pchains[2], \ringFeed2);
+		MFdef(\setPanner).(NTSS.pchains[3], \peatSoup2);
 
 		// finetune Butzes
 		Butz(\NTMI).remove(\miniNTMI); // not fully working
