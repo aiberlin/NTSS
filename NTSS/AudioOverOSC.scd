@@ -112,6 +112,18 @@ ProxyChain.add3(\aooReceive, \mix -> {
 	receivedChans
 }, 1);
 
+
+ProxyChain.sourceDicts[\aooReceive].text =
+"aooReceive allows receiving multichannel audio from other NTSS instances in the same local network,  that send to the one machine with the USB connection to the multichannel sound system. The senders need to know the IP address and port of the receiver as
+NTSS.aoo.destAddr
+";
+
+ProxyChain.sourceDicts[\aooSend].text =
+"aooSend allows sending multichannel audio via local network to the one machine with the USB connection to the multichannel sound system. The senders need to know the IP address and port of the receiver as
+NTSS.aoo.destAddr
+";
+
+
 ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 	var aoo = NTSS.aoo;
 	var synthCtl;
