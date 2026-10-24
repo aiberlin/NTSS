@@ -120,7 +120,7 @@ NTSS.hwRelAmps = [
 	0.5, 0.5, 1, 2,     // behring, bluecab, gene1, empty
 	2, 4, 2, 1.5,       // wd14, noname, blech, b_o
 	10, 2, 1, 1.5,     // harp, braun1, wd13, bw6
-	1.5, 0.5, 3, 0.5    // ldl8, ldl7, cryptA, sub
+	1.5, 2.5, 3, 0.5    // ldl8, ldl7, cryptA, sub
 ];
 // put the measured amp compensation levels into spk.data
 NTSS.hwRelAmps.do { |amp, idx| NTSS.spk.data[idx].put(\relAmp, amp) };
