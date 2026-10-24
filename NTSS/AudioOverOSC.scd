@@ -118,11 +118,6 @@ ProxyChain.sourceDicts[\aooReceive].text =
 NTSS.aoo.destAddr
 ";
 
-ProxyChain.sourceDicts[\aooSend].text =
-"aooSend allows sending multichannel audio via local network to the one machine with the USB connection to the multichannel sound system. The senders need to know the IP address and port of the receiver as
-NTSS.aoo.destAddr
-";
-
 
 ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 	var aoo = NTSS.aoo;
@@ -170,6 +165,13 @@ ProxyChain.add3(\aooSend, \filter -> { |logicOuts|
 	logicOuts
 }, 1);
 );
+
+ProxyChain.sourceDicts[\aooSend].text =
+"aooSend allows sending multichannel audio via local network to the one machine with the USB connection to the multichannel sound system. The senders need to know the IP address and port of the receiver as
+NTSS.aoo.destAddr
+";
+
+
 
 /// MFdef to make a test sender with SynthDef/Synth construction
 (
